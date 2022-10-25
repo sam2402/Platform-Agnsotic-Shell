@@ -8,7 +8,7 @@ import parser
 
 def evaluate(cmd_line: str, out: Deque[str]):
     for app, args in parser.parse_raw_input(cmd_line):
-        app.run([], out, args)
+        app.execute([], out, args)
 
 
 def run_shell():
