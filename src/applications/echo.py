@@ -1,11 +1,11 @@
 from typing import Deque, List
 
-from application import Application
+from ..application import Application
 
 
-class EchoApplication(Application):
+class Echo(Application):
 
-    def run(self, inp: List[str], out: Deque[str], args: List[str]) -> None:
+    def _run(self, inp: List[str], out: Deque[str], args: List[str]) -> None:
         output = " ".join(args) + "\n"
         out.append(output)
 

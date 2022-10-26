@@ -2,18 +2,18 @@ import glob
 import re
 from typing import List, Tuple
 
-from application import Application, UnsafeApplication
-from application_cat import CatApplication
-from application_cd import CdApplication
-from application_cut import CutApplication
-from application_echo import EchoApplication
-from application_find import FindApplication
-from application_grep import GrepApplication
-from application_head_tail import HeadApplication, TailApplication
-from application_ls import LsApplication
-from application_pwd import PwdApplication
-from application_sort import SortApplication
-from application_uniq import UniqApplication
+from ..application import Application, UnsafeApplication
+from ..applications.cat import Cat
+from ..applications.cd import Cd
+from ..applications.cut import Cut
+from ..applications.echo import Echo
+from ..applications.find import Find
+from ..applications.grep import Grep
+from ..applications.head_tail import Head, Tail
+from ..applications.ls import Ls
+from ..applications.pwd import Pwd
+from ..applications.sort import Sort
+from ..applications.uniq import Uniq
 
 
 # At the moment this just handles semicolons, does
@@ -32,18 +32,18 @@ def parse_raw_input(raw_line: str) -> List[Tuple[Application, List[str]]]:
 
 
 APPLICATIONS = {
-    "cat": CatApplication,
-    "cd": CdApplication,
-    "cut": CutApplication,
-    "echo": EchoApplication,
-    "find": FindApplication,
-    "grep": GrepApplication,
-    "head": HeadApplication,
-    "ls": LsApplication,
-    "pwd": PwdApplication,
-    "sort": SortApplication,
-    "tail": TailApplication,
-    "uniq": UniqApplication,
+    "cat": Cat,
+    "cd": Cd,
+    "cut": Cut,
+    "echo": Echo,
+    "find": Find,
+    "grep": Grep,
+    "head": Head,
+    "ls": Ls,
+    "pwd": Pwd,
+    "sort": Sort,
+    "tail": Tail,
+    "uniq": Uniq,
 }
 
 

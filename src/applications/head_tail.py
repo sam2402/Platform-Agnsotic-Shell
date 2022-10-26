@@ -1,21 +1,21 @@
 from typing import Deque, List
 
-import util
-from application import Application
+from .. import util
+from ..application import Application
 
 
-class HeadApplication(Application):
+class Head(Application):
 
-    def run(self, inp: List[str], out: Deque[str], args: List[str]):
+    def _run(self, inp: List[str], out: Deque[str], args: List[str]):
         execute(inp, out, args, False)
 
     def help_message(self) -> str:
         return "head [-n lines] [file]"
 
 
-class TailApplication(Application):
+class Tail(Application):
 
-    def run(self, inp: List[str], out: Deque[str], args: List[str]):
+    def _run(self, inp: List[str], out: Deque[str], args: List[str]):
         execute(inp, out, args, True)
 
     def help_message(self) -> str:

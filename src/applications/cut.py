@@ -1,13 +1,13 @@
 from typing import Deque, List
 
-import util
-from application import Application, ArgumentError
+from .. import util
+from ..application import Application, ArgumentError
 
 
-class CutApplication(Application):
+class Cut(Application):
 
-    def run(self, inp: List[str], out: Deque[str], args: List[str]):
-        if len(args) < 2 or len(args) > 3 or args[0] != "-b":
+    def _run(self, inp: List[str], out: Deque[str], args: List[str]):
+        if len(args) not in [2, 3] or args[0] != "-b":
             raise ArgumentError()
 
         intervals = parse_intervals(args[1])

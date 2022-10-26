@@ -2,13 +2,13 @@ import fnmatch
 import os
 from typing import Deque, List
 
-from application import Application, ArgumentError
+from ..application import Application, ArgumentError
 
 
-class FindApplication(Application):
+class Find(Application):
 
-    def run(self, inp: List[str], out: Deque[str], args: List[str]):
-        if len(args) < 2 or len(args) > 3:
+    def _run(self, inp: List[str], out: Deque[str], args: List[str]):
+        if len(args) not in [2, 3]:
             raise ArgumentError()
         if args[0 if len(args) == 2 else 1] != "-name":
             raise ArgumentError()

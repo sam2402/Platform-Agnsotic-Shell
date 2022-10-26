@@ -1,12 +1,12 @@
 from typing import Deque, List
 
-import util
-from application import Application
+from .. import util
+from ..application import Application
 
 
-class UniqApplication(Application):
+class Uniq(Application):
 
-    def run(self, inp: List[str], out: Deque[str], args: List[str]) -> None:
+    def _run(self, inp: List[str], out: Deque[str], args: List[str]) -> None:
         ignore_case, file_name = util.parse_opt_boolean_flag(args, "-i")
         lines = util.read_lines(file_name) if file_name else inp
 

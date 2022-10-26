@@ -1,13 +1,13 @@
 import os
 from typing import Deque, List
 
-import util
-from application import Application
+from .. import util
+from ..application import Application
 
 
-class LsApplication(Application):
+class Ls(Application):
 
-    def run(self, inp: List[str], out: Deque[str], args: List[str]) -> None:
+    def _run(self, inp: List[str], out: Deque[str], args: List[str]) -> None:
         show_hidden, directory = util.parse_opt_boolean_flag(args, "-a")
         if not directory:
             directory = os.getcwd()

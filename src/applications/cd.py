@@ -1,12 +1,12 @@
 import os
 from typing import Deque, List
 
-from application import Application, ArgumentError
+from ..application import Application, ArgumentError
 
 
-class CdApplication(Application):
+class Cd(Application):
 
-    def run(self, inp: List[str], out: Deque[str], args: List[str]):
+    def _run(self, inp: List[str], out: Deque[str], args: List[str]):
         if len(args) != 1:
             raise ArgumentError()
 

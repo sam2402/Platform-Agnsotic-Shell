@@ -1,12 +1,12 @@
 from typing import Deque, List
 
-import util
-from application import Application
+from .. import util
+from ..application import Application
 
 
-class CatApplication(Application):
+class Cat(Application):
 
-    def run(self, inp: List[str], out: Deque[str], args: List[str]) -> None:
+    def _run(self, inp: List[str], out: Deque[str], args: List[str]) -> None:
         if not args:
             for line in inp:
                 out.append(line)

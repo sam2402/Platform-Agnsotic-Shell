@@ -5,7 +5,7 @@ from typing import Deque, List
 class Application(ABC):
 
     @abstractmethod
-    def run(self, inp: List[str], out: Deque[str], args: List[str]):
+    def _run(self, inp: List[str], out: Deque[str], args: List[str]):
         pass
 
     @abstractmethod
@@ -14,7 +14,7 @@ class Application(ABC):
 
     def execute(self, inp: List[str], out: Deque[str], args: List[str]):
         try:
-            self.run(inp, out, args)
+            self._run(inp, out, args)
         except ArgumentError:
             raise ArgumentError(self.help_message())
 
@@ -24,9 +24,9 @@ class UnsafeApplication(Application):
     def __init__(self, child_application: Application):
         self.child_application = child_application
 
-    def run(self, inp: List[str], out: Deque[str], args: List[str]):
+    def _run(self, inp: List[str], out: Deque[str], args: List[str]):
         try:
-            self.child_application.run(inp, out, args)
+            self.child_application._run(inp, out, args)
         except Exception as err:
             out.append(str(err) + "\n")
 
