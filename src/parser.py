@@ -2,18 +2,18 @@ import glob
 import re
 from typing import List, Tuple
 
-from ..application import Application, UnsafeApplication
-from ..applications.cat import Cat
-from ..applications.cd import Cd
-from ..applications.cut import Cut
-from ..applications.echo import Echo
-from ..applications.find import Find
-from ..applications.grep import Grep
-from ..applications.head_tail import Head, Tail
-from ..applications.ls import Ls
-from ..applications.pwd import Pwd
-from ..applications.sort import Sort
-from ..applications.uniq import Uniq
+from applications.application import Application, UnsafeApplication
+from applications.cat import Cat
+from applications.cd import Cd
+from applications.cut import Cut
+from applications.echo import Echo
+from applications.find import Find
+from applications.grep import Grep
+from applications.head_tail import Head, Tail
+from applications.ls import Ls
+from applications.pwd import Pwd
+from applications.sort import Sort
+from applications.uniq import Uniq
 
 
 # At the moment this just handles semicolons, does

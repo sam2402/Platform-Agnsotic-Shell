@@ -1,7 +1,7 @@
 from typing import Deque, List
 
-from .. import util
-from ..application import Application
+from . import util
+from .application import Application
 
 
 class Cat(Application):

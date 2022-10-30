@@ -27,7 +27,10 @@ def run_shell():
 
 def handle_input(cmd_line: str):
     std_out = deque()
-    evaluate(cmd_line, std_out)
+    try:
+        evaluate(cmd_line, std_out)
+    except Exception as err:
+        print("error:", err)
 
     while std_out:
         print(std_out.popleft(), end="")

@@ -1,7 +1,7 @@
 import os
 from typing import Deque, List
 
-from ..application import Application, ArgumentError
+from .application import Application, ArgumentError
 
 
 class Cd(Application):

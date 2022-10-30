@@ -1,6 +1,6 @@
 from typing import List, Optional
 
-from application import ArgumentError
+from .application import ArgumentError
 
 
 def read_lines(file_name: str) -> List[str]:
@@ -34,6 +34,6 @@ def parse_opt_int_flag(args: List[str], flag: str, default: int) \
         try:
             return int(args[1]), args[2] if len(args) == 3 else None
         except ValueError:
-            raise ArgumentError(f"expected a number, got {args[1]}")
+            raise ValueError(f"expected an integer, got '{args[1]}'")
 
     raise ArgumentError()
