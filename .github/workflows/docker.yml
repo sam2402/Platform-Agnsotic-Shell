@@ -10,4 +10,4 @@ jobs:
         - name: Build Docker container
           uses: ./
         - name: Run unit tests
-          run: "docker run -p 80:8000 --rm shell /comp0010/tools/test"
+          run: "docker build -t shell . && docker run -p 80:8000 --rm shell /comp0010/tools/test"
