@@ -1,7 +1,7 @@
 from typing import Deque, List
 
-from .. import util
-from ..application import Application
+from . import util
+from .application import Application
 
 
 class Head(Application):
@@ -30,4 +30,7 @@ def execute(inp: List[str], out: Deque[str], args: List[str], tail: bool):
         lines = lines[::-1]
 
     for i in range(min(no_lines, len(lines))):
-        out.append(lines[i])
+        if tail:
+            out.appendleft(lines[i])
+        else:
+            out.append(lines[i])

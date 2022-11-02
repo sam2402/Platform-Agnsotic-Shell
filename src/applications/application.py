@@ -16,7 +16,9 @@ class Application(ABC):
         try:
             self._run(inp, out, args)
         except ArgumentError:
-            raise ArgumentError(self.help_message())
+            raise ArgumentError(
+                    f"wrong arguments, try: {self.help_message()}"
+                )
 
 
 class UnsafeApplication(Application):

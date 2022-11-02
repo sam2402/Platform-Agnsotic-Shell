@@ -1,7 +1,7 @@
 from typing import Deque, List
 
-from .. import util
-from ..application import Application
+from . import util
+from .application import Application
 
 
 class Uniq(Application):
@@ -13,7 +13,8 @@ class Uniq(Application):
         last = None
 
         for line in lines:
-            if line == last or (ignore_case and line.lower() == last.lower()):
+            if line == last or \
+               (ignore_case and last and line.lower() == last.lower()):
                 continue
 
             out.append(line)

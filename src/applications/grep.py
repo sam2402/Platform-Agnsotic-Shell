@@ -1,8 +1,8 @@
 import re
 from typing import Deque, List
 
-from .. import util
-from ..application import Application, ArgumentError
+from . import util
+from .application import Application, ArgumentError
 
 
 class Grep(Application):
@@ -32,7 +32,7 @@ class Grep(Application):
                 if len(files) == 1:
                     out.append(line)
                 else:
-                    out.append(f"{file_name}:{line}\n")
+                    out.append(f"{file_name}:{line}")
 
     def help_message(self) -> str:
         return "grep <pcre> [files...]"

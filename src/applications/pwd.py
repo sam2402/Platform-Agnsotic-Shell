@@ -1,7 +1,7 @@
 import os
 from typing import Deque, List
 
-from ..application import Application
+from .application import Application
 
 
 class Pwd(Application):
