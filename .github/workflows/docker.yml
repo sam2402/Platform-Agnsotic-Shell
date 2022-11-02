@@ -9,10 +9,10 @@ jobs:
           uses: actions/checkout@v3
         - name: Build Docker container
           uses: ./
-        - name: Built local container
+        - name: Build local container
           run: "docker build -t shell"
         - name: Run unit tests
-        - run: "docker run -p 80:8000 --rm shell /comp0010/tools/test_no_http"
+          run: "docker run -p 80:8000 --rm shell /comp0010/tools/test_no_http"
         - name: Run style tests
           run: "docker run -p 80:8000 --rm shell /comp0010/tools/analysis_no_http"
         - name: Run coverage tests
