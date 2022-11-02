@@ -1,0 +1,6 @@
+name: "Builder Docker container"
+description: "Build the Docker container for the shell"
+
+runs:
+  using: "docker"
+  image: "Dockerfile"
