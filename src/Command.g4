@@ -3,7 +3,7 @@
  */
 grammar Command;
 
-command: sub_command (SEMI sub_command) SEMI?;
+command: sub_command (SEMI sub_command)* SEMI?;
 sub_command: pipe | call;
 pipe: (call PIPE pipe) | (call PIPE call);
 
@@ -11,22 +11,6 @@ call: redirection* argument atom*;
 atom: redirection | argument;
 argument: (quoted | unquoted)+;
 redirection: (LT argument) | (GT argument);
-
-nonKeyword:
-	~(
-		CAT
-		| CD
-		| CUT
-		| ECHO
-		| FIND
-		| GREP
-		| HEAD
-		| TAIL
-		| LS
-		| PWD
-		| SORT
-		| UNIQ
-	);
 
 quoted: singleQuoted | doubleQuoted | backquoted;
 singleQuoted:
