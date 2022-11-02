@@ -10,7 +10,7 @@ jobs:
         - name: Build Docker container
           uses: ./
         - name: Build local container
-          run: "docker build -t shell"
+          run: "docker build -t shell ."
         - name: Run unit tests
           run: "docker run -p 80:8000 --rm shell /comp0010/tools/test_no_http"
         - name: Run style tests
