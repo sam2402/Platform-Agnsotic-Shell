@@ -1,9 +1,9 @@
 on: [push, pull_request]
 
 jobs:
-  system_tests:
+  tests:
       runs-on: ubuntu-latest
-      name: Run unit tests
+      name: Run tests
       steps:
         - name: Checkout
           uses: actions/checkout@v3
@@ -11,4 +11,6 @@ jobs:
           uses: ./
         - name: Run unit tests
           run: "docker build -t shell . && docker run -p 80:8000 --rm shell /comp0010/tools/test_no_http"
+        - name: Run style tests
+          run: "docker run -p 80:8000 --rm shell /comp0010/tools/analysis_no_http"
 
