@@ -2,4 +2,4 @@
 
 TOOLS_ROOT="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
-cd "$TOOLS_ROOT/../" && flake8 --exclude system_test
+cd "$TOOLS_ROOT/../" && flake8 --exclude system_test --exclude src/parsing
