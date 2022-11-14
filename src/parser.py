@@ -85,11 +85,14 @@ def perform_glob_expansion(raw_command: str) -> List[str]:
 
     return tokens
 
+
+
 from antlr4 import CommonTokenStream, ParseTreeWalker
 
-from CommandLexer import CommandLexer
-from CommandParser import CommandParser
-from CommandListener import CommandListener
+from parsing.CommandLexer import CommandLexer
+from parsing.CommandParser import CommandParser
+from parsing.CommandListener import CommandListener
+
 
 def parseTreeWalker(input: str):
 
@@ -98,9 +101,11 @@ def parseTreeWalker(input: str):
     parser = CommandParser(tokens)
     tree = parser.command()
 
-    listener = newCommandListener()
-    walker = ParseTreeWalker()
-    walker.walk(listener, tree)
+
+
+    # listener = newCommandListener()
+    # walker = ParseTreeWalker()
+    # walker.walk(listener, tree)
 
 
 class newCommandListener(CommandListener):
