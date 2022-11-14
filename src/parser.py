@@ -83,3 +83,37 @@ def perform_glob_expansion(raw_command: str) -> List[str]:
                 tokens.append(match.group(0))
 
     return tokens
+
+from antlr4 import CommonTokenStream, ParseTreeWalker
+
+from CommandLexer import CommandLexer
+from CommandParser import CommandParser
+from CommandListener import CommandListener
+
+def parseTreeWalker(input: str):
+
+    lexer = CommandLexer(input)
+    tokens = CommonTokenStream(lexer)
+    parser = CommandParser(tokens)
+    tree = parser.command()
+
+    listener = newCommandListener()
+    walker = ParseTreeWalker()
+    walker.walk(listener, tree)
+
+
+class newCommandListener(CommandListener):
+    def __init__(self, out_stream, indent='    '):
+        self.__out = out_stream
+        self.__indent = indent
+        self.__indent_level = 0
+
+    def __write(self, s):
+        self.__out.write(s)
+
+    def __line(self, s):
+        self.__write('\n')
+        pfix = self.__indent * self.__indent_level
+        self.__write(pfix)
+        self.__write(s)
+
