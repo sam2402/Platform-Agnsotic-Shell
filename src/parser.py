@@ -2,7 +2,8 @@ import glob
 import re
 from typing import List, Tuple
 
-from applications.application import Application, UnsafeApplication
+from applications.application import Application, UnsafeApplication, \
+    ApplicationError
 from applications.cat import Cat
 from applications.cd import Cd
 from applications.cut import Cut
@@ -55,7 +56,7 @@ def app_from_name(app_name: str, try_unsafe=True) -> Application:
     if app_name in APPLICATIONS:
         return APPLICATIONS[app_name]()
 
-    raise ValueError(f"unknown application '{app_name}'")
+    raise ApplicationError(f"unknown application '{app_name}'")
 
 
 def extract_raw_commands(raw_line: str) -> List[str]:

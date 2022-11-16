@@ -1,7 +1,7 @@
 from typing import Deque, List
 
 from . import util
-from .application import Application, ArgumentError
+from .application import Application, ArgumentError, ApplicationError
 
 
 class Cut(Application):
@@ -62,8 +62,7 @@ def parse_intervals(arg: str) -> Intervals:
                     intervals.indices.add(i)
             else:
                 intervals.indices.add(int(term))
-
     except ValueError:
-        raise ArgumentError(f"improperly formatted bytes options '{arg}'")
+        raise ApplicationError(f"improperly formatted bytes options '{arg}'")
 
     return intervals

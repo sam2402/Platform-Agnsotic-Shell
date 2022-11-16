@@ -1,11 +1,14 @@
 from typing import List, Optional
 
-from .application import ArgumentError
+from .application import ArgumentError, ApplicationError
 
 
 def read_lines(file_name: str) -> List[str]:
-    with open(file_name) as file:
-        return file.read().splitlines(keepends=True)
+    try:
+        with open(file_name) as file:
+            return file.read().splitlines(keepends=True)
+    except FileNotFoundError:
+        raise ApplicationError(f"file '{file_name}' does not exist")
 
 
 def parse_opt_boolean_flag(args: List[str], flag: str) \
@@ -34,6 +37,6 @@ def parse_opt_int_flag(args: List[str], flag: str, default: int) \
         try:
             return int(args[1]), args[2] if len(args) == 3 else None
         except ValueError:
-            raise ValueError(f"expected an integer, got '{args[1]}'")
+            raise ApplicationError(f"expected an integer, got '{args[1]}'")
 
     raise ArgumentError()

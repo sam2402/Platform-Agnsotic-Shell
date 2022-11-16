@@ -39,3 +39,8 @@ class UnsafeApplication(Application):
 # Raised when an application is called with the incorrect arguments
 class ArgumentError(Exception):
     pass
+
+
+# Raised when an error occurs when calling an application
+class ApplicationError(Exception):
+    pass
