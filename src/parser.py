@@ -62,8 +62,12 @@ def parse_command(raw_input: str) -> Command:
     lexer = CommandLexer(InputStream(raw_input))
     tokens = CommonTokenStream(lexer)
     parser = CommandParser(tokens)
-    tree = parser.command()
 
+    # Silence ANTLR error output in favour of ours
+    lexer.removeErrorListeners()
+    parser.removeErrorListeners()
+
+    tree = parser.command()
     return command_from_tree(tree)
 
 
@@ -75,7 +79,8 @@ def command_from_tree(ctx: CommandParser.CommandContext) -> Command:
 
 
 def parse_sub_command(ctx: CommandParser.SubCommandContext) -> SubCommand:
-    assert len(ctx.children) == 1
+    if len(ctx.children) != 1:
+        raise ParsingError("improperly formatted subcommand")
     child = ctx.children[0]
 
     if type(child) == CommandParser.PipeContext:
@@ -87,8 +92,8 @@ def parse_sub_command(ctx: CommandParser.SubCommandContext) -> SubCommand:
 
 
 def parse_pipe(ctx: CommandParser.PipeContext) -> PipeCommand:
-    assert len(ctx.children) == 3
-
+    if len(ctx.children) != 3:
+        raise ParsingError("improperly formatted pipe command")
     if type(ctx.children[0]) != CommandParser.CallContext:
         raise ParsingError("input to pipe must be a CALL command")
 
@@ -149,6 +154,8 @@ def parse_arguments(
     args = []
     cur_arg = ""
 
+    # Combines arguments if there is no whitespace between them
+    # e.g. a"b"c -> abc
     for child in ctxts:
         if type(child) == CommandParser.ArgumentContext:
             arg = parse_argument(child)
@@ -157,7 +164,7 @@ def parse_arguments(
             else:
                 args.extend(arg)
                 cur_arg = ""
-        elif cur_arg:  # whitespace
+        elif cur_arg:  # Whitespace
             args.append(cur_arg)
             cur_arg = ""
 
@@ -168,15 +175,15 @@ def parse_arguments(
 
 
 def parse_argument(ctx: CommandParser.ArgumentContext) -> List[str]:
-    assert len(ctx.children) == 1
     child = ctx.children[0]
 
     if type(child) == TerminalNodeImpl:
-        # Unquoted
+        # Unquoted argument
         return glob_expand_arg(str(child))
 
     child = child.children[0]
 
+    # Quoted argument
     if type(child) == CommandParser.SingleQuotedContext:
         return [parse_single_quoted(child)]
     if type(child) == CommandParser.DoubleQuotedContext:
