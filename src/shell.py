@@ -51,4 +51,7 @@ def handle_input(cmd_line: str):
 
 
 if __name__ == "__main__":
+    while True:
+        i = input()
+        parser.parseTreeWalker(i)
     run_shell()
