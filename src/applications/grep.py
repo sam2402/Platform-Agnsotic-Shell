@@ -7,7 +7,7 @@ from .application import Application, ArgumentError, ApplicationError
 
 class Grep(Application):
 
-    def _run(self, inp: List[str], out: Deque[str], args: List[str]):
+    def run(self, inp: List[str], out: Deque[str], args: List[str]):
         if not args:
             raise ArgumentError()
 

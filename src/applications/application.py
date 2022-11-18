@@ -5,20 +5,12 @@ from typing import Deque, List
 class Application(ABC):
 
     @abstractmethod
-    def _run(self, inp: List[str], out: Deque[str], args: List[str]):
+    def run(self, inp: List[str], out: Deque[str], args: List[str]):
         pass
 
     @abstractmethod
     def help_message(self) -> str:
         pass
-
-    def execute(self, inp: List[str], out: Deque[str], args: List[str]):
-        try:
-            self._run(inp, out, args)
-        except ArgumentError:
-            raise ArgumentError(
-                    f"wrong arguments, try: {self.help_message()}"
-                )
 
 
 class UnsafeApplication(Application):
@@ -26,9 +18,9 @@ class UnsafeApplication(Application):
     def __init__(self, child_application: Application):
         self.child_application = child_application
 
-    def _run(self, inp: List[str], out: Deque[str], args: List[str]):
+    def run(self, inp: List[str], out: Deque[str], args: List[str]):
         try:
-            self.child_application._run(inp, out, args)
+            self.child_application.run(inp, out, args)
         except Exception as err:
             out.append(str(err) + "\n")
 

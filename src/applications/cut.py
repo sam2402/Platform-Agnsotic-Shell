@@ -6,7 +6,7 @@ from .application import Application, ArgumentError, ApplicationError
 
 class Cut(Application):
 
-    def _run(self, inp: List[str], out: Deque[str], args: List[str]):
+    def run(self, inp: List[str], out: Deque[str], args: List[str]):
         if len(args) not in [2, 3] or args[0] != "-b":
             raise ArgumentError()
 

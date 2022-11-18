@@ -17,12 +17,12 @@ class CommandListener(ParseTreeListener):
         pass
 
 
-    # Enter a parse tree produced by CommandParser#sub_command.
-    def enterSub_command(self, ctx:CommandParser.Sub_commandContext):
+    # Enter a parse tree produced by CommandParser#subCommand.
+    def enterSubCommand(self, ctx:CommandParser.SubCommandContext):
         pass
 
-    # Exit a parse tree produced by CommandParser#sub_command.
-    def exitSub_command(self, ctx:CommandParser.Sub_commandContext):
+    # Exit a parse tree produced by CommandParser#subCommand.
+    def exitSubCommand(self, ctx:CommandParser.SubCommandContext):
         pass
 
 
@@ -41,15 +41,6 @@ class CommandListener(ParseTreeListener):
 
     # Exit a parse tree produced by CommandParser#call.
     def exitCall(self, ctx:CommandParser.CallContext):
-        pass
-
-
-    # Enter a parse tree produced by CommandParser#atom.
-    def enterAtom(self, ctx:CommandParser.AtomContext):
-        pass
-
-    # Exit a parse tree produced by CommandParser#atom.
-    def exitAtom(self, ctx:CommandParser.AtomContext):
         pass
 
 
@@ -89,15 +80,6 @@ class CommandListener(ParseTreeListener):
         pass
 
 
-    # Enter a parse tree produced by CommandParser#backquoted.
-    def enterBackquoted(self, ctx:CommandParser.BackquotedContext):
-        pass
-
-    # Exit a parse tree produced by CommandParser#backquoted.
-    def exitBackquoted(self, ctx:CommandParser.BackquotedContext):
-        pass
-
-
     # Enter a parse tree produced by CommandParser#doubleQuoted.
     def enterDoubleQuoted(self, ctx:CommandParser.DoubleQuotedContext):
         pass
@@ -107,12 +89,12 @@ class CommandListener(ParseTreeListener):
         pass
 
 
-    # Enter a parse tree produced by CommandParser#unquoted.
-    def enterUnquoted(self, ctx:CommandParser.UnquotedContext):
+    # Enter a parse tree produced by CommandParser#backQuoted.
+    def enterBackQuoted(self, ctx:CommandParser.BackQuotedContext):
         pass
 
-    # Exit a parse tree produced by CommandParser#unquoted.
-    def exitUnquoted(self, ctx:CommandParser.UnquotedContext):
+    # Exit a parse tree produced by CommandParser#backQuoted.
+    def exitBackQuoted(self, ctx:CommandParser.BackQuotedContext):
         pass
 
 

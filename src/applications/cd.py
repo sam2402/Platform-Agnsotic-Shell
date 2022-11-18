@@ -6,7 +6,7 @@ from .application import Application, ArgumentError
 
 class Cd(Application):
 
-    def _run(self, inp: List[str], out: Deque[str], args: List[str]):
+    def run(self, inp: List[str], out: Deque[str], args: List[str]):
         if len(args) != 1:
             raise ArgumentError()
 

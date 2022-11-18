@@ -1,9 +1,13 @@
 import glob
-import re
-from typing import List, Tuple
+from typing import List, Optional, Tuple, Union
 
-from applications.application import Application, UnsafeApplication, \
-    ApplicationError
+from antlr4 import CommonTokenStream, InputStream
+from antlr4.tree.Tree import TerminalNodeImpl
+
+from antlr.CommandLexer import CommandLexer
+from antlr.CommandParser import CommandParser
+from applications.application import Application, UnsafeApplication
+from applications.application import ApplicationError
 from applications.cat import Cat
 from applications.cd import Cd
 from applications.cut import Cut
@@ -15,22 +19,7 @@ from applications.ls import Ls
 from applications.pwd import Pwd
 from applications.sort import Sort
 from applications.uniq import Uniq
-
-
-# At the moment this just handles semicolons, does
-# glob expansion and returns [(application, args)]
-def parse_raw_input(raw_line: str) -> List[Tuple[Application, List[str]]]:
-    raw_commands = extract_raw_commands(raw_line)
-    commands = []
-
-    for raw_command in raw_commands:
-        tokens = perform_glob_expansion(raw_command)
-        app = app_from_name(tokens[0])
-        args = tokens[1:]
-        commands.append((app, args))
-
-    return commands
-
+from command import Command, SubCommand, PipeCommand, CallCommand
 
 APPLICATIONS = {
     "cat": Cat,
@@ -59,67 +48,184 @@ def app_from_name(app_name: str, try_unsafe=True) -> Application:
     raise ApplicationError(f"unknown application '{app_name}'")
 
 
-def extract_raw_commands(raw_line: str) -> List[str]:
-    raw_commands = []
-
-    for match in re.finditer("([^\"';]+|\"[^\"]*\"|'[^']*')", raw_line):
-        if match.group(0):
-            raw_commands.append(match.group(0))
-
-    return raw_commands
+# Raised when a command is improperly formatted
+class ParsingError(Exception):
+    pass
 
 
-def perform_glob_expansion(raw_command: str) -> List[str]:
-    tokens = []
-
-    for match in re.finditer("[^\\s\"']+|\"([^\"]*)\"|'([^']*)'", raw_command):
-        if match.group(1) or match.group(2):
-            quoted = match.group(0)
-            tokens.append(quoted[1:-1])
-        else:
-            globbing = glob.glob(match.group(0))
-            if globbing:
-                tokens.extend(globbing)
-            else:
-                tokens.append(match.group(0))
-
-    return tokens
+def execute_command(raw_input: str) -> List[str]:
+    command = parse_command(raw_input)
+    return command.execute()
 
 
-
-from antlr4 import CommonTokenStream, ParseTreeWalker
-
-from parsing.CommandLexer import CommandLexer
-from parsing.CommandParser import CommandParser
-from parsing.CommandListener import CommandListener
-
-
-def parseTreeWalker(input: str):
-
-    lexer = CommandLexer(input)
+def parse_command(raw_input: str) -> Command:
+    lexer = CommandLexer(InputStream(raw_input))
     tokens = CommonTokenStream(lexer)
     parser = CommandParser(tokens)
     tree = parser.command()
 
+    return command_from_tree(tree)
 
 
-    # listener = newCommandListener()
-    # walker = ParseTreeWalker()
-    # walker.walk(listener, tree)
+def command_from_tree(ctx: CommandParser.CommandContext) -> Command:
+    sub_commands = [parse_sub_command(child)
+                    for child in ctx.children
+                    if type(child) == CommandParser.SubCommandContext]
+    return Command(sub_commands)
 
 
-class newCommandListener(CommandListener):
-    def __init__(self, out_stream, indent='    '):
-        self.__out = out_stream
-        self.__indent = indent
-        self.__indent_level = 0
+def parse_sub_command(ctx: CommandParser.SubCommandContext) -> SubCommand:
+    assert len(ctx.children) == 1
+    child = ctx.children[0]
 
-    def __write(self, s):
-        self.__out.write(s)
+    if type(child) == CommandParser.PipeContext:
+        return parse_pipe(child)
+    if type(child) == CommandParser.CallContext:
+        return parse_call(child)
 
-    def __line(self, s):
-        self.__write('\n')
-        pfix = self.__indent * self.__indent_level
-        self.__write(pfix)
-        self.__write(s)
+    raise ParsingError("sub commands must either be of type PIPE or CALL")
 
+
+def parse_pipe(ctx: CommandParser.PipeContext) -> PipeCommand:
+    assert len(ctx.children) == 3
+
+    if type(ctx.children[0]) != CommandParser.CallContext:
+        raise ParsingError("input to pipe must be a CALL command")
+
+    call = parse_call(ctx.children[0])
+
+    receiver_node = ctx.children[2]
+    if type(receiver_node) == CommandParser.PipeContext:
+        receiver = parse_pipe(receiver_node)
+    elif type(receiver_node) == CommandParser.CallContext:
+        receiver = parse_call(receiver_node)
+    else:
+        raise ParsingError("receiver from pipe must be a PIPE or CALL command")
+
+    return PipeCommand(call, receiver)
+
+
+def parse_call(ctx: CommandParser.CallContext) -> CallCommand:
+    redirections = list(filter(
+        lambda c: type(c) == CommandParser.RedirectionContext,
+        ctx.children
+    ))
+
+    in_file, out_file = parse_redirections(redirections)
+    args = parse_arguments(ctx.children)
+
+    return CallCommand(args, in_file, out_file)
+
+
+IN = "<"
+OUT = ">"
+
+
+def parse_redirections(ctxts: List[CommandParser.RedirectionContext]) \
+        -> Tuple[Optional[str], Optional[str]]:
+    in_file = None
+    out_file = None
+
+    for ctx in ctxts:
+        redirect_type = str(ctx.children[0])
+        file = parse_argument(ctx.children[1 if len(ctx.children) == 2 else 2])
+        file = file[0]
+
+        if redirect_type == IN:
+            if in_file:
+                raise ParsingError("more than one input file specified")
+            in_file = file
+        elif redirect_type == OUT:
+            if out_file:
+                raise ParsingError("more than one output file specified")
+            out_file = file
+
+    return in_file, out_file
+
+
+def parse_arguments(
+        ctxts: List[Union[TerminalNodeImpl, CommandParser.ArgumentContext]])\
+        -> List[str]:
+    args = []
+    cur_arg = ""
+
+    for child in ctxts:
+        if type(child) == CommandParser.ArgumentContext:
+            arg = parse_argument(child)
+            if len(arg) == 1:
+                cur_arg += arg[0]
+            else:
+                args.extend(arg)
+                cur_arg = ""
+        elif cur_arg:  # whitespace
+            args.append(cur_arg)
+            cur_arg = ""
+
+    if cur_arg:
+        args.append(cur_arg)
+
+    return args
+
+
+def parse_argument(ctx: CommandParser.ArgumentContext) -> List[str]:
+    assert len(ctx.children) == 1
+    child = ctx.children[0]
+
+    if type(child) == TerminalNodeImpl:
+        # Unquoted
+        return glob_expand_arg(str(child))
+
+    child = child.children[0]
+
+    if type(child) == CommandParser.SingleQuotedContext:
+        return [parse_single_quoted(child)]
+    if type(child) == CommandParser.DoubleQuotedContext:
+        return [parse_double_quoted(child)]
+    if type(child) == CommandParser.BackQuotedContext:
+        return parse_back_quoted(child)
+
+    raise ParsingError("unknown argument type")
+
+
+def glob_expand_arg(arg: str) -> List[str]:
+    files = glob.glob(arg)
+    return files if files else [arg]
+
+
+def parse_single_quoted(ctx: CommandParser.SingleQuotedContext) -> str:
+    quoted = "".join([str(child) for child in ctx.children[1:-1]])
+
+    if "\n" in quoted or "'" in quoted:
+        raise ParsingError(
+            "single quoted sections may not contain single quotes or newlines"
+        )
+
+    return quoted
+
+
+def parse_double_quoted(ctx: CommandParser.DoubleQuotedContext) -> str:
+    quoted = ""
+
+    for child in ctx.children[1:-1]:
+        if type(child) == TerminalNodeImpl:
+            if "\"" in str(child) or "\n" in str(child):
+                raise ParsingError(
+                    "double quoted sections may not"
+                    "contain double quotes or newlines"
+                )
+            quoted += str(child)
+        elif type(child) == CommandParser.BackQuotedContext:
+            quoted += " ".join(parse_back_quoted(child))
+
+    return quoted
+
+
+def parse_back_quoted(ctx: CommandParser.BackQuotedContext) -> List[str]:
+    raw_command = "".join([str(child) for child in ctx.children[1:-1]])
+
+    if "`" in raw_command or "\n" in raw_command:
+        raise ParsingError(
+            "back quoted section may not contain back quotes or newlines"
+        )
+
+    return [s.strip() for s in execute_command(raw_command)]
