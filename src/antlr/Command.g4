@@ -19,14 +19,15 @@ backQuoted: BACKTICK ~(NEWLINE | BACKTICK)* BACKTICK;
 /*
  * Lexer Rules
  */
-UNQUOTED: [!#$%&()*+,-./0-9:=?@A-Z[\]^_a-z{}~]+; // ASCII without ['"`\n;<>]
-PIPE: '|';
-SEMI: ';';
+UNQUOTED: ~[\n "';<>`|]+;
+
 NEWLINE: '\n';
-SINGLE_QUOTE: '\'';
 DOUBLE_QUOTE: '"';
-BACKTICK: '`';
-UNDERSCORE: '_';
-GT: '>';
+SINGLE_QUOTE: '\'';
+SEMI: ';';
 LT: '<';
-WHITESPACE: (' ' | '\t')+;
+GT: '>';
+BACKTICK: '`';
+PIPE: '|';
+
+WHITESPACE: [\t ]+;
