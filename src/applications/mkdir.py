@@ -14,7 +14,8 @@ class Mkdir(Application):
                 already_exists_dir.append(arg)
         if already_exists_dir:
             err_msg = "\n".join(
-                map(lambda arg: f"directory '{arg}' already exists", already_exists_dir)
+                map(lambda arg:
+                    f"directory '{arg}' already exists", already_exists_dir)
             )
             raise ApplicationError(err_msg)
 
