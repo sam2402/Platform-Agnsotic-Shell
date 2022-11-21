@@ -217,7 +217,7 @@ def parse_double_quoted(ctx: CommandParser.DoubleQuotedContext) -> str:
         if type(child) == TerminalNodeImpl:
             if "\"" in str(child) or "\n" in str(child):
                 raise ParsingError(
-                    "double quoted sections may not"
+                    "double quoted sections may not "
                     "contain double quotes or newlines"
                 )
             quoted += str(child)

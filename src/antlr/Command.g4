@@ -19,7 +19,7 @@ backQuoted: BACKTICK ~(NEWLINE | BACKTICK)* BACKTICK;
 /*
  * Lexer Rules
  */
-UNQUOTED: ~[\n "';<>`|]+;
+UNQUOTED: ~[\t\n "';<>`|]+;
 
 NEWLINE: '\n';
 DOUBLE_QUOTE: '"';
