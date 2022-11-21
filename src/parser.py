@@ -16,6 +16,7 @@ from applications.find import Find
 from applications.grep import Grep
 from applications.head_tail import Head, Tail
 from applications.ls import Ls
+from applications.mkdir import Mkdir
 from applications.pwd import Pwd
 from applications.sort import Sort
 from applications.uniq import Uniq
@@ -30,6 +31,7 @@ APPLICATIONS = {
     "grep": Grep,
     "head": Head,
     "ls": Ls,
+    "mkdir": Mkdir,
     "pwd": Pwd,
     "sort": Sort,
     "tail": Tail,
