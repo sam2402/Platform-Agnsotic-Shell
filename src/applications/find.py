@@ -7,7 +7,7 @@ from .application import Application, ArgumentError
 
 class Find(Application):
 
-    def _run(self, inp: List[str], out: Deque[str], args: List[str]):
+    def run(self, inp: List[str], out: Deque[str], args: List[str]):
         if len(args) not in [2, 3]:
             raise ArgumentError()
         if args[0 if len(args) == 2 else 1] != "-name":

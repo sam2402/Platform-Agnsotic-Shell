@@ -4,7 +4,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update \
     && apt-get -y install --no-install-recommends apt-utils dialog 2>&1 \
-    && apt-get -y install git procps lsb-release 	libxml2-utils \
+    && apt-get -y install git procps lsb-release libxml2-utils \
     && apt-get autoremove -y \
     && apt-get clean -y
 

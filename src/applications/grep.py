@@ -2,19 +2,19 @@ import re
 from typing import Deque, List
 
 from . import util
-from .application import Application, ArgumentError
+from .application import Application, ArgumentError, ApplicationError
 
 
 class Grep(Application):
 
-    def _run(self, inp: List[str], out: Deque[str], args: List[str]):
+    def run(self, inp: List[str], out: Deque[str], args: List[str]):
         if not args:
             raise ArgumentError()
 
         try:
             pattern = re.compile(args[0])
         except Exception:
-            raise ArgumentError(f"'{args[0]}' is not a valid regex")
+            raise ApplicationError(f"'{args[0]}' is not a valid regex")
 
         if len(args) > 1:
             files = {

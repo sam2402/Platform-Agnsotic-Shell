@@ -6,7 +6,7 @@ from .application import Application
 
 class Sort(Application):
 
-    def _run(self, inp: List[str], out: Deque[str], args: List[str]) -> None:
+    def run(self, inp: List[str], out: Deque[str], args: List[str]) -> None:
         reverse_order, file_name = util.parse_opt_boolean_flag(args, "-r")
         lines = util.read_lines(file_name) if file_name else inp
 

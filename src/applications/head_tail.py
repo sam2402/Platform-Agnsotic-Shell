@@ -6,7 +6,7 @@ from .application import Application
 
 class Head(Application):
 
-    def _run(self, inp: List[str], out: Deque[str], args: List[str]):
+    def run(self, inp: List[str], out: Deque[str], args: List[str]):
         execute(inp, out, args, False)
 
     def help_message(self) -> str:
@@ -15,7 +15,7 @@ class Head(Application):
 
 class Tail(Application):
 
-    def _run(self, inp: List[str], out: Deque[str], args: List[str]):
+    def run(self, inp: List[str], out: Deque[str], args: List[str]):
         execute(inp, out, args, True)
 
     def help_message(self) -> str:
