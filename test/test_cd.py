@@ -3,26 +3,36 @@ import src.applications.cd as cd
 import os
 import shutil
 from collections import deque
+from src.applications.application import ArgumentError
+
 
 class TestCd(unittest.TestCase):
     def setUp(self) -> None:
         self.out = deque()
-        self.folder = "TestFiles"
+        self.folder = "TestFolder"
+        self.dir_name = os.getcwd() + "\\" + self.folder
         if not os.path.exists(self.folder):
-            os.makedirs(self.folder)
+            os.mkdir(self.folder)
+            os.chdir(self.folder)
 
-        self.files = {
-            "file1.txt": "this\nis\nfile\nnumber\none",
-            "file2.txt": "and\nthis\nis\nthe\nsecond\nfile",
-            "file3.txt": "third\nfile\nto\ntest\nmultiple\nfiles"
-        }
+            self.folders = {"folder1", "folder2", "folder3"}
 
-        for file in self.files:
-            with open(os.path.join(self.folder, file), "x") as f:
-                f.write(self.files[file])
+            for folder in self.folders:
+                os.mkdir(folder)
+            os.chdir("..")
 
-    def tearDown(self) -> None:
-        shutil.rmtree(self.folder)
+
+   # def tearDown(self) -> None:
+    #    shutil.rmtree(os.getcwd())
+
+    def test_cd_zero_arg(self):
+        self.out = deque()
+        self.assertRaises(ArgumentError, cd.Cd.run, self, [], self.out, [])
+
+    def test_cd_one_valid_arg(self):
+        self.out = deque()
+        cd.Cd.run(self, [], self.out, [self.folder])
+        self.assertEqual(self.dir_name, os.getcwd())
 
     def test_cd_help_message(self):
         self.assertEqual(cd.Cd.help_message(self), "cd <directory>")

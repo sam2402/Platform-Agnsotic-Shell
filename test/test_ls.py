@@ -3,13 +3,15 @@ import src.applications.ls as ls
 import os
 import shutil
 from collections import deque
+import re
+from system_test.tests import TestShell
 
 class TestLs(unittest.TestCase):
     def setUp(self) -> None:
         self.out = deque()
         self.folder = "TestFiles"
         if not os.path.exists(self.folder):
-            os.makedirs(self.folder)
+            os.mkdir(self.folder)
 
         self.files = {
             "file1.txt": "this\nis\nfile\nnumber\none",
@@ -23,6 +25,13 @@ class TestLs(unittest.TestCase):
 
     def tearDown(self) -> None:
         shutil.rmtree(self.folder)
+
+    def test_ls_zero_arg(self):
+        self.out = deque()
+        os.chdir(self.folder)
+        ls.Ls.run(self, [], self.out, [])
+        self.assertEqual(self.out.popleft(), os.listdir() + "\n")
+
 
     def test_ls_help_message(self):
         self.assertEqual(ls.Ls.help_message(self), "ls [-a] [directory]")
