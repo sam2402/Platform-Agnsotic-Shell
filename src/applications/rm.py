@@ -20,7 +20,7 @@ class Rm(Application):
         if not args:
             raise ArgumentError("supply at least one path")
 
-        non_existant_paths = []
+        non_existent_paths = []
         directory_args = []
 
         for arg in args:
@@ -35,12 +35,12 @@ class Rm(Application):
                     if self.flags["-v"]:
                         out.append(f"deleted directory '{arg}'\n")
             else:
-                non_existant_paths.append(arg)
+                non_existent_paths.append(arg)
 
-        self._handle_errors(non_existant_paths, directory_args)
+        self._handle_errors(non_existent_paths, directory_args)
 
     def _handle_errors(
-            self, non_existant_paths: List[str], directory_args: List[str]):
+            self, non_existent_paths: List[str], directory_args: List[str]):
         err_msgs = []
         if directory_args and not self.flags["-r"]:
             err_msgs.extend(
@@ -49,11 +49,11 @@ class Rm(Application):
                     directory_args
                 )
             )
-        if non_existant_paths and not self.flags["-f"]:
+        if non_existent_paths and not self.flags["-f"]:
             err_msgs.extend(
                 map(
                     lambda arg: f"'{arg}' is not a file or directory",
-                    non_existant_paths
+                    non_existent_paths
                 )
             )
         if err_msgs:
