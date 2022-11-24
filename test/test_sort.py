@@ -5,6 +5,7 @@ import shutil
 from collections import deque
 
 class TestSort(unittest.TestCase):
+    '''
     def setUp(self) -> None:
         self.out = deque()
         self.folder = "TestFiles"
@@ -14,9 +15,9 @@ class TestSort(unittest.TestCase):
             os.chdir(self.folder)
 
             self.files = {
-                "file1.txt": "this\nis\nfile\nnumber\none",
-                "file2.txt": "and\nthis\nis\nthe\nsecond\nfile",
-                "file3.txt": "third\nfile\nto\ntest\nmultiple\nfiles"
+                "/file1.txt": "this\nis\nfile\nnumber\none",
+                "/file2.txt": "and\nthis\nis\nthe\nsecond\nfile",
+                "/file3.txt": "third\nfile\nto\ntest\nmultiple\nfiles"
             }
 
             for file in self.files:
@@ -26,7 +27,7 @@ class TestSort(unittest.TestCase):
     def tearDown(self) -> None:
         shutil.rmtree(self.dir_name)
 
-    
+    '''
 
 
     def test_sort_help_message(self):
