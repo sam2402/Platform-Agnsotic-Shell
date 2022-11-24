@@ -10,7 +10,7 @@ class TestCd(unittest.TestCase):
     def setUp(self) -> None:
         self.out = deque()
         self.folder = "TestFolder"
-        self.dir_name = os.getcwd() + "\\" + self.folder
+        self.dir_name = os.getcwd() + "/" + self.folder
         if not os.path.exists(self.folder):
             os.mkdir(self.folder)
             os.chdir(self.folder)
@@ -32,7 +32,7 @@ class TestCd(unittest.TestCase):
     def test_cd_one_valid_arg(self):
         self.out = deque()
         cd.Cd.run(self, [], self.out, [self.folder])
-        self.assertEqual(self.dir_name, os.getcwd())
+        self.assertEqual(os.getcwd(),self.dir_name)
 
     def test_cd_help_message(self):
         self.assertEqual(cd.Cd.help_message(self), "cd <directory>")

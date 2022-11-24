@@ -28,6 +28,8 @@ class TestCat(unittest.TestCase):
 
     #@paramatized([1], self.files[1])
     #def test_cat(self):
+    '''
+
 
 
 
@@ -36,6 +38,6 @@ class TestCat(unittest.TestCase):
     def test_cat_help_message(self):
         self.assertEqual(cat.Cat.help_message(self), "cat [files...]")
 
-    '''
+
 if __name__ == '__main__':
     unittest.main()

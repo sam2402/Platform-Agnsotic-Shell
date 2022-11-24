@@ -34,15 +34,12 @@ class TestHeadTail(unittest.TestCase):
 
         for i in range(10):
             self.assertEqual(self.out.popleft(), self.text_to_check[i] + "\n")
-    '''
-    def test_head_no_input2(self):
-        evaluate("head file1.txt", self.out)
-        self.assertEqual(self.out.popleft(), "This is a test file to see the head and".replace(" ", "\n"))
-    '''
+
+
     def test_head_help_message(self):
         self.assertEqual(head_tail.Head.help_message(self), "head [-n lines] [file]")
 
-    def test_head_help_message(self):
+    def test_tail_help_message(self):
         self.assertEqual(head_tail.Tail.help_message(self), "tail [-n lines] [file]")
 
 

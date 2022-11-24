@@ -3,34 +3,33 @@ import src.applications.ls as ls
 import os
 import shutil
 from collections import deque
-import re
-from system_test.tests import TestShell
 
 class TestLs(unittest.TestCase):
     def setUp(self) -> None:
         self.out = deque()
-        self.folder = "TestFiles"
+        self.folder = "TestFolder"
+        self.dir_name = os.getcwd() + "\\" + self.folder
         if not os.path.exists(self.folder):
             os.mkdir(self.folder)
+            os.chdir(self.folder)
 
-        self.files = {
-            "file1.txt": "this\nis\nfile\nnumber\none",
-            "file2.txt": "and\nthis\nis\nthe\nsecond\nfile",
-            "file3.txt": "third\nfile\nto\ntest\nmultiple\nfiles"
-        }
+            self.folders = {"folder1", "folder2", "folder3"}
 
-        for file in self.files:
-            with open(os.path.join(self.folder, file), "x") as f:
-                f.write(self.files[file])
+            for folder in self.folders:
+                os.mkdir(folder)
+            os.chdir("..")
+
 
     def tearDown(self) -> None:
         shutil.rmtree(self.folder)
+
 
     def test_ls_zero_arg(self):
         self.out = deque()
         os.chdir(self.folder)
         ls.Ls.run(self, [], self.out, [])
-        self.assertEqual(self.out.popleft(), os.listdir() + "\n")
+        self.assertEqual(self.out.popleft(), "folder1\tfolder2\tfolder3\n")
+        os.chdir("..")
 
 
     def test_ls_help_message(self):

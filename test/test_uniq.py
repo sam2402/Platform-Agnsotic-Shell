@@ -18,7 +18,7 @@ class TestUniq(unittest.TestCase):
             }
 
             for file in self.files:
-                with open(os.path.join(self.folder, file),"x") as f:
+                with open(os.path.join(self.folder, file), "x") as f:
                     f.write(self.files[file])
 
     def tearDown(self) -> None:
