@@ -10,7 +10,7 @@ class TestCd(unittest.TestCase):
     def setUp(self) -> None:
         self.out = deque()
         self.folder = "TestFolder"
-        self.dir_name = os.getcwd() + "\\" + self.folder
+        self.dir_name = os.getcwd() + "/" + self.folder
         if not os.path.exists(self.folder):
             os.mkdir(self.folder)
             os.chdir(self.folder)
