@@ -26,6 +26,9 @@ class TestSort(unittest.TestCase):
     def tearDown(self) -> None:
         shutil.rmtree(self.dir_name)
 
+    
+
+
     def test_sort_help_message(self):
         self.assertEqual(sort.Sort.help_message(self), "sort [-r] [file]")
 
