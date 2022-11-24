@@ -40,11 +40,11 @@ def handle_input(cmd_line: str):
     try:
         evaluate(cmd_line, std_out)
     except ArgumentError as err:
-        print("wrong arguments, try:", err)
+        sys.stderr.write(f"argument error: {err}\n")
     except ApplicationError as err:
-        print("application error:", err)
+        sys.stderr.write(f"application error: {err}\n")
     except parser.ParsingError as err:
-        print("parsing error:", err)
+        sys.stderr.write(f"parsing error: {err}\n")
 
     while std_out:
         print(std_out.popleft(), end="")

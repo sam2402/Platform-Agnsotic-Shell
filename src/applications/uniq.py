@@ -1,20 +1,25 @@
 from typing import Deque, List
 
+from flagging import Flag, FlagConfiguration
+
 from . import util
 from .application import Application
 
 
 class Uniq(Application):
 
+    flag_configuration = FlagConfiguration([
+        Flag("-i", bool, "--ignore-case")
+    ])
+
     def run(self, inp: List[str], out: Deque[str], args: List[str]) -> None:
-        ignore_case, file_name = util.parse_opt_boolean_flag(args, "-i")
-        lines = util.read_lines(file_name) if file_name else inp
+        lines = util.read_lines(args[0]) if len(args) == 1 else inp
 
         last = None
 
         for line in lines:
             if line == last or \
-               (ignore_case and last and line.lower() == last.lower()):
+               (self.flags["-i"] and last and line.lower() == last.lower()):
                 continue
 
             out.append(line)

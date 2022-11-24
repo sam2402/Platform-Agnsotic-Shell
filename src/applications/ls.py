@@ -1,22 +1,33 @@
 import os
-from typing import Deque, List
+from typing import Deque, Dict, List, Union
 
-from . import util
-from .application import Application
+from flagging import Flag, FlagConfiguration
+
+from .application import Application, ApplicationError
 
 
 class Ls(Application):
 
-    def run(self, inp: List[str], out: Deque[str], args: List[str]) -> None:
-        show_hidden, directory = util.parse_opt_boolean_flag(args, "-a")
-        if not directory:
-            directory = os.getcwd()
+    flag_configuration = FlagConfiguration([
+        Flag("-a", bool)
+    ])
 
-        files = os.listdir(directory)
-        if not show_hidden:
+    def __init__(self, flags: Dict[str, Union[str, int, bool]] = ...):
+        super().__init__(flags)
+
+    def run(self, inp: List[str], out: Deque[str], args: List[str]) -> None:
+        directory = os.getcwd() if len(args) == 0 else args[0]
+
+        try:
+            files = os.listdir(directory)
+        except FileNotFoundError:
+            raise ApplicationError(f"no such directory '{directory}'")
+
+        if not self.flags["-a"]:
             files = list(filter(lambda file: not file.startswith("."), files))
 
-        out.append("\t".join(files) + "\n")
+        if len(files):
+            out.append("\t".join(files) + "\n")
 
     def help_message(self) -> str:
         return "ls [-a] [directory]"

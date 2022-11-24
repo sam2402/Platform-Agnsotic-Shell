@@ -1,4 +1,6 @@
-from typing import Deque, List
+from typing import Deque, Dict, List, Union
+
+from flagging import Flag, FlagConfiguration
 
 from . import util
 from .application import Application, ArgumentError, ApplicationError
@@ -6,12 +8,19 @@ from .application import Application, ArgumentError, ApplicationError
 
 class Cut(Application):
 
-    def run(self, inp: List[str], out: Deque[str], args: List[str]):
-        if len(args) not in [2, 3] or args[0] != "-b":
-            raise ArgumentError()
+    flag_configuration = FlagConfiguration([
+        Flag("-b", str, argument_count=1)
+    ])
 
-        intervals = parse_intervals(args[1])
-        lines = util.read_lines(args[2]) if len(args) == 3 else inp
+    def __init__(self, flags: Dict[str, Union[str, int, bool]] = None):
+        super().__init__(flags)
+
+    def run(self, inp: List[str], out: Deque[str], args: List[str]):
+        if len(args) not in [0, 1]:
+            raise ArgumentError("supply at most one file path")
+
+        intervals = parse_intervals(self.flags["-b"])
+        lines = util.read_lines(args[0]) if len(args) == 1 else inp
 
         for line in lines:
             filtered = intervals.filter_included(line)

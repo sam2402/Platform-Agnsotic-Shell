@@ -2,8 +2,7 @@ import os
 from abc import ABC, abstractmethod
 from collections import deque
 from typing import List
-
-import parser
+from application_factory import ApplicationFactory
 from applications.application import ApplicationError
 
 
@@ -29,9 +28,13 @@ class CallCommand(SubCommand):
                 )
             inp = read_lines(self.in_file)
 
-        application = parser.app_from_name(self.args[0])
+        application = ApplicationFactory().get_application(self.args)
         out = deque()
-        application.run(inp, out, self.args[1:])
+        if application.flags["-h"]:
+            out.append(f"{application.help_message()}\n")
+        else:
+            cleaned_args = application.clean_args(self.args)
+            application.run(inp, out, cleaned_args)
 
         if self.out_file:
             write_lines(self.out_file, list(out))

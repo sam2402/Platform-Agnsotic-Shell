@@ -6,48 +6,7 @@ from antlr4.tree.Tree import TerminalNodeImpl
 
 from antlr.CommandLexer import CommandLexer
 from antlr.CommandParser import CommandParser
-from applications.application import Application, UnsafeApplication
-from applications.application import ApplicationError
-from applications.cat import Cat
-from applications.cd import Cd
-from applications.cut import Cut
-from applications.echo import Echo
-from applications.find import Find
-from applications.grep import Grep
-from applications.head_tail import Head, Tail
-from applications.ls import Ls
-from applications.mkdir import Mkdir
-from applications.pwd import Pwd
-from applications.sort import Sort
-from applications.uniq import Uniq
 from command import Command, SubCommand, PipeCommand, CallCommand
-
-APPLICATIONS = {
-    "cat": Cat,
-    "cd": Cd,
-    "cut": Cut,
-    "echo": Echo,
-    "find": Find,
-    "grep": Grep,
-    "head": Head,
-    "ls": Ls,
-    "mkdir": Mkdir,
-    "pwd": Pwd,
-    "sort": Sort,
-    "tail": Tail,
-    "uniq": Uniq,
-}
-
-
-def app_from_name(app_name: str, try_unsafe=True) -> Application:
-    if try_unsafe and app_name.startswith("_"):
-        app = app_from_name(app_name[1:], False)
-        return UnsafeApplication(app)
-
-    if app_name in APPLICATIONS:
-        return APPLICATIONS[app_name]()
-
-    raise ApplicationError(f"unknown application '{app_name}'")
 
 
 # Raised when a command is improperly formatted

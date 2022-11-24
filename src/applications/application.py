@@ -1,8 +1,27 @@
 from abc import ABC, abstractmethod
-from typing import Deque, List
+from typing import Deque, Dict, List, Union
+
+from flagging import FlagConfiguration
 
 
 class Application(ABC):
+
+    flag_configuration: FlagConfiguration = FlagConfiguration()
+
+    @classmethod
+    def clean_args(cls, args: List[str]):
+        i = 1
+        while i < len(args):
+            arg = args[i]
+            if arg in cls.flag_configuration:
+                i += cls.flag_configuration[arg].argument_count
+            else:
+                return args[i:]
+            i += 1
+        return []
+
+    def __init__(self, flags: Dict[str, Union[str, int, bool]] = None):
+        self.flags = flags if flags is not None else {}
 
     @abstractmethod
     def run(self, inp: List[str], out: Deque[str], args: List[str]):
@@ -16,6 +35,7 @@ class Application(ABC):
 class UnsafeApplication(Application):
 
     def __init__(self, child_application: Application):
+        super().__init__(child_application.flags)
         self.child_application = child_application
 
     def run(self, inp: List[str], out: Deque[str], args: List[str]):
