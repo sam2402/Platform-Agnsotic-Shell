@@ -1,9 +1,8 @@
 import unittest
 import src.applications.head_tail as head_tail
 import os
-import shutil
 from collections import deque
-#from shell import evaluate
+
 
 class TestHeadTail(unittest.TestCase):
     def setUp(self) -> None:

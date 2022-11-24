@@ -1,7 +1,5 @@
 import unittest
 import src.applications.echo as echo
-from hypothesis import example, given, settings
-from hypothesis.strategies import text
 from collections import deque
 
 class TestEcho(unittest.TestCase):

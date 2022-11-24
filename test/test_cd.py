@@ -1,9 +1,9 @@
 import unittest
 import src.applications.cd as cd
 import os
-import shutil
 from collections import deque
 from src.applications.application import ArgumentError
+import shutil
 
 
 class TestCd(unittest.TestCase):
@@ -22,8 +22,8 @@ class TestCd(unittest.TestCase):
             os.chdir("..")
 
 
-   # def tearDown(self) -> None:
-    #    shutil.rmtree(os.getcwd())
+    def tearDown(self) -> None:
+        shutil.rmtree(self.dir_name)
 
     def test_cd_zero_arg(self):
         self.out = deque()
