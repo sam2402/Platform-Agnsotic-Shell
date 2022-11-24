@@ -32,7 +32,7 @@ class TestCd(unittest.TestCase):
     def test_cd_one_valid_arg(self):
         self.out = deque()
         cd.Cd.run(self, [], self.out, [self.folder])
-        self.assertEqual(self.dir_name, os.getcwd())
+        self.assertEqual(os.getcwd(),self.dir_name)
 
     def test_cd_help_message(self):
         self.assertEqual(cd.Cd.help_message(self), "cd <directory>")
