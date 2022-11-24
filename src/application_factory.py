@@ -1,17 +1,16 @@
-from typing import Dict, List, Type, Union
+from typing import List, Type
+
 from applications.application import (
     Application,
     ArgumentError,
     UnsafeApplication,
     ApplicationError,
 )
-
 from applications.cat import Cat
 from applications.cd import Cd
 from applications.cut import Cut
 from applications.echo import Echo
 from applications.find import Find
-from flagging import FlagConfiguration
 from applications.grep import Grep
 from applications.head_tail import Head, Tail
 from applications.ls import Ls
@@ -19,6 +18,7 @@ from applications.mkdir import Mkdir
 from applications.pwd import Pwd
 from applications.sort import Sort
 from applications.uniq import Uniq
+from flagging import ApplicationFlagDict, FlagConfiguration
 
 APPLICATIONS = {
     "cat": Cat,
@@ -58,7 +58,7 @@ class ApplicationFactory:
         return self._get_safe_application(app_name, args[1:])
 
     def _get_safe_application(
-        self, app_name: str, application_args: List[str]
+            self, app_name: str, application_args: List[str]
     ) -> Application:
         application_type = self._get_app_type(app_name)
         flags = self._parse_flags(
@@ -73,8 +73,8 @@ class ApplicationFactory:
         raise ApplicationError(f"unknown application '{app_name}'")
 
     def _parse_flags(
-        self, flag_configuration: FlagConfiguration, args: List[str]
-    ) -> Dict[str, Union[str, int, bool]]:
+            self, flag_configuration: FlagConfiguration, args: List[str]
+    ) -> ApplicationFlagDict:
         flags = {}
         for i in range(len(args)):
             arg = args[i]
@@ -106,7 +106,7 @@ class ApplicationFactory:
     def _clean_flags(
         self,
         flag_configuration: FlagConfiguration,
-        flags: Dict[str, Union[str, int, bool]],
+        flags: ApplicationFlagDict,
     ):
         cleaned_flags = flags
         for flag in flag_configuration.required_flags():
@@ -116,7 +116,9 @@ class ApplicationFactory:
                 raise ArgumentError(f"expected flag {flag.name}")
 
         for flag in flag_configuration.optional_flags():
-            if flag.type is bool and flag.name not in flags:
-                cleaned_flags[flag.name] = False
-
+            if flag.name not in cleaned_flags:
+                if flag.default_value is not None:
+                    cleaned_flags[flag.name] = flag.default_value
+                elif flag.type is bool:
+                    cleaned_flags[flag.name] = False
         return cleaned_flags

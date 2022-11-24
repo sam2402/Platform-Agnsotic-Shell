@@ -1,18 +1,14 @@
-from typing import Deque, Dict, List, Union
+from typing import Deque, List
 
-from flagging import Flag, FlagConfiguration
-
+from flagging import ApplicationFlagDict, Flag, FlagConfiguration
 from . import util
 from .application import Application, ArgumentError, ApplicationError
 
 
 class Cut(Application):
+    flag_configuration = FlagConfiguration([Flag("-b", str, argument_count=1)])
 
-    flag_configuration = FlagConfiguration([
-        Flag("-b", str, argument_count=1)
-    ])
-
-    def __init__(self, flags: Dict[str, Union[str, int, bool]] = None):
+    def __init__(self, flags: ApplicationFlagDict = None):
         super().__init__(flags)
 
     def run(self, inp: List[str], out: Deque[str], args: List[str]):
@@ -31,7 +27,6 @@ class Cut(Application):
 
 
 class Intervals:
-
     def __init__(self):
         self.all_before = -1
         self.all_after = float("inf")
@@ -48,9 +43,11 @@ class Intervals:
         return included
 
     def includes_index(self, index: int) -> bool:
-        return index <= self.all_before \
-               or index >= self.all_after \
-               or index in self.indices
+        return (
+            index <= self.all_before or
+            index >= self.all_after or
+            index in self.indices
+        )
 
 
 def parse_intervals(arg: str) -> Intervals:

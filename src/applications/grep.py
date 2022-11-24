@@ -1,13 +1,13 @@
 import re
-from typing import Deque, Dict, List, Union
+from typing import Deque, List
 
+from flagging import ApplicationFlagDict
 from . import util
 from .application import Application, ArgumentError, ApplicationError
 
 
 class Grep(Application):
-
-    def __init__(self, flags: Dict[str, Union[str, int, bool]] = None):
+    def __init__(self, flags: ApplicationFlagDict = None):
         super().__init__(flags)
 
     def run(self, inp: List[str], out: Deque[str], args: List[str]):
@@ -21,8 +21,7 @@ class Grep(Application):
 
         if len(args) > 1:
             files = {
-                file_name: util.read_lines(file_name)
-                for file_name in args[1:]
+                file_name: util.read_lines(file_name) for file_name in args[1:]
             }
         else:
             files = {"": inp}

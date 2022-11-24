@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
-from typing import Deque, Dict, List, Union
+from typing import Deque, List
 
-from flagging import FlagConfiguration
+from flagging import ApplicationFlagDict, FlagConfiguration
 
 
 class Application(ABC):
@@ -20,8 +20,8 @@ class Application(ABC):
             i += 1
         return []
 
-    def __init__(self, flags: Dict[str, Union[str, int, bool]] = None):
-        self.flags = flags if flags is not None else {}
+    def __init__(self, flags: ApplicationFlagDict = None):
+        self.flags = flags or {}
 
     @abstractmethod
     def run(self, inp: List[str], out: Deque[str], args: List[str]):

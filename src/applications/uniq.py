@@ -1,13 +1,11 @@
 from typing import Deque, List
 
 from flagging import Flag, FlagConfiguration
-
 from . import util
 from .application import Application
 
 
 class Uniq(Application):
-
     flag_configuration = FlagConfiguration([
         Flag("-i", bool, "--ignore-case")
     ])
@@ -19,7 +17,11 @@ class Uniq(Application):
 
         for line in lines:
             if line == last or \
-               (self.flags["-i"] and last and line.lower() == last.lower()):
+                    (
+                        self.flags["-i"] and
+                        last and
+                        line.lower() == last.lower()
+                    ):
                 continue
 
             out.append(line)

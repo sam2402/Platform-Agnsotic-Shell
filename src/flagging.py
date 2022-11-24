@@ -1,14 +1,18 @@
 from dataclasses import dataclass
-from typing import List, Type, Union
+from typing import Dict, List, Type, Union
+
+ApplicationFlagDict = Dict[str, Union[str, int, bool]]
+FlagType = Union[Type[str], Type[int], Type[bool]]
 
 
 @dataclass
 class Flag:
     name: str
-    type: Union[Type[str], Type[int], Type[bool]]
+    type: FlagType
     long_name: str = None
     argument_count: int = 0
     is_optional: bool = False
+    default_value: Union[FlagType, List[FlagType]] = None
 
     def __str__(self) -> str:
         return self.name
@@ -36,7 +40,7 @@ class FlagConfiguration:
         for flag in self.flags:
             if item in [flag.name, flag.long_name]:
                 return flag
-        raise KeyError("No such flag ")
+        raise KeyError(f"No such flag '{item}'")
 
     def __str__(self) -> str:
         return str([str(flag) for flag in self.flags])

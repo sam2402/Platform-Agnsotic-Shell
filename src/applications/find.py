@@ -1,13 +1,13 @@
 import fnmatch
 import os
-from typing import Deque, Dict, List, Union
+from typing import Deque, List
 
 from .application import Application, ArgumentError
+from flagging import ApplicationFlagDict
 
 
 class Find(Application):
-
-    def __init__(self, flags: Dict[str, Union[str, int, bool]] = None):
+    def __init__(self, flags: ApplicationFlagDict = None):
         super().__init__(flags)
 
     def run(self, inp: List[str], out: Deque[str], args: List[str]):
