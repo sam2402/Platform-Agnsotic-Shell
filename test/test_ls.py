@@ -3,6 +3,8 @@ import src.applications.ls as ls
 import os
 import shutil
 from collections import deque
+import re
+from system_test.tests import TestShell
 
 from src.shell import evaluate
 
@@ -14,8 +16,11 @@ class TestLs(unittest.TestCase):
     def setUp(self) -> None:
         self.out = deque()
 
+
         self.folder = "TestFolder"
         self.dir_name = os.getcwd() + "/" + self.folder
+
+        self.folder = "TestFiles"
 
         self.folder = "TestFiles"
 
@@ -28,13 +33,16 @@ class TestLs(unittest.TestCase):
             "file3.txt": "third\nfile\nto\ntest\nmultiple\nfiles"
         }
 
-
         for file in self.files:
             with open(os.path.join(self.folder, file), "x") as f:
                 f.write(self.files[file])
 
     def tearDown(self) -> None:
+
         shutil.rmtree(self.dir_name)
+
+        shutil.rmtree(self.folder)
+
 
     def test_ls_zero_arg(self):
         self.out = deque()
@@ -44,6 +52,8 @@ class TestLs(unittest.TestCase):
         self.assertEqual(self.out.popleft(), "folder1\tfolder2\tfolder3\n")
         #os.chdir("..")
 
+        ls.Ls.run(self, [], self.out, [])
+        self.assertEqual(self.out.popleft(), os.listdir() + "\n")
         ls.Ls.run(self, [], self.out, [])
         self.assertEqual(self.out.popleft(), os.listdir() + "\n")
 
