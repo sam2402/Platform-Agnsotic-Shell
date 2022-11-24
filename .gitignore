@@ -133,3 +133,4 @@ dmypy.json
 
 # VSCode
 .vscode/
+test/test_ls.py
