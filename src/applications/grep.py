@@ -7,6 +7,11 @@ from .application import Application, ArgumentError, ApplicationError
 
 
 class Grep(Application):
+    """Searches for lines containing a match to the specified pattern
+
+    Flags:
+        -v/--verbose: inverts match
+    """
 
     flag_configuration = FlagConfiguration([Flag("-v", bool, "--invert")])
 
@@ -15,7 +20,7 @@ class Grep(Application):
 
     def run(self, inp: List[str], out: Deque[str], args: List[str]):
         if not args:
-            raise ArgumentError()
+            raise ArgumentError("supply at least one argument")
 
         try:
             pattern = re.compile(args[0])

@@ -1,3 +1,5 @@
+"""Module for handling user flags"""
+
 from dataclasses import dataclass
 from typing import Dict, List, Type, Union
 
@@ -7,6 +9,7 @@ FlagType = Union[Type[str], Type[int], Type[bool]]
 
 @dataclass
 class Flag:
+    """The data about a flag an application accepts"""
     name: str
     type: FlagType
     long_name: str = None
@@ -19,6 +22,21 @@ class Flag:
 
 
 class FlagConfiguration:
+    """A store of flags an application accepts and methods for handling them
+
+    Externally appears like a read only dictionary with flag names as keys and
+    flags as values.
+    See this typical use case:
+
+    fc = FlagConfiguration([
+        Flag("-r", bool, "--recursive"),
+        Flag("-v", bool, "--verbose"),
+        Flag("-f", bool, "--force")
+    ])
+    fc["-r"] # returns Flag("-r", bool, "--recursive")
+    fc["-fake-flag"] # raises KeyError
+    "-f" in fc # True
+    """
 
     def __init__(self, flags: List[Flag] = None):
         self.flags = [Flag("-h", bool, "--help")] \

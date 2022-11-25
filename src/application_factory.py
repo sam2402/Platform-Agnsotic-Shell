@@ -42,6 +42,8 @@ APPLICATIONS = {
 class ApplicationFactory:
     """
     Singleton Application Factory
+
+    Call get_application on this class to get an application object
     """
 
     _instance = None
@@ -52,6 +54,24 @@ class ApplicationFactory:
         return cls._instance
 
     def get_application(self, args: List[str]) -> Application:
+        """Get a application object from the args
+
+        It is assumed the first arg is the application name
+
+        Args:
+            args: a list of strings that represent all arguments in the command
+
+        Returns:
+            An instance of the application name instantiated with the flags
+            configured in the application's flag_configuration class attribute
+            and specified in args
+
+        Raises:
+            ApplicationError: raised if the first string in args is not a known
+                application name
+            ArgumentError: raised if the flags and/or their parameters are
+                malformed
+        """
         app_name = args[0]
         if app_name.startswith("_"):
             return UnsafeApplication(self._get_safe_application(
@@ -112,6 +132,9 @@ class ApplicationFactory:
         flag_configuration: FlagConfiguration,
         flags: ApplicationFlagDict,
     ):
+        """Assigned false to non-present boolean flags and the default value
+        to non-present optional flags that have a default value"""
+
         cleaned_flags = flags
         for flag in flag_configuration.required_flags():
             if flag.type is bool and flag.name not in flags:

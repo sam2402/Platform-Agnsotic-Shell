@@ -7,6 +7,15 @@ from .application import Application, ApplicationError, ArgumentError
 
 
 class Rm(Application):
+    """Deletes files
+
+    Flags:
+        -r/--recursive: removes directories and their contents recursively
+        -v/--verbose:   outputs a message for each deletion
+        -f/--force:     enables the deletion of non empty directories and
+                        ignore non-existent paths
+    """
+
     flag_configuration = FlagConfiguration([
         Flag("-r", bool, "--recursive"),
         Flag("-v", bool, "--verbose"),

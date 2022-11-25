@@ -6,8 +6,13 @@ from .application import Application
 
 
 class Cat(Application):
+    """Concatenates the content of given files and prints it to stdout
 
-    flag_configuration = FlagConfiguration([Flag("-n", bool)])
+    Flags:
+        -n, --number: numbers all output lines
+    """
+
+    flag_configuration = FlagConfiguration([Flag("-n", bool, "--number")])
 
     def __init__(self, flags: ApplicationFlagDict):
         super().__init__(flags)

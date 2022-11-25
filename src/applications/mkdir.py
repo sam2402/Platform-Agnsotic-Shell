@@ -6,6 +6,12 @@ from .application import Application, ApplicationError
 
 
 class Mkdir(Application):
+    """Create a new directory
+
+    Flags:
+        -v/--verbose:   displays a message for every directory created
+        -p:             enables the creation of parent directories as necessary
+    """
 
     flag_configuration = FlagConfiguration([
         Flag("-v", bool, "--verbose"),
@@ -17,7 +23,7 @@ class Mkdir(Application):
 
     def run(self, inp: List[str], out: Deque[str], args: List[str]) -> None:
         already_exists_dir = []
-        non_existant_parent_dirs = []
+        non_existent_parent_dirs = []
 
         make_directory = os.makedirs if self.flags["-p"] else os.mkdir
         for arg in args:
@@ -27,15 +33,15 @@ class Mkdir(Application):
                     if self.flags["-v"]:
                         out.append(f"created directory {arg}\n")
                 except FileNotFoundError:
-                    non_existant_parent_dirs.append(arg)
+                    non_existent_parent_dirs.append(arg)
             else:
                 already_exists_dir.append(arg)
-        self._handle_errors(already_exists_dir, non_existant_parent_dirs)
+        self._handle_errors(already_exists_dir, non_existent_parent_dirs)
 
     def _handle_errors(
             self,
             already_exists_dir: List[str],
-            non_existant_parent_dirs: List[str]):
+            non_existent_parent_dirs: List[str]):
         err_msgs = []
         if already_exists_dir:
             err_msgs.extend(
@@ -44,11 +50,11 @@ class Mkdir(Application):
                     already_exists_dir
                 )
             )
-        if non_existant_parent_dirs:
+        if non_existent_parent_dirs:
             err_msgs.extend(
                 map(
                     lambda arg: f"path does not exist to '{arg}'",
-                    non_existant_parent_dirs
+                    non_existent_parent_dirs
                 )
             )
 

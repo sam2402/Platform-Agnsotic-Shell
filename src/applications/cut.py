@@ -6,6 +6,14 @@ from .application import Application, ArgumentError, ApplicationError
 
 
 class Cut(Application):
+    """Cuts out sections from each line of a given file or stdin
+
+    The removed sections are outputted to stdout
+
+    Flags:
+        -b <interval>: required - specifies the bytes to extract from each line
+    """
+
     flag_configuration = FlagConfiguration([Flag("-b", str, argument_count=1)])
 
     def __init__(self, flags: ApplicationFlagDict = None):

@@ -6,6 +6,14 @@ from .application import Application
 
 
 class Uniq(Application):
+    """Detects and deletes adjacent duplicate lines from an input file/stdin
+
+    Prints the result to stdout.
+
+    Flags:
+        -i/--ignore-case: ignores case when doing comparison
+    """
+
     flag_configuration = FlagConfiguration([
         Flag("-i", bool, "--ignore-case")
     ])
