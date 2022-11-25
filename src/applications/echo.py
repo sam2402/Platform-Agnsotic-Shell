@@ -5,6 +5,13 @@ from .application import Application
 
 
 class Echo(Application):
+    """Prints its arguments to stdout
+
+    The arguments are separated by spaces and followed by a newline
+
+    Flags:
+        -n: Omits trailing newline
+    """
 
     flag_configuration = FlagConfiguration([Flag("-n", bool)])
 

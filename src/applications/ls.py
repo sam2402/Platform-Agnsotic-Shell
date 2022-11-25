@@ -6,6 +6,17 @@ from .application import Application, ApplicationError
 
 
 class Ls(Application):
+    """Lists the content of a directory
+
+    It prints a list of files and directories separated by tabs and followed
+    by a newline
+
+    Flags:
+        -a:             lists all files including hidden file starting with '.'
+        -r/--reverse:   lists in reverse order
+        -s/--size:      lists file size
+    """
+
     flag_configuration = FlagConfiguration([
         Flag("-a", bool),
         Flag("-r", bool, "--reverse"),

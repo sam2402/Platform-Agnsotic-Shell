@@ -5,11 +5,33 @@ from flagging import ApplicationFlagDict, FlagConfiguration
 
 
 class Application(ABC):
+    """Base class for all runnable applications
+
+    Provides common util functions that are class dependant
+
+    Attributes:
+        flag_configuration - static: FlagConfiguration object specifying which
+            flags an application accepts
+            By default, all applications accept the the -h (help) flag
+        flags: a dictionary of all flag values
+            Configured by flag_configuration
+    """
 
     flag_configuration: FlagConfiguration = FlagConfiguration()
 
     @classmethod
-    def clean_args(cls, args: List[str]):
+    def clean_args(cls, args: List[str]) -> List[str]:
+        """Removes the application name, flags and their parameters
+
+        Args:
+            args: A list of args as strings
+                It is assumed the first element in the list is the application
+                name
+
+        Returns:
+            A list of arguments with the application name, flags and their
+            parameters removed
+        """
         i = 1
         while i < len(args):
             arg = args[i]
@@ -25,34 +47,70 @@ class Application(ABC):
 
     @abstractmethod
     def run(self, inp: List[str], out: Deque[str], args: List[str]):
+        """Runs the application with flag context
+
+        Args:
+            inp: standard input - a list of strings from which a program reads
+                its input data
+            out: standard output - a dequeue of strings to which a program
+                writes its output data
+            args: command line arguments - a list of strings that can alter
+                the operation of a program
+                see the help_message function to see which args are accepted
+                for each application
+
+        Raises:
+            ArgumentError: the flags and/or args are malformed
+            ApplicationError: an error occurred in the execution of the command
+        """
         pass
 
     @abstractmethod
     def help_message(self) -> str:
+        """Details the syntax of the application's command
+
+        square brackets (`[]`) around a parameter means the parameter is
+        optional
+        an ellipsis `...` after a parameter is equivalent to the Kleene star
+
+        example: `echo [-n] [args...]` is an `echo` command that can take a
+            `-n` flag and 0 or more args.
+            `echo -n arg1 arg2 arg3` is valid
+
+        Returns:
+            A string detailing the syntax of the application's command
+        """
         pass
 
 
 class UnsafeApplication(Application):
+    """A adapter pattern implementation Application class to provide an unsafe
+    variant
+
+    An unsafe version of an application is an application that has the same
+    semantics as the original application, but instead of raising exceptions,
+    it prints the error message to its stdout
+    """
 
     def __init__(self, child_application: Application):
         super().__init__(child_application.flags)
-        self.child_application = child_application
+        self._child_application = child_application
 
     def run(self, inp: List[str], out: Deque[str], args: List[str]):
         try:
-            self.child_application.run(inp, out, args)
+            self._child_application.run(inp, out, args)
         except Exception as err:
             out.append(str(err) + "\n")
 
     def help_message(self) -> str:
-        return self.child_application.help_message()
+        return self._child_application.help_message()
 
 
-# Raised when an application is called with the incorrect arguments
 class ArgumentError(Exception):
+    """Raised when an application is called with the incorrect arguments"""
     pass
 
 
-# Raised when an error occurs when calling an application
 class ApplicationError(Exception):
+    """Raised when an error occurs when calling an application"""
     pass

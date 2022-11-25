@@ -6,6 +6,13 @@ from .application import Application
 
 
 class Pwd(Application):
+    """Output the path of the working directory to std out
+
+    Starting from the root
+
+    Flags:
+        -P: prints the actual path
+    """
 
     flag_configuration = FlagConfiguration([
         Flag("-P", bool),

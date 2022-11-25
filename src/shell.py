@@ -13,8 +13,8 @@ def evaluate(cmd_line: str, out: Deque[str]):
         out.append(term)
 
 
-# Raised when the shell is used incorrectly
 class ShellError(Exception):
+    """Raised when the shell is used incorrectly"""
     pass
 
 

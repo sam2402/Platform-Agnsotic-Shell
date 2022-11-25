@@ -1,3 +1,5 @@
+"""Module of classes used to represent the types of command"""
+
 import os
 from abc import ABC, abstractmethod
 from collections import deque

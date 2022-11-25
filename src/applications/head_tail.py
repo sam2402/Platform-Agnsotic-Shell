@@ -7,6 +7,8 @@ from .application import Application, ArgumentError
 
 
 class FileLineOutputter(Application, ABC):
+    """Abstract class to handle common implementation
+    details of head and tail"""
     flag_configuration = FlagConfiguration([
         Flag("-n", int, default_value=10, argument_count=1, is_optional=True),
         Flag("-v", bool, "--verbose")
@@ -40,6 +42,16 @@ class FileLineOutputter(Application, ABC):
 
 
 class Head(FileLineOutputter):
+    """Prints the first N lines of a given file or stdin
+
+    If there are less than N lines, prints only the existing lines without
+    raising an exception.
+
+    Flags:
+        -n <number of line: int>:   Specifies the number of lines to output
+        -v/--verbose:               Precedes data from file with file name
+    """
+
     def run(self, inp: List[str], out: Deque[str], args: List[str]):
         super().run(inp, out, args)
 
@@ -48,6 +60,14 @@ class Head(FileLineOutputter):
 
 
 class Tail(FileLineOutputter):
+    """Prints the last N lines of a given file or stdin. If there are less
+    than N lines, prints only the existing lines without raising an exception.
+
+    Flags:
+        -n <number of line: int>: Specifies the number of lines to output
+        -v: Precede data from file with file name
+    """
+
     def run(self, inp: List[str], out: Deque[str], args: List[str]):
         super().run(inp, out, args, invert=True)
 

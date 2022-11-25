@@ -1,3 +1,7 @@
+"""
+Module for parsing the user input
+"""
+
 import glob
 from typing import List, Optional, Tuple, Union
 
@@ -9,8 +13,8 @@ from antlr.CommandParser import CommandParser
 from command import Command, SubCommand, PipeCommand, CallCommand
 
 
-# Raised when a command is improperly formatted
 class ParsingError(Exception):
+    """Raised when a command is improperly formatted"""
     pass
 
 

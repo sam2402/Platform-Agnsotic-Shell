@@ -1,3 +1,5 @@
+"""Store of common utility functions used in the COMP0010 shell"""
+
 from typing import List
 
 from .application import ApplicationError
