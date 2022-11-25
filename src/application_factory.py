@@ -16,6 +16,7 @@ from applications.head_tail import Head, Tail
 from applications.ls import Ls
 from applications.mkdir import Mkdir
 from applications.pwd import Pwd
+from applications.rm import Rm
 from applications.sort import Sort
 from applications.uniq import Uniq
 from flagging import ApplicationFlagDict, FlagConfiguration
@@ -31,6 +32,7 @@ APPLICATIONS = {
     "ls": Ls,
     "mkdir": Mkdir,
     "pwd": Pwd,
+    "rm": Rm,
     "sort": Sort,
     "tail": Tail,
     "uniq": Uniq,
