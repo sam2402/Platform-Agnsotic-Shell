@@ -21,4 +21,4 @@ class Pwd(Application):
         out.append(cwd + "\n")
 
     def help_message(self) -> str:
-        return "pwd"
+        return "pwd [-P]"
