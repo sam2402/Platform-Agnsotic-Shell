@@ -2,10 +2,13 @@ import fnmatch
 import os
 from typing import Deque, List
 
+from flagging import ApplicationFlagDict
 from .application import Application, ArgumentError
 
 
 class Find(Application):
+    def __init__(self, flags: ApplicationFlagDict = None):
+        super().__init__(flags)
 
     def run(self, inp: List[str], out: Deque[str], args: List[str]):
         if len(args) not in [2, 3]:

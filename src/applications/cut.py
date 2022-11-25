@@ -1,28 +1,32 @@
 from typing import Deque, List
 
+from flagging import ApplicationFlagDict, Flag, FlagConfiguration
 from . import util
 from .application import Application, ArgumentError, ApplicationError
 
 
 class Cut(Application):
+    flag_configuration = FlagConfiguration([Flag("-b", str, argument_count=1)])
+
+    def __init__(self, flags: ApplicationFlagDict = None):
+        super().__init__(flags)
 
     def run(self, inp: List[str], out: Deque[str], args: List[str]):
-        if len(args) not in [2, 3] or args[0] != "-b":
-            raise ArgumentError()
+        if len(args) not in [0, 1]:
+            raise ArgumentError("supply at most one file path")
 
-        intervals = parse_intervals(args[1])
-        lines = util.read_lines(args[2]) if len(args) == 3 else inp
+        intervals = parse_intervals(self.flags["-b"])
+        lines = util.read_lines(args[0]) if len(args) == 1 else inp
 
         for line in lines:
             filtered = intervals.filter_included(line)
             out.append(filtered + "\n")
 
     def help_message(self) -> str:
-        return "cut <options> [file]"
+        return "cut [-b <interval>] [file]"
 
 
 class Intervals:
-
     def __init__(self):
         self.all_before = -1
         self.all_after = float("inf")
@@ -39,9 +43,11 @@ class Intervals:
         return included
 
     def includes_index(self, index: int) -> bool:
-        return index <= self.all_before \
-               or index >= self.all_after \
-               or index in self.indices
+        return (
+            index <= self.all_before or
+            index >= self.all_after or
+            index in self.indices
+        )
 
 
 def parse_intervals(arg: str) -> Intervals:

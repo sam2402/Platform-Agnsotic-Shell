@@ -7,22 +7,24 @@ from collections import deque
 class TestUniq(unittest.TestCase):
     def setUp(self) -> None:
         self.out = deque()
-        self.folder = "TestFiles"
-        if not os.path.exists(self.folder):
-            os.mkdir(self.folder)
+        self.file_name = "file1.txt"
+        self.text = "Uniq method test\nUniq method test\nUniQ MethoD TesT\n"
 
-            self.files = {
-                "file1.txt": "this\nis\nfile\nnumber\none",
-                "file2.txt": "and\nthis\nis\nthe\nsecond\nfile",
-                "file3.txt": "third\nfile\nto\ntest\nmultiple\nfiles"
-            }
-
-            for file in self.files:
-                with open(os.path.join(self.folder, file),"x") as f:
-                    f.write(self.files[file])
+        with open(self.file_name, "x") as f:
+            f.write(self.text)
 
     def tearDown(self) -> None:
-        shutil.rmtree(self.folder)
+        os.remove(self.file_name)
+
+    def test_uniq_no_options(self):
+        uniq.Uniq.run(self,[],self.out,[self.file_name])
+        ans = ["Uniq method test\n","UniQ MethoD TesT\n"]
+        for i in range(len(self.out)):
+            self.assertEqual(self.out.popleft(), ans[i])
+
+    def test_uniq_case_insensitive(self):
+        uniq.Uniq.run(self,[],self.out,["-i",self.file_name])
+        self.assertEqual(self.out.popleft(), "Uniq method test\n")
 
     def test_uniq_help_message(self):
         self.assertEqual(uniq.Uniq.help_message(self), "uniq [-i] [file]")

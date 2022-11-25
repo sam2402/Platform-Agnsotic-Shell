@@ -3,26 +3,32 @@ import src.applications.find as find
 import os
 import shutil
 from collections import deque
+from src.applications.application import ArgumentError
 
 class TestFind(unittest.TestCase):
     def setUp(self) -> None:
         self.out = deque()
-        self.folder = "TestFiles"
-        if not os.path.exists(self.folder):
-            os.mkdir(self.folder)
+        self.folder = "FindFolder"
+        self.dir_name = os.path.join(os.getcwd(), self.folder)
+        os.mkdir(self.folder)
+        self.files = ["file1.txt", "file2.txt", "file3.txt"]
+        for file in self.files:
+            with open(os.path.join(self.folder, file), 'w') as f:
+                pass
 
-            self.files = {
-                "file1.txt": "this\nis\nfile\nnumber\none",
-                "file2.txt": "and\nthis\nis\nthe\nsecond\nfile",
-                "file3.txt": "third\nfile\nto\ntest\nmultiple\nfiles"
-            }
-
-            for file in self.files:
-                with open(os.path.join(self.folder, file), "x") as f:
-                    f.write(self.files[file])
 
     def tearDown(self) -> None:
         shutil.rmtree(self.folder)
+
+    def test_find_no_args(self):
+        self.assertRaises(ArgumentError, find.Find.run, self, [], self.out, [])
+
+    def test_find_no_name_flag(self):
+        self.assertRaises(ArgumentError,find.Find.run, self, [], self.out, ["-notname","file"])
+
+    def test_find_one_file(self):
+        find.Find.run(self,[],self.out,["-name",self.files[0]])
+        self.assertEqual(self.out.popleft(),os.path.join(".",self.folder,self.files[0] + "\n"))
 
     def test_find_help_message(self):
         self.assertEqual(find.Find.help_message(self), "find [path] -name <pattern>")
