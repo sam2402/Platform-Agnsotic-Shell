@@ -6,7 +6,11 @@ from .application import Application, ApplicationError
 
 
 class Ls(Application):
-    flag_configuration = FlagConfiguration([Flag("-a", bool)])
+    flag_configuration = FlagConfiguration([
+        Flag("-a", bool),
+        Flag("-r", bool, "--reverse"),
+        Flag("-s", bool, "--size")
+    ])
 
     def __init__(self, flags: ApplicationFlagDict = None):
         super().__init__(flags)
@@ -21,9 +25,17 @@ class Ls(Application):
 
         if not self.flags["-a"]:
             files = list(filter(lambda file: not file.startswith("."), files))
+        if self.flags["-r"]:
+            files = files[::-1]
+        if self.flags["-s"]:
+            files = [
+                f"{(os.stat(file).st_size if os.path.isfile(file) else 0)}"
+                f"{file}"
+                for file in files
+            ]
 
         if len(files):
             out.append("\t".join(files) + "\n")
 
     def help_message(self) -> str:
-        return "ls [-a] [directory]"
+        return "ls [-a -r -s] [directory]"

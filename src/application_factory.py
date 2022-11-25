@@ -78,7 +78,8 @@ class ApplicationFactory:
             self, flag_configuration: FlagConfiguration, args: List[str]
     ) -> ApplicationFlagDict:
         flags = {}
-        for i in range(len(args)):
+        i = 0
+        while i < len(args):
             arg = args[i]
             if arg in flag_configuration:
                 flag = flag_configuration[arg]
@@ -103,6 +104,7 @@ class ApplicationFactory:
                 i += flag_configuration[arg].argument_count
             else:
                 return self._clean_flags(flag_configuration, flags)
+            i += 1
         return self._clean_flags(flag_configuration, flags)
 
     def _clean_flags(

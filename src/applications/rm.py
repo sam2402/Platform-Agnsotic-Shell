@@ -1,4 +1,5 @@
 import os
+import shutil
 from typing import Deque, List
 
 from flagging import ApplicationFlagDict, Flag, FlagConfiguration
@@ -22,6 +23,9 @@ class Rm(Application):
 
         non_existent_paths = []
         directory_args = []
+        non_empty_directories = []
+
+        delete_directory = shutil.rmtree if self.flags["-f"] else os.rmdir
 
         for arg in args:
             if os.path.isfile(arg):
@@ -31,16 +35,26 @@ class Rm(Application):
             elif os.path.isdir(arg):
                 directory_args.append(arg)
                 if self.flags["-r"]:
-                    os.rmdir(arg)
-                    if self.flags["-v"]:
-                        out.append(f"deleted directory '{arg}'\n")
+                    try:
+                        delete_directory(arg)
+                        if self.flags["-v"]:
+                            out.append(f"deleted directory '{arg}'\n")
+                    except OSError:
+                        non_empty_directories.append(arg)
             else:
                 non_existent_paths.append(arg)
 
-        self._handle_errors(non_existent_paths, directory_args)
+        self._handle_errors(
+            non_existent_paths,
+            directory_args,
+            non_empty_directories
+        )
 
     def _handle_errors(
-            self, non_existent_paths: List[str], directory_args: List[str]):
+            self,
+            non_existent_paths: List[str],
+            directory_args: List[str],
+            non_empty_directories: List[str]):
         err_msgs = []
         if directory_args and not self.flags["-r"]:
             err_msgs.extend(
@@ -54,6 +68,13 @@ class Rm(Application):
                 map(
                     lambda arg: f"'{arg}' is not a file or directory",
                     non_existent_paths
+                )
+            )
+        if non_empty_directories and not self.flags["-f"]:
+            err_msgs.extend(
+                map(
+                    lambda arg: f"'{arg}' is not an empty directory",
+                    non_empty_directories
                 )
             )
         if err_msgs:
