@@ -23,7 +23,7 @@ class Cut(Application):
             out.append(filtered + "\n")
 
     def help_message(self) -> str:
-        return "cut <options> [file]"
+        return "cut [-b <interval>] [file]"
 
 
 class Intervals:

@@ -1,12 +1,15 @@
 import re
 from typing import Deque, List
 
-from flagging import ApplicationFlagDict
+from flagging import ApplicationFlagDict, Flag, FlagConfiguration
 from . import util
 from .application import Application, ArgumentError, ApplicationError
 
 
 class Grep(Application):
+
+    flag_configuration = FlagConfiguration([Flag("-v", bool, "--invert")])
+
     def __init__(self, flags: ApplicationFlagDict = None):
         super().__init__(flags)
 
@@ -28,7 +31,8 @@ class Grep(Application):
 
         for file_name, lines in files.items():
             for line in lines:
-                if not pattern.search(line):
+
+                if self.flags["-v"] ^ (not pattern.search(line)):
                     continue
 
                 if len(files) == 1:
@@ -37,4 +41,4 @@ class Grep(Application):
                     out.append(f"{file_name}:{line}")
 
     def help_message(self) -> str:
-        return "grep <pcre> [files...]"
+        return "grep [-v] <pcre> [files...]"

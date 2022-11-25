@@ -3,18 +3,36 @@ from typing import Deque, List
 
 from flagging import ApplicationFlagDict, Flag, FlagConfiguration
 from . import util
-from .application import Application
+from .application import Application, ArgumentError
 
 
 class FileLineOutputter(Application, ABC):
-    flag_configuration = FlagConfiguration(
-        [Flag("-n", int, default_value=10, argument_count=1, is_optional=True)]
-    )
+    flag_configuration = FlagConfiguration([
+        Flag("-n", int, default_value=10, argument_count=1, is_optional=True),
+        Flag("-v", bool, "--verbose")
+    ])
 
     def __init__(self, flags: ApplicationFlagDict = None):
         super().__init__(flags)
 
-    def get_lines(self, inp: List[str], args: List[str], max_line_count: int):
+    def run(self,
+            inp: List[str],
+            out: Deque[str],
+            args: List[str], invert: bool = False
+            ):
+        if len(args) > 1:
+            raise ArgumentError("supply at most one file path")
+
+        lines = self._get_lines(
+            inp,
+            args,
+            self.flags["-n"] if not invert else -self.flags["-n"]
+        )
+        if self.flags["-v"]:
+            out.append(f"==>{args[0]}<==\n")
+        out.append("".join(lines))
+
+    def _get_lines(self, inp: List[str], args: List[str], max_line_count: int):
         lines = util.read_lines(args[0]) if len(args) == 1 else inp
         line_count = max_line_count if abs(max_line_count) < len(lines) \
             else len(lines)
@@ -23,15 +41,15 @@ class FileLineOutputter(Application, ABC):
 
 class Head(FileLineOutputter):
     def run(self, inp: List[str], out: Deque[str], args: List[str]):
-        out.append("".join(self.get_lines(inp, args, self.flags["-n"])))
+        super().run(inp, out, args)
 
     def help_message(self) -> str:
-        return "head [-n lines] [file]"
+        return "head [-v -n lines] [file]"
 
 
 class Tail(FileLineOutputter):
     def run(self, inp: List[str], out: Deque[str], args: List[str]):
-        out.append("".join(self.get_lines(inp, args, -self.flags["-n"])))
+        super().run(inp, out, args, invert=True)
 
     def help_message(self) -> str:
-        return "tail [-n lines] [file]"
+        return "tail [-v -n lines] [file]"
