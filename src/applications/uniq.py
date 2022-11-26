@@ -1,11 +1,20 @@
 from typing import Deque, List
 
+import util
 from flagging import Flag, FlagConfiguration
-from . import util
 from .application import Application
 
 
 class Uniq(Application):
+    """Detects and deletes adjacent duplicate lines from an input file/stdin
+
+    Prints the result to stdout.
+
+    Flags:
+        -i, --ignore-case: ignores case when doing comparison
+    """
+
+    name = "uniq"
     flag_configuration = FlagConfiguration([
         Flag("-i", bool, "--ignore-case")
     ])

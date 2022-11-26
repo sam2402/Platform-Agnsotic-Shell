@@ -1,7 +1,11 @@
+"""Module of classes used to represent the types of command"""
+
 import os
 from abc import ABC, abstractmethod
 from collections import deque
 from typing import List
+
+import util
 from application_factory import ApplicationFactory
 from applications.application import ApplicationError
 
@@ -26,7 +30,7 @@ class CallCommand(SubCommand):
                 raise ApplicationError(
                     f"input file '{self.in_file} does not exist"
                 )
-            inp = read_lines(self.in_file)
+            inp = util.read_lines(self.in_file)
 
         application = ApplicationFactory().get_application(self.args)
         out = deque()
@@ -37,7 +41,7 @@ class CallCommand(SubCommand):
             application.run(inp, out, cleaned_args)
 
         if self.out_file:
-            write_lines(self.out_file, list(out))
+            util.write_lines(self.out_file, list(out))
             return []
 
         return list(out)
@@ -64,13 +68,3 @@ class Command:
                for sub_command in self.sub_commands
                for line in sub_command.execute([])]
         return out
-
-
-def read_lines(file_name: str) -> List[str]:
-    with open(file_name) as file:
-        return file.read().splitlines(keepends=True)
-
-
-def write_lines(file_name: str, lines: List[str]):
-    with open(file_name, "w") as file:
-        file.writelines(lines)

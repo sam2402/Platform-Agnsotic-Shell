@@ -1,11 +1,20 @@
 from typing import Deque, List
 
+import util
 from flagging import ApplicationFlagDict, Flag, FlagConfiguration
-from . import util
 from .application import Application, ArgumentError, ApplicationError
 
 
 class Cut(Application):
+    """Cuts out sections from each line of a given file or stdin
+
+    The removed sections are outputted to stdout
+
+    Flags:
+        -b <interval>: required - specifies the bytes to extract from each line
+    """
+
+    name = "cut"
     flag_configuration = FlagConfiguration([Flag("-b", str, argument_count=1)])
 
     def __init__(self, flags: ApplicationFlagDict = None):
@@ -13,7 +22,7 @@ class Cut(Application):
 
     def run(self, inp: List[str], out: Deque[str], args: List[str]):
         if len(args) not in [0, 1]:
-            raise ArgumentError("supply at most one file path")
+            raise ArgumentError(type(self), "supply at most one file path")
 
         intervals = parse_intervals(self.flags["-b"])
         lines = util.read_lines(args[0]) if len(args) == 1 else inp
@@ -23,7 +32,7 @@ class Cut(Application):
             out.append(filtered + "\n")
 
     def help_message(self) -> str:
-        return "cut [-b <interval>] [file]"
+        return "cut -b <intervals> [file]"
 
 
 class Intervals:

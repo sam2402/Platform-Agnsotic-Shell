@@ -1,13 +1,19 @@
 from typing import Deque, List
 
+import util
 from flagging import ApplicationFlagDict, Flag, FlagConfiguration
-from . import util
 from .application import Application
 
 
 class Cat(Application):
+    """Concatenates the content of the given files and prints it to stdout
 
-    flag_configuration = FlagConfiguration([Flag("-n", bool)])
+    Flags:
+        -n, --number: numbers all output lines
+    """
+
+    name = "cat"
+    flag_configuration = FlagConfiguration([Flag("-n", bool, "--number")])
 
     def __init__(self, flags: ApplicationFlagDict):
         super().__init__(flags)
@@ -18,7 +24,7 @@ class Cat(Application):
 
         for i, line in enumerate(lines):
             if self.flags["-n"]:
-                out.append(f"{i})")
+                out.append(f"{i + 1} ")
             out.append(line)
 
     def help_message(self) -> str:

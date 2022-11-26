@@ -21,27 +21,29 @@ from applications.sort import Sort
 from applications.uniq import Uniq
 from flagging import ApplicationFlagDict, FlagConfiguration
 
-APPLICATIONS = {
-    "cat": Cat,
-    "cd": Cd,
-    "cut": Cut,
-    "echo": Echo,
-    "find": Find,
-    "grep": Grep,
-    "head": Head,
-    "ls": Ls,
-    "mkdir": Mkdir,
-    "pwd": Pwd,
-    "rm": Rm,
-    "sort": Sort,
-    "tail": Tail,
-    "uniq": Uniq,
-}
+APPLICATIONS = {app.name: app for app in [
+    Cat,
+    Cd,
+    Cut,
+    Echo,
+    Find,
+    Grep,
+    Head,
+    Ls,
+    Mkdir,
+    Pwd,
+    Rm,
+    Sort,
+    Tail,
+    Uniq,
+]}
 
 
 class ApplicationFactory:
     """
     Singleton Application Factory
+
+    Call get_application on this class to get an application object
     """
 
     _instance = None
@@ -52,6 +54,24 @@ class ApplicationFactory:
         return cls._instance
 
     def get_application(self, args: List[str]) -> Application:
+        """Get a application object from the args
+
+        It is assumed the first arg is the application name
+
+        Args:
+            args: a list of strings that represent all arguments in the command
+
+        Returns:
+            An instance of the application name instantiated with the flags
+            configured in the application's flag_configuration class attribute
+            and specified in args
+
+        Raises:
+            ApplicationError: the first string in args is not a known
+                application name
+            ArgumentError: the flags and/or their parameters are
+                malformed
+        """
         app_name = args[0]
         if app_name.startswith("_"):
             return UnsafeApplication(self._get_safe_application(
@@ -63,11 +83,14 @@ class ApplicationFactory:
             self, app_name: str, application_args: List[str]
     ) -> Application:
         application_type = self._get_app_type(app_name)
-        flags = self._parse_flags(
-            application_type.flag_configuration,
-            application_args
-        )
-        return application_type(flags)
+        try:
+            flags = self._parse_flags(
+                application_type.flag_configuration,
+                application_args
+            )
+            return application_type(flags)
+        except SyntaxError as err:
+            raise ArgumentError(application_type, str(err))
 
     def _get_app_type(self, app_name: str) -> Type[Application]:
         if app_name in APPLICATIONS:
@@ -91,9 +114,9 @@ class ApplicationFactory:
                         )
                     )
                 except ValueError:
-                    raise ArgumentError("invalid flags argument types")
+                    raise SyntaxError("invalid flags argument types")
                 if len(flag_values) != flag.argument_count:
-                    raise ArgumentError("invalid flags argument")
+                    raise SyntaxError("invalid flags argument")
                 if len(flag_values) == 0:
                     flag_value = True
                 elif len(flag_values) == 1:
@@ -112,12 +135,15 @@ class ApplicationFactory:
         flag_configuration: FlagConfiguration,
         flags: ApplicationFlagDict,
     ):
+        """Assigns false to non-present boolean flags and the default value
+        to non-present optional flags that have a default value"""
+
         cleaned_flags = flags
         for flag in flag_configuration.required_flags():
             if flag.type is bool and flag.name not in flags:
                 cleaned_flags[flag.name] = False
             if flag.name not in flags:
-                raise ArgumentError(f"expected flag {flag.name}")
+                raise SyntaxError(f"expected flag {flag.name}")
 
         for flag in flag_configuration.optional_flags():
             if flag.name not in cleaned_flags:

@@ -1,12 +1,24 @@
 import random
 from typing import Deque, List
 
+import util
 from flagging import ApplicationFlagDict, Flag, FlagConfiguration
-from . import util
 from .application import Application
 
 
 class Sort(Application):
+    """Sorts the contents of a file/stdin line by line
+
+    Prints the result to stdout.
+
+    Flags:
+        -r: sorts in reverse order
+        -R: randomises order
+        -f: enable the deletion of non-empty directories and ignore
+            non-existent paths
+    """
+
+    name = "sort"
     flag_configuration = FlagConfiguration([
         Flag("-r", bool, "--reverse"),
         Flag("-R", bool, "--random")
