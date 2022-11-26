@@ -23,7 +23,7 @@ class FileLineOutputter(Application, ABC):
             args: List[str], invert: bool = False
             ):
         if len(args) > 1:
-            raise ArgumentError("supply at most one file path")
+            raise ArgumentError(type(self), "supply at most one file path")
 
         lines = self._get_lines(
             inp,
@@ -49,14 +49,13 @@ class Head(FileLineOutputter):
 
     Flags:
         -n <number of line: int>:   Specifies the number of lines to output
-        -v/--verbose:               Precedes data from file with file name
+        -v, --verbose:               Precedes data from file with file name
     """
 
+    name = "head"
+
     def run(self, inp: List[str], out: Deque[str], args: List[str]):
-        try:
-            super().run(inp, out, args, invert=False)
-        except ArgumentError as err:
-            raise ArgumentError("tail: " + str(err))
+        super().run(inp, out, args, invert=False)
 
     def help_message(self) -> str:
         return "head [-v -n lines] [file]"
@@ -68,14 +67,13 @@ class Tail(FileLineOutputter):
 
     Flags:
         -n <number of line: int>: Specifies the number of lines to output
-        -v/--verbose: Precede data from file with file name
+        -v, --verbose: Precede data from file with file name
     """
 
+    name = "tail"
+
     def run(self, inp: List[str], out: Deque[str], args: List[str]):
-        try:
-            super().run(inp, out, args, invert=True)
-        except ArgumentError as err:
-            raise ArgumentError("tail: " + str(err))
+        super().run(inp, out, args, invert=True)
 
     def help_message(self) -> str:
         return "tail [-v -n lines] [file]"

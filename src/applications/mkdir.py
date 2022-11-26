@@ -9,10 +9,11 @@ class Mkdir(Application):
     """Create a new directory
 
     Flags:
-        -v/--verbose:   displays a message for every directory created
+        -v, --verbose:   displays a message for every directory created
         -p:             enables the creation of parent directories as necessary
     """
 
+    name = "mkdir"
     flag_configuration = FlagConfiguration([
         Flag("-v", bool, "--verbose"),
         Flag("-p", bool)

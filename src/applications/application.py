@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from typing import Deque, List
+from typing import Deque, List, Type
 
 from flagging import ApplicationFlagDict, FlagConfiguration
 
@@ -10,6 +10,7 @@ class Application(ABC):
     Provides common util functions that are class dependant
 
     Attributes:
+        name - static: name of application used in terminal as string
         flag_configuration - static: FlagConfiguration object specifying which
             flags an application accepts
             By default, all applications accept the -h (help) flag
@@ -17,6 +18,7 @@ class Application(ABC):
             Configured by flag_configuration
     """
 
+    name: str
     flag_configuration: FlagConfiguration = FlagConfiguration()
 
     @classmethod
@@ -108,7 +110,13 @@ class UnsafeApplication(Application):
 
 class ArgumentError(Exception):
     """Raised when an application is called with the incorrect arguments"""
-    pass
+
+    def __init__(self, application_type: Type[Application], *args):
+        super().__init__(*args)
+        self._application_type = application_type
+
+    def __str__(self) -> str:
+        return f"{self._application_type.name} - {super().__str__()}"
 
 
 class ApplicationError(Exception):

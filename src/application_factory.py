@@ -21,22 +21,22 @@ from applications.sort import Sort
 from applications.uniq import Uniq
 from flagging import ApplicationFlagDict, FlagConfiguration
 
-APPLICATIONS = {
-    "cat": Cat,
-    "cd": Cd,
-    "cut": Cut,
-    "echo": Echo,
-    "find": Find,
-    "grep": Grep,
-    "head": Head,
-    "ls": Ls,
-    "mkdir": Mkdir,
-    "pwd": Pwd,
-    "rm": Rm,
-    "sort": Sort,
-    "tail": Tail,
-    "uniq": Uniq,
-}
+APPLICATIONS = {app.name: app for app in [
+    Cat,
+    Cd,
+    Cut,
+    Echo,
+    Find,
+    Grep,
+    Head,
+    Ls,
+    Mkdir,
+    Pwd,
+    Rm,
+    Sort,
+    Tail,
+    Uniq,
+]}
 
 
 class ApplicationFactory:
@@ -83,11 +83,14 @@ class ApplicationFactory:
             self, app_name: str, application_args: List[str]
     ) -> Application:
         application_type = self._get_app_type(app_name)
-        flags = self._parse_flags(
-            application_type.flag_configuration,
-            application_args
-        )
-        return application_type(flags)
+        try:
+            flags = self._parse_flags(
+                application_type.flag_configuration,
+                application_args
+            )
+            return application_type(flags)
+        except SyntaxError as err:
+            raise ArgumentError(application_type, str(err))
 
     def _get_app_type(self, app_name: str) -> Type[Application]:
         if app_name in APPLICATIONS:
@@ -111,9 +114,9 @@ class ApplicationFactory:
                         )
                     )
                 except ValueError:
-                    raise ArgumentError("invalid flags argument types")
+                    raise SyntaxError("invalid flags argument types")
                 if len(flag_values) != flag.argument_count:
-                    raise ArgumentError("invalid flags argument")
+                    raise SyntaxError("invalid flags argument")
                 if len(flag_values) == 0:
                     flag_value = True
                 elif len(flag_values) == 1:
@@ -140,7 +143,7 @@ class ApplicationFactory:
             if flag.type is bool and flag.name not in flags:
                 cleaned_flags[flag.name] = False
             if flag.name not in flags:
-                raise ArgumentError(f"expected flag {flag.name}")
+                raise SyntaxError(f"expected flag {flag.name}")
 
         for flag in flag_configuration.optional_flags():
             if flag.name not in cleaned_flags:

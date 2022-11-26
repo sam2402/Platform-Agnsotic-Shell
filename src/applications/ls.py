@@ -13,10 +13,11 @@ class Ls(Application):
 
     Flags:
         -a:             lists all files including hidden file starting with '.'
-        -r/--reverse:   lists in reverse order
-        -s/--size:      lists file size
+        -r, --reverse:   lists in reverse order
+        -s, --size:      lists file size
     """
 
+    name = "ls"
     flag_configuration = FlagConfiguration([
         Flag("-a", bool),
         Flag("-r", bool, "--reverse"),
