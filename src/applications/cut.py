@@ -1,7 +1,7 @@
 from typing import Deque, List
 
+import util
 from flagging import ApplicationFlagDict, Flag, FlagConfiguration
-from . import util
 from .application import Application, ArgumentError, ApplicationError
 
 
@@ -21,7 +21,7 @@ class Cut(Application):
 
     def run(self, inp: List[str], out: Deque[str], args: List[str]):
         if len(args) not in [0, 1]:
-            raise ArgumentError("supply at most one file path")
+            raise ArgumentError("cut: supply at most one file path")
 
         intervals = parse_intervals(self.flags["-b"])
         lines = util.read_lines(args[0]) if len(args) == 1 else inp
@@ -31,7 +31,7 @@ class Cut(Application):
             out.append(filtered + "\n")
 
     def help_message(self) -> str:
-        return "cut [-b <interval>] [file]"
+        return "cut -b <intervals> [file]"
 
 
 class Intervals:

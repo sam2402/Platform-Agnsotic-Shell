@@ -1,8 +1,8 @@
 from abc import ABC
 from typing import Deque, List
 
+import util
 from flagging import ApplicationFlagDict, Flag, FlagConfiguration
-from . import util
 from .application import Application, ArgumentError
 
 
@@ -53,7 +53,10 @@ class Head(FileLineOutputter):
     """
 
     def run(self, inp: List[str], out: Deque[str], args: List[str]):
-        super().run(inp, out, args)
+        try:
+            super().run(inp, out, args, invert=False)
+        except ArgumentError as err:
+            raise ArgumentError("tail: " + str(err))
 
     def help_message(self) -> str:
         return "head [-v -n lines] [file]"
@@ -65,11 +68,14 @@ class Tail(FileLineOutputter):
 
     Flags:
         -n <number of line: int>: Specifies the number of lines to output
-        -v: Precede data from file with file name
+        -v/--verbose: Precede data from file with file name
     """
 
     def run(self, inp: List[str], out: Deque[str], args: List[str]):
-        super().run(inp, out, args, invert=True)
+        try:
+            super().run(inp, out, args, invert=True)
+        except ArgumentError as err:
+            raise ArgumentError("tail: " + str(err))
 
     def help_message(self) -> str:
         return "tail [-v -n lines] [file]"

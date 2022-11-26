@@ -19,11 +19,30 @@ class ParsingError(Exception):
 
 
 def execute_command(raw_input: str) -> List[str]:
+    """Executes a command from a string and returns the list of outputs
+
+    Args:
+        raw_input: the command the user provided to the shell (without \n)
+
+    Returns:
+        A list of strings representing the output of the command
+    """
     command = parse_command(raw_input)
     return command.execute()
 
 
 def parse_command(raw_input: str) -> Command:
+    """Parses a command string to a Command object
+
+    Args:
+        raw_input: the command the user provided to the shell (without \n)
+
+    Returns:
+        An instance of the Command class representing the parsed command
+
+    Raises:
+        ParsingError if the input does not follow the command grammar
+    """
     lexer = CommandLexer(InputStream(raw_input))
     tokens = CommonTokenStream(lexer)
     parser = CommandParser(tokens)
@@ -129,7 +148,7 @@ def parse_arguments(
             else:
                 args.extend(arg)
                 cur_arg = ""
-        elif cur_arg:  # Whitespace
+        elif cur_arg:  # Whitespace, start a new argument
             args.append(cur_arg)
             cur_arg = ""
 
@@ -143,7 +162,7 @@ def parse_argument(ctx: CommandParser.ArgumentContext) -> List[str]:
     child = ctx.children[0]
 
     if type(child) == TerminalNodeImpl:
-        # Unquoted argument
+        # Unquoted argument, try glob expansion
         return glob_expand_arg(str(child))
 
     child = child.children[0]
@@ -165,7 +184,8 @@ def glob_expand_arg(arg: str) -> List[str]:
 
 
 def parse_single_quoted(ctx: CommandParser.SingleQuotedContext) -> str:
-    quoted = "".join([str(child) for child in ctx.children[1:-1]])
+    children = ctx.children[1:-1]  # Exclude the opening and closing quote
+    quoted = "".join([str(child) for child in children])
 
     if "\n" in quoted or "'" in quoted:
         raise ParsingError(
@@ -179,7 +199,7 @@ def parse_double_quoted(ctx: CommandParser.DoubleQuotedContext) -> str:
     quoted = ""
 
     for child in ctx.children[1:-1]:
-        if type(child) == TerminalNodeImpl:
+        if type(child) == TerminalNodeImpl:  # Terminal node is UNQUOTED
             if "\"" in str(child) or "\n" in str(child):
                 raise ParsingError(
                     "double quoted sections may not "
@@ -187,17 +207,20 @@ def parse_double_quoted(ctx: CommandParser.DoubleQuotedContext) -> str:
                 )
             quoted += str(child)
         elif type(child) == CommandParser.BackQuotedContext:
+            # Expanded backquoted commands
             quoted += " ".join(parse_back_quoted(child))
 
     return quoted
 
 
 def parse_back_quoted(ctx: CommandParser.BackQuotedContext) -> List[str]:
-    raw_command = "".join([str(child) for child in ctx.children[1:-1]])
+    children = ctx.children[1:-1]  # Exclude the opening and closing backtick
+    raw_command = "".join([str(child) for child in children])
 
     if "`" in raw_command or "\n" in raw_command:
         raise ParsingError(
             "back quoted section may not contain back quotes or newlines"
         )
 
-    return [s.strip() for s in execute_command(raw_command)]
+    output = execute_command(raw_command)
+    return [s.strip() for s in output]

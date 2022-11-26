@@ -1,7 +1,7 @@
 from typing import Deque, List
 
+import util
 from flagging import Flag, FlagConfiguration
-from . import util
 from .application import Application
 
 

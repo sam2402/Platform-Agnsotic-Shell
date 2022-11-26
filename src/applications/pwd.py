@@ -11,7 +11,7 @@ class Pwd(Application):
     Starting from the root
 
     Flags:
-        -P: prints the actual path
+        -P: prints the path with symbolic links resolved
     """
 
     flag_configuration = FlagConfiguration([
@@ -24,7 +24,7 @@ class Pwd(Application):
     def run(self, inp: List[str], out: Deque[str], args: List[str]) -> None:
         cwd = os.getcwd()
         if self.flags["-P"]:
-            cwd = os.path.abspath(cwd)
+            cwd = os.path.realpath(cwd)
         out.append(cwd + "\n")
 
     def help_message(self) -> str:

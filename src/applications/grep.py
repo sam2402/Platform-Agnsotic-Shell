@@ -1,8 +1,8 @@
 import re
 from typing import Deque, List
 
+import util
 from flagging import ApplicationFlagDict, Flag, FlagConfiguration
-from . import util
 from .application import Application, ArgumentError, ApplicationError
 
 
@@ -20,7 +20,7 @@ class Grep(Application):
 
     def run(self, inp: List[str], out: Deque[str], args: List[str]):
         if not args:
-            raise ArgumentError("supply at least one argument")
+            raise ArgumentError("grep: supply at least one argument")
 
         try:
             pattern = re.compile(args[0])
