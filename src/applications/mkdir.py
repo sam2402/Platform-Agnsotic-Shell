@@ -24,8 +24,8 @@ class Mkdir(Application):
     def run(self, inp: List[str], out: Deque[str], args: List[str]) -> None:
         already_exists_dir = []
         non_existent_parent_dirs = []
-
         make_directory = os.makedirs if self.flags["-p"] else os.mkdir
+
         for arg in args:
             if not os.path.isdir(arg):
                 try:
@@ -36,6 +36,7 @@ class Mkdir(Application):
                     non_existent_parent_dirs.append(arg)
             else:
                 already_exists_dir.append(arg)
+
         self._handle_errors(already_exists_dir, non_existent_parent_dirs)
 
     def _handle_errors(

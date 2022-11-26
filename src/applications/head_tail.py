@@ -1,8 +1,8 @@
 from abc import ABC
 from typing import Deque, List
 
+import util
 from flagging import ApplicationFlagDict, Flag, FlagConfiguration
-from . import util
 from .application import Application, ArgumentError
 
 
@@ -23,7 +23,7 @@ class FileLineOutputter(Application, ABC):
             args: List[str], invert: bool = False
             ):
         if len(args) > 1:
-            raise ArgumentError("supply at most one file path")
+            raise ArgumentError("head/tail: supply at most one file path")
 
         lines = self._get_lines(
             inp,

@@ -12,7 +12,7 @@ class Application(ABC):
     Attributes:
         flag_configuration - static: FlagConfiguration object specifying which
             flags an application accepts
-            By default, all applications accept the the -h (help) flag
+            By default, all applications accept the -h (help) flag
         flags: a dictionary of all flag values
             Configured by flag_configuration
     """
@@ -84,7 +84,7 @@ class Application(ABC):
 
 
 class UnsafeApplication(Application):
-    """A adapter pattern implementation Application class to provide an unsafe
+    """An adapter pattern implementation Application class to provide an unsafe
     variant
 
     An unsafe version of an application is an application that has the same

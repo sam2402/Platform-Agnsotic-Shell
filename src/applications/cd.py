@@ -13,7 +13,7 @@ class Cd(Application):
 
     def run(self, inp: List[str], out: Deque[str], args: List[str]):
         if len(args) != 1:
-            raise ArgumentError("missing path argument")
+            raise ArgumentError("cd: missing path argument")
 
         try:
             os.chdir(args[0])

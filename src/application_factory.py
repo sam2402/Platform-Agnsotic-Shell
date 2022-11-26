@@ -67,9 +67,9 @@ class ApplicationFactory:
             and specified in args
 
         Raises:
-            ApplicationError: raised if the first string in args is not a known
+            ApplicationError: the first string in args is not a known
                 application name
-            ArgumentError: raised if the flags and/or their parameters are
+            ArgumentError: the flags and/or their parameters are
                 malformed
         """
         app_name = args[0]
@@ -132,7 +132,7 @@ class ApplicationFactory:
         flag_configuration: FlagConfiguration,
         flags: ApplicationFlagDict,
     ):
-        """Assigned false to non-present boolean flags and the default value
+        """Assigns false to non-present boolean flags and the default value
         to non-present optional flags that have a default value"""
 
         cleaned_flags = flags
