@@ -8,12 +8,14 @@ from .application import Application, ApplicationError, ArgumentError
 class Cd(Application):
     """Changes the current working directory"""
 
+    name = "cd"
+
     def __init__(self, flags: ApplicationFlagDict = None):
         super().__init__(flags)
 
     def run(self, inp: List[str], out: Deque[str], args: List[str]):
         if len(args) != 1:
-            raise ArgumentError("cd: missing path argument")
+            raise ArgumentError(type(self), "missing path argument")
 
         try:
             os.chdir(args[0])

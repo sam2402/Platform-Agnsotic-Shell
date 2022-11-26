@@ -10,12 +10,13 @@ class Rm(Application):
     """Deletes files
 
     Flags:
-        -r/--recursive: removes directories and their contents recursively
-        -v/--verbose:   outputs a message for each deletion
-        -f/--force:     enables the deletion of non-empty directories and
-                        ignore non-existent paths
+        -r, --recursive: removes directories and their contents recursively
+        -v, --verbose:   outputs a message for each deletion
+        -f, --force:     enables the deletion of non-empty directories and
+                         ignore non-existent paths
     """
 
+    name = "rm"
     flag_configuration = FlagConfiguration([
         Flag("-r", bool, "--recursive"),
         Flag("-v", bool, "--verbose"),
@@ -27,7 +28,7 @@ class Rm(Application):
 
     def run(self, inp: List[str], out: Deque[str], args: List[str]) -> None:
         if not args:
-            raise ArgumentError("rm: supply at least one file path")
+            raise ArgumentError(type(self), "supply at least one file path")
 
         non_existent_paths = []
         directory_args = []

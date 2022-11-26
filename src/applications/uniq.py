@@ -11,9 +11,10 @@ class Uniq(Application):
     Prints the result to stdout.
 
     Flags:
-        -i/--ignore-case: ignores case when doing comparison
+        -i, --ignore-case: ignores case when doing comparison
     """
 
+    name = "uniq"
     flag_configuration = FlagConfiguration([
         Flag("-i", bool, "--ignore-case")
     ])

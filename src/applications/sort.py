@@ -18,6 +18,7 @@ class Sort(Application):
             non-existent paths
     """
 
+    name = "sort"
     flag_configuration = FlagConfiguration([
         Flag("-r", bool, "--reverse"),
         Flag("-R", bool, "--random")
