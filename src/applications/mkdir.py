@@ -9,7 +9,7 @@ class Mkdir(Application):
     """Create a new directory
 
     Flags:
-        -v, --verbose:   displays a message for every directory created
+        -v, --verbose:  displays a message for every directory created
         -p:             enables the creation of parent directories as necessary
     """
 

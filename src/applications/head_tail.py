@@ -49,7 +49,7 @@ class Head(FileLineOutputter):
 
     Flags:
         -n <number of line: int>:   Specifies the number of lines to output
-        -v, --verbose:               Precedes data from file with file name
+        -v, --verbose:              Precedes data from file with file name
     """
 
     name = "head"
@@ -66,8 +66,8 @@ class Tail(FileLineOutputter):
     than N lines, prints only the existing lines without raising an exception.
 
     Flags:
-        -n <number of line: int>: Specifies the number of lines to output
-        -v, --verbose: Precede data from file with file name
+        -n <number of line: int>:   Specifies the number of lines to output
+        -v, --verbose:              Precede data from file with file name
     """
 
     name = "tail"
