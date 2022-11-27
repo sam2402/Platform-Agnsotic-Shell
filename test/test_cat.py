@@ -3,8 +3,10 @@ import src.applications.cat as cat
 import os
 import shutil
 from collections import deque
+from application_test import ApplicationTest, application_test
+from parameterized import parameterized
 
-class TestCat(unittest.TestCase):
+class TestCat(ApplicationTest):
 
     def setUp(self) -> None:
         self.out = deque()
