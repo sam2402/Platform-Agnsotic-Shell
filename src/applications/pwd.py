@@ -14,6 +14,7 @@ class Pwd(Application):
         -P: prints the path with symbolic links resolved
     """
 
+    name = "pwd"
     flag_configuration = FlagConfiguration([
         Flag("-P", bool),
     ])

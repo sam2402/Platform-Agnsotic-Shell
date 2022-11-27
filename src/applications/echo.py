@@ -10,9 +10,10 @@ class Echo(Application):
     The arguments are separated by spaces and followed by a newline
 
     Flags:
-        -n: Omits trailing newline
+        -n: omits trailing newline
     """
 
+    name = "echo"
     flag_configuration = FlagConfiguration([Flag("-n", bool)])
 
     def __init__(self, flags: ApplicationFlagDict = None):

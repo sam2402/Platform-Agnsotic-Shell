@@ -16,6 +16,7 @@ class Rm(Application):
                         ignores non-existent paths
     """
 
+    name = "rm"
     flag_configuration = FlagConfiguration([
         Flag("-r", bool, "--recursive"),
         Flag("-v", bool, "--verbose"),
@@ -27,7 +28,7 @@ class Rm(Application):
 
     def run(self, inp: List[str], out: Deque[str], args: List[str]) -> None:
         if not args:
-            raise ArgumentError("rm: supply at least one file path")
+            raise ArgumentError(type(self), "supply at least one file path")
 
         non_existent_paths = []
         directory_args = []
