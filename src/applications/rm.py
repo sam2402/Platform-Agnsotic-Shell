@@ -10,9 +10,9 @@ class Rm(Application):
     """Deletes files
 
     Flags:
-        -r/--recursive: removes directories and their contents recursively
-        -v/--verbose:   outputs a message for each deletion
-        -f/--force:     enables the deletion of non-empty directories and
+        -r,--recursive: removes directories and their contents recursively
+        -v,--verbose:   outputs a message for each deletion
+        -f,--force:     enables the deletion of non-empty directories and
                         ignores non-existent paths
     """
 
