@@ -32,7 +32,7 @@ class TestSort(unittest.TestCase):
             self.assertEqual(self.out.popleft(), text_to_check[i] + "\n")
 
     def test_sort_help_message(self):
-        self.assertEqual(sort.Sort.help_message(self), "sort [-r] [file]")
+        self.assertEqual(sort.Sort.help_message(self), "sort [-r -R] [file]")
 
 
 if __name__ == '__main__':

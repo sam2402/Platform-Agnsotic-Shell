@@ -44,7 +44,7 @@ class TestCut(unittest.TestCase):
 
 
     def test_cut_help_message(self):
-        self.assertEqual(cut.Cut.help_message(self), "cut <options> [file]")
+        self.assertEqual(cut.Cut.help_message(self), "cut -b <intervals> [file]")
 
 
 if __name__ == '__main__':

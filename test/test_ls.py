@@ -42,7 +42,7 @@ class TestLs(unittest.TestCase):
         self.assertEqual(self.out.popleft(), "folder1\tfolder2\tfolder3\n")
 
     def test_ls_help_message(self):
-        self.assertEqual(ls.Ls.help_message(self), "ls [-a] [directory]")
+        self.assertEqual(ls.Ls.help_message(self), "ls [-a -r -s] [directory]")
 
 
 if __name__ == '__main__':

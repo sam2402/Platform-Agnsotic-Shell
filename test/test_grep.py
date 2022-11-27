@@ -41,7 +41,7 @@ class TestGrep(unittest.TestCase):
     '''
 
     def test_grep_help_message(self):
-        self.assertEqual(grep.Grep.help_message(self), "grep <pcre> [files...]")
+        self.assertEqual(grep.Grep.help_message(self), "grep [-v] <pcre> [files...]")
 
 
 if __name__ == '__main__':

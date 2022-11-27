@@ -48,10 +48,10 @@ class TestHeadTail(unittest.TestCase):
             self.assertEqual(self.out.popleft(), self.text_to_check[i] + "\n")
 
     def test_head_help_message(self):
-        self.assertEqual(head_tail.Head.help_message(self), "head [-n lines] [file]")
+        self.assertEqual(head_tail.Head.help_message(self), "head [-v -n lines] [file]")
 
     def test_tail_help_message(self):
-        self.assertEqual(head_tail.Tail.help_message(self), "tail [-n lines] [file]")
+        self.assertEqual(head_tail.Tail.help_message(self), "tail [-v -n lines] [file]")
 
 
 if __name__ == '__main__':

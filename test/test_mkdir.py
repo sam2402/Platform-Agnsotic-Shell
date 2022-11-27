@@ -34,7 +34,7 @@ class TestMkdir(unittest.TestCase):
             shutil.rmtree(dir)
 
     def test_mkdir_help_message(self):
-        self.assertEqual(mkdir.Mkdir.help_message(self), "mkdir [directories...]")
+        self.assertEqual(mkdir.Mkdir.help_message(self), "mkdir [-v -p] [directories...]")
 
 
 if __name__ == '__main__':

@@ -12,7 +12,7 @@ class TestPwd(unittest.TestCase):
         self.assertEqual(self.out.popleft(), os.getcwd()+"\n")
 
     def test_pwd_help_message(self):
-        self.assertEqual(pwd.Pwd.help_message(self), "pwd")
+        self.assertEqual(pwd.Pwd.help_message(self), "pwd [-P]")
 
 
 if __name__ == '__main__':

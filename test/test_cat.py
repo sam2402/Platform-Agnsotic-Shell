@@ -54,7 +54,7 @@ class TestCat(unittest.TestCase):
             self.assertEqual(self.out.popleft(), text[i])
 
     def test_cat_help_message(self):
-        self.assertEqual(cat.Cat.help_message(self), "cat [files...]")
+        self.assertEqual(cat.Cat.help_message(self), "cat [-n] [files...]")
 
 
 if __name__ == '__main__':
