@@ -32,7 +32,7 @@ class FileLineOutputter(Application, ABC):
         )
         if self.flags["-v"]:
             out.append(f"==>{args[0]}<==\n")
-        out.append("".join(lines))
+        out.extend(lines)
 
     def _get_lines(self, inp: List[str], args: List[str], max_line_count: int):
         lines = util.read_lines(args[0]) if len(args) == 1 else inp
