@@ -12,6 +12,7 @@ class Cat(Application):
         -n, --number: numbers all output lines
     """
 
+    name = "cat"
     flag_configuration = FlagConfiguration([Flag("-n", bool, "--number")])
 
     def __init__(self, flags: ApplicationFlagDict):
