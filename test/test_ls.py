@@ -51,14 +51,14 @@ class TestLs(ApplicationTest):
         app_ls = Ls({"-a": False, "-r": False, "-s": True})
         app_ls.run([], self.out, [])
         os.chdir("..")
-        self.assertEqual(self.out.popleft(), "0folder1\t0folder2\t0folder3\n")
+        self.assertEqual(self.out.popleft(), "0folder2\t0folder3\t0folder1\n")
 
     def test_ls_r_flag(self):
         os.chdir(self.folder)
         app_ls = Ls({"-a": False, "-r": True, "-s": False})
         app_ls.run([], self.out, [])
         os.chdir("..")
-        self.assertEqual(self.out.popleft(), "folder3\tfolder2\tfolder1\n")
+        self.assertEqual(self.out.popleft(), "folder1\tfolder3\tfolder2\n")
 
     def test_ls_file(self):
         app_ls = Ls({"-a": False, "-r": False, "-s": False})

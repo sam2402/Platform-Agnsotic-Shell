@@ -28,7 +28,7 @@ class TestRm(ApplicationTest):
         app_rm = Rm({"-r": False, "-v": False, "-f": False})
         file = os.path.join(self.folder, "file1.txt")
         app_rm.run([], self.out, [file])
-        self.assertEqual(os.listdir(self.folder), ['file2.txt', 'file3.txt'])
+        self.assertEqual(os.listdir(self.folder), ['file3.txt', 'file2.txt'])
 
 
 
