@@ -1,7 +1,6 @@
 import os
 import unittest
 from collections import deque
-
 from application_test import ApplicationTest
 from src.applications.application import ArgumentError
 from src.applications.cut import Cut
@@ -12,7 +11,7 @@ class TestCut(ApplicationTest):
         self.out = deque()
         self.file_name = "file1.txt"
         self.text = "This is the first line\nand this is the second " \
-                    "line\ncut method test\n "
+                    "line\ncut method test\n"
 
         with open(self.file_name, "x") as f:
             f.write(self.text)
