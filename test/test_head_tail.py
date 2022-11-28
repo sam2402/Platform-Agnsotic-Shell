@@ -1,8 +1,9 @@
 import os
 import unittest
 from collections import deque
-from src.applications.application import ArgumentError
+
 from application_test import ApplicationTest
+from src.applications.application import ArgumentError
 from src.applications.head_tail import Head, Tail
 
 

@@ -1,7 +1,7 @@
-import unittest
-from collections import deque
-from src.parser import execute_command
 import os
+import unittest
+
+from src.parser import execute_command
 
 
 class TestParser(unittest.TestCase):

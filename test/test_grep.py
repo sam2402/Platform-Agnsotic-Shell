@@ -1,7 +1,8 @@
 import os
+import shutil
 import unittest
 from collections import deque
-import shutil
+
 from application_test import ApplicationTest
 from src.applications.application import ArgumentError, ApplicationError
 from src.applications.grep import Grep

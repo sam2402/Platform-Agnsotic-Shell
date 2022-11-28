@@ -1,6 +1,7 @@
 import os
 import unittest
 from collections import deque
+
 from application_test import ApplicationTest
 from src.applications.application import ArgumentError, ApplicationError
 from src.applications.cut import Cut

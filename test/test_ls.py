@@ -2,7 +2,7 @@ import os
 import shutil
 import unittest
 from collections import deque
-from src.applications.application import ApplicationError
+
 from application_test import ApplicationTest
 from src.applications.ls import Ls
 

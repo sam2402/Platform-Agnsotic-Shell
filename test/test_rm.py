@@ -2,8 +2,9 @@ import os
 import shutil
 import unittest
 from collections import deque
+
 from application_test import ApplicationTest
-from src.applications.application import ApplicationError, ArgumentError
+from src.applications.application import ArgumentError
 from src.applications.rm import Rm
 
 
@@ -29,9 +30,6 @@ class TestRm(ApplicationTest):
         file = os.path.join(self.folder, "file1.txt")
         app_rm.run([], self.out, [file])
         self.assertEqual(os.listdir(self.folder), ['file3.txt', 'file2.txt'])
-
-
-
 
     def test_rm_help_message(self):
         self.assertEqual(Rm.help_message(self),
