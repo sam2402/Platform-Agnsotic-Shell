@@ -2,7 +2,7 @@ import os
 import unittest
 from collections import deque
 from application_test import ApplicationTest
-from src.applications.application import ArgumentError
+from src.applications.application import ArgumentError, ApplicationError
 from src.applications.cut import Cut
 
 
@@ -44,6 +44,11 @@ class TestCut(ApplicationTest):
                "cumethod test"]
         for i in range(len(self.out)):
             self.assertEqual(self.out.popleft(), ans[i] + "\n")
+
+    def test_cut_improperly_formatted(self):
+        app_cut = Cut({"-b": "-1-2-"})
+        self.assertRaises(ApplicationError, app_cut.run, [], self.out,
+                          [self.file_name])
 
     def test_cut_help_message(self):
         self.assertEqual(Cut.help_message(self), "cut -b <intervals> [file]")

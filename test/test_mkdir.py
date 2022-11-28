@@ -37,6 +37,13 @@ class TestMkdir(ApplicationTest):
         for dir in dirs:
             shutil.rmtree(dir)
 
+    def test_mkdir_verbose(self):
+        app_mkdir_v = Mkdir({"-p": False, "-v": True})
+        app_mkdir_v.run([], self.out, ["folder7"])
+        self.assertIn("folder7", os.listdir())
+        self.assertEqual(self.out.popleft(), "created directory folder7\n")
+        shutil.rmtree("folder7")
+
     def test_mkdir_help_message(self):
         self.assertEqual(Mkdir.help_message(self),
                          "mkdir [-v -p] [directories...]")

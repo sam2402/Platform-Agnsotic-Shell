@@ -1,7 +1,7 @@
 import os
 import unittest
 from collections import deque
-
+from src.applications.application import ArgumentError
 from application_test import ApplicationTest
 from src.applications.head_tail import Head, Tail
 
@@ -55,6 +55,29 @@ class TestHeadTail(ApplicationTest):
 
         for i in range(5):
             self.assertEqual(self.out.popleft(), self.text_to_check[i] + "\n")
+
+    def test_head_v_flag(self):
+        app_head = Head({"-n": 10, "-v": True})
+        app_head.run([], self.out, ["file1.txt"])
+        self.text_to_check = "==>file1.txt<==\n This is a test file to see " \
+                             "the head and".split()
+
+        for i in range(10):
+            self.assertEqual(self.out.popleft(), self.text_to_check[i] + "\n")
+
+    def test_tail_v_flag(self):
+        app_tail = Tail({"-n": 10, "-v": True})
+        app_tail.run([], self.out, ["file1.txt"])
+        self.text_to_check = "==>file1.txt<==\n a file to contain text can " \
+                             "can be checked against.".split()
+
+        for i in range(10):
+            self.assertEqual(self.out.popleft(), self.text_to_check[i] + "\n")
+
+    def test_more_than_one_file(self):
+        app_head = Head({"-n": 10, "-v": False})
+        self.assertRaises(ArgumentError, app_head.run, [], self.out,
+                          ["file1.txt", "file2.txt"])
 
     def test_head_help_message(self):
         self.assertEqual(Head.help_message(self), "head [-v -n lines] [file]")

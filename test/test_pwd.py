@@ -15,6 +15,13 @@ class TestPwd(ApplicationTest):
         self.app_pwd.run([], self.out, [])
         self.assertEqual(self.out.popleft(), os.getcwd() + "\n")
 
+    def test_pwd_P_flag(self):
+        self.out = deque()
+        app_pwd_p = Pwd({"-P": True})
+        app_pwd_p.run([], self.out, [])
+        non_symbolic_link = os.path.realpath(os.getcwd())
+        self.assertEqual(self.out.popleft(), non_symbolic_link + "\n")
+
     def test_pwd_help_message(self):
         self.assertEqual(Pwd.help_message(self), "pwd [-P]")
 

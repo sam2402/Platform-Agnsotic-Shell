@@ -37,6 +37,15 @@ class TestSort(ApplicationTest):
         for i in range(len(text_to_check)):
             self.assertEqual(self.out.popleft(), text_to_check[i] + "\n")
 
+    def test_sort_random(self):
+        app_sort = Sort({"-r": False, "-R": True})
+        app_sort.run([], self.out, ["file1.txt"])
+        text_to_check = "This a correctly. file is see sort test the to " \
+                        "working".split()
+        text_to_check =[s + "\n" for s in text_to_check]
+        for i in range(len(text_to_check)):
+            self.assertIn(self.out.popleft(), text_to_check)
+
     def test_sort_help_message(self):
         self.assertEqual(Sort.help_message(self), "sort [-r -R] [file]")
 
