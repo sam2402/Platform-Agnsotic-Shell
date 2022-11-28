@@ -28,7 +28,10 @@ class TestLs(ApplicationTest):
         app_ls = Ls({"-a": False, "-r": False, "-s": False})
         app_ls.run([], self.out, [])
         os.chdir("..")
-        self.assertEqual(self.out.popleft(), "folder1\tfolder2\tfolder3\n")
+        result = self.out.popleft()
+        folder = {"folder1", "folder2", "folder3"}
+        for item in folder:
+            self.assertIn(item, result)
 
     def test_ls_show_hidden(self):
         self.out = deque()
@@ -39,12 +42,6 @@ class TestLs(ApplicationTest):
         result = self.out.popleft()
         for item in self.folders:
             self.assertIn(item, result)
-
-    def test_ls_not_dir(self):
-        self.out = deque()
-        app_ls = Ls({"-a": False, "-r": False, "-s": False})
-        app_ls.run([], self.out, [self.folder])
-        self.assertEqual(self.out.popleft(), "folder1\tfolder2\tfolder3\n")
 
     def test_ls_help_message(self):
         self.assertEqual(Ls.help_message(self), "ls [-a -r -s] [directory]")
