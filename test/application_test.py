@@ -1,9 +1,9 @@
-from abc import ABC
 import functools
-from typing import Callable, Type
 import unittest
-from flagging import ApplicationFlagDict
+from abc import ABC
+from typing import Callable, Type
 
+from flagging import ApplicationFlagDict
 from src.applications.application import Application
 
 

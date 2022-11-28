@@ -1,11 +1,13 @@
-
-import unittest
-import src.applications.ls as ls
 import os
 import shutil
+import unittest
 from collections import deque
 
-class TestLs(unittest.TestCase):
+from application_test import ApplicationTest
+from src.applications.ls import Ls
+
+
+class TestLs(ApplicationTest):
 
     def setUp(self) -> None:
         self.out = deque()
@@ -23,14 +25,16 @@ class TestLs(unittest.TestCase):
     def test_ls_zero_arg(self):
         self.out = deque()
         os.chdir(self.folder)
-        ls.Ls.run(self, [], self.out, [])
+        app_ls = Ls({"-a": False, "-r": False, "-s": False})
+        app_ls.run([], self.out, [])
         os.chdir("..")
         self.assertEqual(self.out.popleft(), "folder1\tfolder2\tfolder3\n")
 
     def test_ls_show_hidden(self):
         self.out = deque()
         os.chdir(self.folder)
-        ls.Ls.run(self, [], self.out, ["-a"])
+        app_ls = Ls({"-a": True, "-r": False, "-s": False})
+        app_ls.run([], self.out, [])
         os.chdir("..")
         result = self.out.popleft()
         for item in self.folders:
@@ -38,11 +42,12 @@ class TestLs(unittest.TestCase):
 
     def test_ls_not_dir(self):
         self.out = deque()
-        ls.Ls.run(self, [], self.out, [self.folder])
+        app_ls = Ls({"-a": False, "-r": False, "-s": False})
+        app_ls.run([], self.out, [self.folder])
         self.assertEqual(self.out.popleft(), "folder1\tfolder2\tfolder3\n")
 
     def test_ls_help_message(self):
-        self.assertEqual(ls.Ls.help_message(self), "ls [-a -r -s] [directory]")
+        self.assertEqual(Ls.help_message(self), "ls [-a -r -s] [directory]")
 
 
 if __name__ == '__main__':

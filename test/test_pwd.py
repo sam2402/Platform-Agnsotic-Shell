@@ -1,18 +1,22 @@
-import unittest
-import src.applications.pwd as pwd
 import os
+import unittest
 from collections import deque
 
+from application_test import ApplicationTest
+from src.applications.pwd import Pwd
 
-class TestPwd(unittest.TestCase):
+
+class TestPwd(ApplicationTest):
+    def setUp(self) -> None:
+        self.app_pwd = Pwd({"-P": False})
 
     def test_pwd_run(self):
         self.out = deque()
-        pwd.Pwd.run(self, [], self.out, [])
+        self.app_pwd.run([], self.out, [])
         self.assertEqual(self.out.popleft(), os.getcwd()+"\n")
 
     def test_pwd_help_message(self):
-        self.assertEqual(pwd.Pwd.help_message(self), "pwd [-P]")
+        self.assertEqual(Pwd.help_message(self), "pwd [-P]")
 
 
 if __name__ == '__main__':

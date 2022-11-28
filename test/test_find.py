@@ -1,9 +1,11 @@
-import unittest
-import src.applications.find as find
 import os
 import shutil
+import unittest
 from collections import deque
+
+import src.applications.find as find
 from src.applications.application import ArgumentError
+
 
 class TestFind(unittest.TestCase):
     def setUp(self) -> None:

@@ -1,12 +1,14 @@
-import unittest
-import src.applications.cd as cd
 import os
-from collections import deque
-from src.applications.application import ArgumentError
 import shutil
+import unittest
+from collections import deque
+
+from application_test import ApplicationTest
+from src.applications.application import ArgumentError
+from src.applications.cd import Cd
 
 
-class TestCd(unittest.TestCase):
+class TestCd(ApplicationTest):
     def setUp(self) -> None:
         self.out = deque()
         self.folder = "TestFolder"
@@ -18,16 +20,16 @@ class TestCd(unittest.TestCase):
         shutil.rmtree(self.folder)
 
     def test_cd_zero_arg(self):
-        self.assertRaises(ArgumentError, cd.Cd.run, self, [], self.out, [])
+        self.assertRaises(ArgumentError, Cd.run, self, [], self.out, [])
 
     def test_cd_one_valid_arg(self):
         self.out = deque()
-        cd.Cd.run(self,[],self.out,[self.folder])
+        Cd.run(self,[],self.out,[self.folder])
         self.assertEqual(os.getcwd(),self.dir_name)
         os.chdir("..")
 
     def test_cd_help_message(self):
-        self.assertEqual(cd.Cd.help_message(self), "cd <directory>")
+        self.assertEqual(Cd.help_message(self), "cd <directory>")
 
 
 if __name__ == '__main__':

@@ -1,8 +1,10 @@
 import unittest
+from collections import deque
+
+from parameterized import parameterized
+
 from application_test import ApplicationTest, application_test
 from src.applications.echo import Echo
-from collections import deque
-from parameterized import parameterized
 
 
 class TestEcho(ApplicationTest):

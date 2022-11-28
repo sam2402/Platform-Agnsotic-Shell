@@ -1,9 +1,12 @@
-import unittest
-import src.applications.sort as sort
 import os
+import unittest
 from collections import deque
 
-class TestSort(unittest.TestCase):
+from application_test import ApplicationTest
+from src.applications.sort import Sort
+
+
+class TestSort(ApplicationTest):
 
     def setUp(self) -> None:
         self.out = deque()
@@ -19,20 +22,21 @@ class TestSort(unittest.TestCase):
         os.remove(self.file_name)
 
     def test_sort_normal(self):
-        sort.Sort.run(self,[],self.out,["file1.txt"])
+        app_sort = Sort({"-r": False, "-R": False})
+        app_sort.run([], self.out, ["file1.txt"])
         text_to_check = "This a correctly. file is see sort test the to working".split()
         for i in range(len(text_to_check)):
             self.assertEqual(self.out.popleft(), text_to_check[i] + "\n")
 
-
     def test_sort_reverse(self):
-        sort.Sort.run(self,[],self.out,["-r","file1.txt"])
+        app_sort_r = Sort({"-r": True, "-R": False})
+        app_sort_r.run([], self.out, ["file1.txt"])
         text_to_check = "working to the test sort see is file correctly. a This".split()
         for i in range(len(text_to_check)):
             self.assertEqual(self.out.popleft(), text_to_check[i] + "\n")
 
     def test_sort_help_message(self):
-        self.assertEqual(sort.Sort.help_message(self), "sort [-r -R] [file]")
+        self.assertEqual(Sort.help_message(self), "sort [-r -R] [file]")
 
 
 if __name__ == '__main__':

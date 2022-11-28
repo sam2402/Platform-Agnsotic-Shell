@@ -1,6 +1,8 @@
 import unittest
 from collections import deque
+
 from src.shell import evaluate
+
 
 class TestParser(unittest.TestCase):
 
