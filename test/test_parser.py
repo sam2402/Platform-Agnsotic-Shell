@@ -24,7 +24,7 @@ class TestParser(unittest.TestCase):
         self.out_list = execute_command("echo \'foo bar\'")
         self.assertEqual(self.out_list, ["foo bar\n"])
 
-    #def test_back_quote(self):
+    # def test_back_quote(self):
 
     def test_pipe_commands(self):
         self.out_list = execute_command("cat file1.txt | uniq -i")
