@@ -1,14 +1,12 @@
 import unittest
 from collections import deque
-
-from shell import evaluate
+from src.shell import evaluate
 
 
 class TestShell(unittest.TestCase):
-    def test_shell(self):
+    def test_shell_empty(self):
         out = deque()
-        evaluate("echo foo", out)
-        self.assertEqual(out.popleft(), "foo\n")
+        evaluate("",out)
         self.assertEqual(len(out), 0)
 
 
