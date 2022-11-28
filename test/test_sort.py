@@ -2,11 +2,13 @@ import os
 import unittest
 from collections import deque
 
-from application_test import ApplicationTest
+from application_test import ApplicationTest, application_test
 from src.applications.sort import Sort
 
 
 class TestSort(ApplicationTest):
+
+    application = Sort
 
     def setUp(self) -> None:
         self.out = deque()
@@ -21,25 +23,25 @@ class TestSort(ApplicationTest):
     def tearDown(self) -> None:
         os.remove(self.file_name)
 
-    def test_sort_normal(self):
-        app_sort = Sort({"-r": False, "-R": False})
-        app_sort.run([], self.out, ["file1.txt"])
+    @application_test({"-r": False, "-R": False})
+    def test_sort_normal(self, sort):
+        sort.run([], self.out, ["file1.txt"])
         text_to_check = "This a correctly. file is see sort test the to " \
                         "working".split()
         for i in range(len(text_to_check)):
             self.assertEqual(self.out.popleft(), text_to_check[i] + "\n")
 
-    def test_sort_reverse(self):
-        app_sort_r = Sort({"-r": True, "-R": False})
-        app_sort_r.run([], self.out, ["file1.txt"])
+    @application_test({"-r": True, "-R": False})
+    def test_sort_reverse(self, sort):
+        sort.run([], self.out, ["file1.txt"])
         text_to_check = "working to the test sort see is file correctly. a " \
                         "This".split()
         for i in range(len(text_to_check)):
             self.assertEqual(self.out.popleft(), text_to_check[i] + "\n")
 
-    def test_sort_random(self):
-        app_sort = Sort({"-r": False, "-R": True})
-        app_sort.run([], self.out, ["file1.txt"])
+    @application_test({"-r": False, "-R": True})
+    def test_sort_random(self, sort):
+        sort.run([], self.out, ["file1.txt"])
         text_to_check = "This a correctly. file is see sort test the to " \
                         "working".split()
         text_to_check = [s + "\n" for s in text_to_check]

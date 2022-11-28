@@ -2,11 +2,14 @@ import os
 import unittest
 from collections import deque
 
-from application_test import ApplicationTest
+from application_test import ApplicationTest, application_test
 from src.applications.uniq import Uniq
 
 
 class TestUniq(ApplicationTest):
+
+    application = Uniq
+
     def setUp(self) -> None:
         self.out = deque()
         self.app_uniq = Uniq({"-i": False})
@@ -19,15 +22,17 @@ class TestUniq(ApplicationTest):
     def tearDown(self) -> None:
         os.remove(self.file_name)
 
-    def test_uniq_no_options(self):
-        self.app_uniq.run([], self.out, [self.file_name])
+    @application_test({"-i": False})
+    def test_uniq_no_options(self, uniq):
+        uniq.run([], self.out, [self.file_name])
         ans = ["Uniq method test\n", "UniQ MethoD TesT\n"]
         for i in range(len(self.out)):
             self.assertEqual(self.out.popleft(), ans[i])
 
-    def test_uniq_case_insensitive(self):
-        app_uniq_i = Uniq({"-i": True})
-        app_uniq_i.run([], self.out, [self.file_name])
+    @application_test({"-i": True})
+    def test_uniq_case_insensitive(self, uniq):
+        uniq = Uniq({"-i": True})
+        uniq.run([], self.out, [self.file_name])
         self.assertEqual(self.out.popleft(), "Uniq method test\n")
 
     def test_uniq_help_message(self):
