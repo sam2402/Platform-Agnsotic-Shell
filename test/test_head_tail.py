@@ -10,9 +10,11 @@ class TestHeadTail(ApplicationTest):
     def setUp(self) -> None:
         self.out = deque()
         self.file_name = "file1.txt"
-        self.text = "This is a test file to see the head and tail function working correctly. Since the functions " \
-                    "work on the contents of a file, we generate a file to contain text can can be checked " \
-                    "against. "
+        self.text = "This is a test file to see the head and tail function " \
+                    "working correctly. Since the functions work on the " \
+                    "contents of a file, we generate a file to contain text " \
+                    "can can be checked against. "
+
         self.text = self.text.replace(" ", "\n")
 
         with open(self.file_name, "x") as f:

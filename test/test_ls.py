@@ -14,7 +14,8 @@ class TestLs(ApplicationTest):
         self.folder = "FolderHolder"
         self.dir_name = os.path.join(os.getcwd(), self.folder)
         os.mkdir(self.folder)
-        self.folders = {"folder1", "folder2", "folder3", ".folder4", ".folder5"}
+        self.folders = {"folder1", "folder2", "folder3", ".folder4",
+                        ".folder5"}
         for folder in self.folders:
             os.mkdir(os.path.join(self.folder, folder))
 
