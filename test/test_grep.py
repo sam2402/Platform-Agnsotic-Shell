@@ -12,7 +12,8 @@ class TestGrep(ApplicationTest):
         self.app_grep = Grep({"-v": False})
         self.out = deque()
         self.file_name = "file1.txt"
-        self.text = "This is the first line\nand this is the second line\ngrep method\n"
+        self.text = "This is the first line\nand this is the second " \
+                    "line\ngrep method\n "
 
         with open(self.file_name, "x") as f:
             f.write(self.text)
@@ -24,7 +25,8 @@ class TestGrep(ApplicationTest):
         self.assertRaises(ArgumentError, Grep.run, self, [], self.out, [])
 
     def test_grep_invalid_args(self):
-        self.assertRaises(ApplicationError, Grep.run, self, [], self.out, ["66s\\55a", self.file_name])
+        self.assertRaises(ApplicationError, Grep.run, self, [], self.out,
+                          ["66s\\55a", self.file_name])
 
     def test_grep_one_valid_arg(self):
         self.app_grep.run([], self.out, ["second", self.file_name])
@@ -43,7 +45,8 @@ class TestGrep(ApplicationTest):
     '''
 
     def test_grep_help_message(self):
-        self.assertEqual(Grep.help_message(self), "grep [-v] <pcre> [files...]")
+        self.assertEqual(Grep.help_message(self),
+                         "grep [-v] <pcre> [files...]")
 
 
 if __name__ == '__main__':

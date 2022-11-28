@@ -25,7 +25,8 @@ class TestMkdir(ApplicationTest):
         shutil.rmtree("folder7")
 
     def test_mkdir_dir_already_exists(self):
-        self.assertRaises(ApplicationError, self.app_mkdir.run, [], self.out, [self.already_exists])
+        self.assertRaises(ApplicationError, self.app_mkdir.run, [], self.out,
+                          [self.already_exists])
 
     def test_mkdir_multiple_directories(self):
         self.app_mkdir.run([], self.out, ["folder4", "folder5", "folder6"])
@@ -37,7 +38,8 @@ class TestMkdir(ApplicationTest):
             shutil.rmtree(dir)
 
     def test_mkdir_help_message(self):
-        self.assertEqual(Mkdir.help_message(self), "mkdir [-v -p] [directories...]")
+        self.assertEqual(Mkdir.help_message(self),
+                         "mkdir [-v -p] [directories...]")
 
 
 if __name__ == '__main__':

@@ -8,7 +8,6 @@ from src.applications.echo import Echo
 
 
 class TestEcho(ApplicationTest):
-
     application = Echo
 
     @parameterized.expand([

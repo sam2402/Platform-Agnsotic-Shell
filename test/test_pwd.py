@@ -13,7 +13,7 @@ class TestPwd(ApplicationTest):
     def test_pwd_run(self):
         self.out = deque()
         self.app_pwd.run([], self.out, [])
-        self.assertEqual(self.out.popleft(), os.getcwd()+"\n")
+        self.assertEqual(self.out.popleft(), os.getcwd() + "\n")
 
     def test_pwd_help_message(self):
         self.assertEqual(Pwd.help_message(self), "pwd [-P]")
