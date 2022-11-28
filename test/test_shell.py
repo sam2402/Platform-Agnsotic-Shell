@@ -1,6 +1,5 @@
 import unittest
 from collections import deque
-
 from shell import evaluate
 
 

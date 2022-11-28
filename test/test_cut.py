@@ -19,26 +19,26 @@ class TestCut(ApplicationTest):
         os.remove(self.file_name)
 
     def test_cut_no_flag(self):
-        self.assertRaises(ArgumentError, Cut.run, self, [], self.out, ["1,","2"])
+        self.assertRaises(ArgumentError, Cut.run, self, [], self.out, ["1,", "2"])
 
     def test_cut_valid(self):
         app_cut = Cut({"-b": "1"})
         app_cut.run([], self.out, [self.file_name])
-        ans = ["T","a","c"]
+        ans = ["T", "a", "c"]
         for i in range(len(self.out)):
             self.assertEqual(self.out.popleft(), ans[i] + "\n")
 
     def test_cut_valid_range(self):
         app_cut = Cut({"-b": "1-3"})
         app_cut.run([], self.out, [self.file_name])
-        ans = ["Thi","and","cut"]
+        ans = ["Thi", "and", "cut"]
         for i in range(len(self.out)):
             self.assertEqual(self.out.popleft(), ans[i] + "\n")
 
     def test_cut_starting_and_ending_with_flag(self):
         app_cut = Cut({"-b": "-2,5-"})
         app_cut.run([], self.out, [self.file_name])
-        ans = ["Th is the first line","anthis is the second line","cumethod test"]
+        ans = ["Th is the first line", "anthis is the second line", "cumethod test"]
         for i in range(len(self.out)):
             self.assertEqual(self.out.popleft(), ans[i] + "\n")
 

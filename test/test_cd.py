@@ -15,7 +15,6 @@ class TestCd(ApplicationTest):
         self.dir_name = os.path.join(os.getcwd(), self.folder)
         os.mkdir(self.folder)
 
-
     def tearDown(self) -> None:
         shutil.rmtree(self.folder)
 
@@ -24,8 +23,8 @@ class TestCd(ApplicationTest):
 
     def test_cd_one_valid_arg(self):
         self.out = deque()
-        Cd.run(self,[],self.out,[self.folder])
-        self.assertEqual(os.getcwd(),self.dir_name)
+        Cd.run(self, [], self.out, [self.folder])
+        self.assertEqual(os.getcwd(), self.dir_name)
         os.chdir("..")
 
     def test_cd_help_message(self):

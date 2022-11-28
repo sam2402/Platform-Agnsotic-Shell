@@ -16,8 +16,7 @@ class TestLs(ApplicationTest):
         os.mkdir(self.folder)
         self.folders = {"folder1", "folder2", "folder3", ".folder4", ".folder5"}
         for folder in self.folders:
-            os.mkdir(os.path.join(self.folder,folder))
-
+            os.mkdir(os.path.join(self.folder, folder))
 
     def tearDown(self) -> None:
         shutil.rmtree(self.folder)

@@ -18,7 +18,6 @@ class TestFind(unittest.TestCase):
             with open(os.path.join(self.folder, file), 'w') as f:
                 pass
 
-
     def tearDown(self) -> None:
         shutil.rmtree(self.folder)
 
@@ -26,11 +25,11 @@ class TestFind(unittest.TestCase):
         self.assertRaises(ArgumentError, find.Find.run, self, [], self.out, [])
 
     def test_find_no_name_flag(self):
-        self.assertRaises(ArgumentError,find.Find.run, self, [], self.out, ["-notname","file"])
+        self.assertRaises(ArgumentError, find.Find.run, self, [], self.out, ["-notname", "file"])
 
     def test_find_one_file(self):
-        find.Find.run(self,[],self.out,["-name",self.files[0]])
-        self.assertEqual(self.out.popleft(),os.path.join(".",self.folder,self.files[0] + "\n"))
+        find.Find.run(self, [], self.out, ["-name", self.files[0]])
+        self.assertEqual(self.out.popleft(), os.path.join(".", self.folder, self.files[0] + "\n"))
 
     def test_find_help_message(self):
         self.assertEqual(find.Find.help_message(self), "find [path] -name <pattern>")

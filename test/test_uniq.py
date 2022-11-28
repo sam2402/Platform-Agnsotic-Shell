@@ -20,14 +20,14 @@ class TestUniq(ApplicationTest):
         os.remove(self.file_name)
 
     def test_uniq_no_options(self):
-        self.app_uniq.run([],self.out,[self.file_name])
-        ans = ["Uniq method test\n","UniQ MethoD TesT\n"]
+        self.app_uniq.run([], self.out, [self.file_name])
+        ans = ["Uniq method test\n", "UniQ MethoD TesT\n"]
         for i in range(len(self.out)):
             self.assertEqual(self.out.popleft(), ans[i])
 
     def test_uniq_case_insensitive(self):
         app_uniq_i = Uniq({"-i": True})
-        app_uniq_i.run([],self.out,[self.file_name])
+        app_uniq_i.run([], self.out, [self.file_name])
         self.assertEqual(self.out.popleft(), "Uniq method test\n")
 
     def test_uniq_help_message(self):

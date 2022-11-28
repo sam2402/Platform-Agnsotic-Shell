@@ -29,12 +29,11 @@ class TestCat(ApplicationTest):
         shutil.rmtree(self.folder)
 
     def test_cat_valid_file(self):
-        arg = os.path.join(self.folder,"file1.txt")
-        self.app_cat.run([],self.out,[arg])
+        arg = os.path.join(self.folder, "file1.txt")
+        self.app_cat.run([], self.out, [arg])
         ans = self.files["file1.txt"].split()
         for i in range(len(self.out)):
             self.assertEqual(self.out.popleft(), ans[i] + "\n")
-
 
     def test_cat_stdin(self):
         text = "This is a default message to test cat function".split()

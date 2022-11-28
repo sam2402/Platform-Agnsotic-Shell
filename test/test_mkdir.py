@@ -20,7 +20,7 @@ class TestMkdir(ApplicationTest):
         shutil.rmtree(self.already_exists)
 
     def test_mkdir_one_directory(self):
-        self.app_mkdir.run([],self.out,["folder7"])
+        self.app_mkdir.run([], self.out, ["folder7"])
         self.assertIn("folder7", os.listdir())
         shutil.rmtree("folder7")
 
@@ -28,7 +28,7 @@ class TestMkdir(ApplicationTest):
         self.assertRaises(ApplicationError, self.app_mkdir.run, [], self.out, [self.already_exists])
 
     def test_mkdir_multiple_directories(self):
-        self.app_mkdir.run( [], self.out, ["folder4", "folder5", "folder6"])
+        self.app_mkdir.run([], self.out, ["folder4", "folder5", "folder6"])
         dirs = {"folder4", "folder5", "folder6"}
         listdir = os.listdir()
         for directory in dirs:

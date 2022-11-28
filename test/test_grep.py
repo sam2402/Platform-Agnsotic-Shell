@@ -24,15 +24,15 @@ class TestGrep(ApplicationTest):
         self.assertRaises(ArgumentError, Grep.run, self, [], self.out, [])
 
     def test_grep_invalid_args(self):
-        self.assertRaises(ApplicationError, Grep.run, self, [], self.out, ["66s\\55a",self.file_name])
+        self.assertRaises(ApplicationError, Grep.run, self, [], self.out, ["66s\\55a", self.file_name])
 
     def test_grep_one_valid_arg(self):
         self.app_grep.run([], self.out, ["second", self.file_name])
-        self.assertEqual(self.out.popleft(),"and this is the second line\n")
+        self.assertEqual(self.out.popleft(), "and this is the second line\n")
 
     def test_grep_multiple_valid_arg(self):
         self.app_grep.run([], self.out, ["line", self.file_name])
-        ans = ["This is the first line\n","and this is the second line\n"]
+        ans = ["This is the first line\n", "and this is the second line\n"]
         for i in range(len(self.out)):
             self.assertEqual(self.out.popleft(), ans[i])
 
