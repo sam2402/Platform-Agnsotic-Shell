@@ -42,7 +42,7 @@ class TestSort(ApplicationTest):
         app_sort.run([], self.out, ["file1.txt"])
         text_to_check = "This a correctly. file is see sort test the to " \
                         "working".split()
-        text_to_check =[s + "\n" for s in text_to_check]
+        text_to_check = [s + "\n" for s in text_to_check]
         for i in range(len(text_to_check)):
             self.assertIn(self.out.popleft(), text_to_check)
 
