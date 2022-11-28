@@ -1,9 +1,0 @@
-{
-    "python.formatting.provider": "black",
-    "[python]": {
-        "editor.formatOnPaste": false,
-        "editor.formatOnSaveMode": "file",
-        "editor.formatOnSave": true
-    },
-    "python.envFile": "${workspaceRoot}/.env"
-}

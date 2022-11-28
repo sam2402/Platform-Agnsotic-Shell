@@ -1,35 +1,66 @@
-import os
+import tempfile
 import unittest
 
-from src.parser import execute_command
+from parser import execute_command, ParsingError
 
 
 class TestParser(unittest.TestCase):
-    def setUp(self) -> None:
-        self.out_list = []
-        self.file_name = "file1.txt"
-        self.text = "Uniq method test\nUniq method test\nUniQ MethoD TesT\n"
 
-        with open(self.file_name, "x") as f:
-            f.write(self.text)
+    def test_raises_for_empty_input(self):
+        with self.assertRaises(ParsingError):
+            execute_command("")
 
-    def tearDown(self) -> None:
-        os.remove(self.file_name)
+    def test_double_pipe(self):
+        out = execute_command("echo abc | cat | cat")
+        expected = ["abc\n"]
+        self.assertEqual(out, expected)
 
-    def test_double_quote(self):
-        self.out_list = execute_command("echo \"foo bar\"")
-        self.assertEqual(self.out_list, ["foo bar\n"])
+    def test_double_input_redirection_raises(self):
+        with self.assertRaises(ParsingError):
+            execute_command("<in1.txt <in2.txt echo hello world")
 
-    def test_single_quote(self):
-        self.out_list = execute_command("echo \'foo bar\'")
-        self.assertEqual(self.out_list, ["foo bar\n"])
+    def test_double_output_redirection_raises(self):
+        with self.assertRaises(ParsingError):
+            execute_command("echo hello world >out1.txt >out2.txt")
 
-    # def test_back_quote(self):
+    def test_single_quoted(self):
+        out = execute_command("echo \'foo bar\'")
+        expected = ["foo bar\n"]
+        self.assertEqual(out, expected)
 
-    def test_pipe_commands(self):
-        self.out_list = execute_command("cat file1.txt | uniq -i")
-        self.assertEqual(self.out_list, ["Uniq method test\n"])
+    def test_single_quoted_invalid(self):
+        with self.assertRaises(ParsingError):
+            execute_command("echo '\n'")
 
+    def test_double_quoted(self):
+        out = execute_command("echo \"foo bar\"")
+        expected = ["foo bar\n"]
+        self.assertEqual(out, expected)
 
-if __name__ == '__main__':
-    unittest.main()
+    def test_double_quoted_invalid(self):
+        with self.assertRaises(ParsingError):
+            execute_command("echo \"\n'\"")
+
+    def test_back_quoted(self):
+        out = execute_command("echo `echo foo bar`")
+        expected = ["foo bar\n"]
+        self.assertEqual(out, expected)
+
+    def test_back_quoted_invalid(self):
+        with self.assertRaises(ParsingError):
+            execute_command("```")
+
+    def test_back_quoted_within_double_quotes(self):
+        out = execute_command("echo \"foo `echo bar`\"")
+        expected = ["foo bar\n"]
+        self.assertEqual(out, expected)
+
+    def test_arg_splitting(self):
+        with tempfile.NamedTemporaryFile(mode="a") as tmp:
+            tmp.write("Hello World\n")
+            tmp.write("Goodbye World\n")
+            tmp.flush()
+
+            out = execute_command(f"echo `cat {tmp.name}`")
+            expected = ["Hello World Goodbye World\n"]
+            self.assertEqual(out, expected)
