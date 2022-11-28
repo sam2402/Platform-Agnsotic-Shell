@@ -7,12 +7,18 @@ from src.applications.application import ApplicationError
 
 class TestShell(unittest.TestCase):
     # def test_shell_empty(self):
-    #    out = deque()
-    #    self.assertRaises(ParsingError, evaluate, "", out)
+    #     out = deque()
+    #     self.assertRaises(ParsingError, evaluate, " ", out)
 
     def test_shell_invalid_command(self):
         out = deque()
-        self.assertRaises(ApplicationError, evaluate, "???", out)
+        evaluate("echo foo bar", out)
+        self.assertEqual(out.popleft(), "foo bar\n")
+
+    def test_shell_invalid_command(self):
+        out = deque()
+        evaluate("_echo foo bar", out)
+        self.assertEqual(out.popleft(), "foo bar\n")
 
 
 if __name__ == "__main__":
