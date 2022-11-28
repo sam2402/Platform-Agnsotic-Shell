@@ -2,12 +2,14 @@ import os
 import unittest
 from collections import deque
 
-from application_test import ApplicationTest
+from application_test import ApplicationTest, application_test
 from src.applications.application import ArgumentError, ApplicationError
 from src.applications.cut import Cut
 
 
 class TestCut(ApplicationTest):
+    application = Cut
+
     def setUp(self) -> None:
         self.out = deque()
         self.file_name = "file1.txt"
@@ -24,31 +26,31 @@ class TestCut(ApplicationTest):
         self.assertRaises(ArgumentError, Cut.run, self, [], self.out,
                           ["1,", "2"])
 
-    def test_cut_valid(self):
-        app_cut = Cut({"-b": "1"})
-        app_cut.run([], self.out, [self.file_name])
+    @application_test(flags={"-b": "1"})
+    def test_cut_valid(self, cut):
+        cut.run([], self.out, [self.file_name])
         ans = ["T", "a", "c"]
         for i in range(len(self.out)):
             self.assertEqual(self.out.popleft(), ans[i] + "\n")
 
-    def test_cut_valid_range(self):
-        app_cut = Cut({"-b": "1-3"})
-        app_cut.run([], self.out, [self.file_name])
+    @application_test(flags={"-b": "1-3"})
+    def test_cut_valid_range(self, cut):
+        cut.run([], self.out, [self.file_name])
         ans = ["Thi", "and", "cut"]
         for i in range(len(self.out)):
             self.assertEqual(self.out.popleft(), ans[i] + "\n")
 
-    def test_cut_starting_and_ending_with_flag(self):
-        app_cut = Cut({"-b": "-2,5-"})
-        app_cut.run([], self.out, [self.file_name])
+    @application_test(flags={"-b": "-2,5-"})
+    def test_cut_starting_and_ending_with_flag(self, cut):
+        cut.run([], self.out, [self.file_name])
         ans = ["Th is the first line", "anthis is the second line",
                "cumethod test"]
         for i in range(len(self.out)):
             self.assertEqual(self.out.popleft(), ans[i] + "\n")
 
-    def test_cut_improperly_formatted(self):
-        app_cut = Cut({"-b": "-1-2-"})
-        self.assertRaises(ApplicationError, app_cut.run, [], self.out,
+    @application_test(flags={"-b": "-1-2-"})
+    def test_cut_improperly_formatted(self, cut):
+        self.assertRaises(ApplicationError, cut.run, [], self.out,
                           [self.file_name])
 
     def test_cut_help_message(self):

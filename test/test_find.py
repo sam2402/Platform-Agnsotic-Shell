@@ -3,11 +3,14 @@ import shutil
 import unittest
 from collections import deque
 
-import src.applications.find as find
+from application_test import ApplicationTest, application_test
 from src.applications.application import ArgumentError
+from src.applications.find import Find
 
 
-class TestFind(unittest.TestCase):
+class TestFind(ApplicationTest):
+    application = Find
+
     def setUp(self) -> None:
         self.out = deque()
         self.folder = "FindFolder"
@@ -21,20 +24,24 @@ class TestFind(unittest.TestCase):
     def tearDown(self) -> None:
         shutil.rmtree(self.folder)
 
+    @application_test()
     def test_find_no_args(self):
-        self.assertRaises(ArgumentError, find.Find.run, self, [], self.out, [])
+        self.assertRaises(ArgumentError, Find.run, self, [], self.out, [])
 
+    @application_test()
     def test_find_no_name_flag(self):
-        self.assertRaises(ArgumentError, find.Find.run, self, [], self.out,
+        self.assertRaises(ArgumentError, Find.run, self, [], self.out,
                           ["-notname", "file"])
 
+    @application_test()
     def test_find_one_file(self):
-        find.Find.run(self, [], self.out, ["-name", self.files[0]])
+        Find.run(self, [], self.out, ["-name", self.files[0]])
         file_address = os.path.join(".", self.folder, self.files[0] + "\n")
         self.assertEqual(self.out.popleft(), file_address)
 
+    @application_test()
     def test_find_help_message(self):
-        self.assertEqual(find.Find.help_message(self), "find [path] -name "
+        self.assertEqual(Find.help_message(self), "find [path] -name "
                                                        "<pattern>")
 
 
