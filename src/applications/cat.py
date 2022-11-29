@@ -1,4 +1,4 @@
-from typing import Deque, List
+from collections import deque
 
 import util
 from flagging import ApplicationFlagDict, Flag, FlagConfiguration
@@ -18,7 +18,7 @@ class Cat(Application):
     def __init__(self, flags: ApplicationFlagDict):
         super().__init__(flags)
 
-    def run(self, inp: List[str], out: Deque[str], args: List[str]) -> None:
+    def run(self, inp: list[str], out: deque[str], args: list[str]) -> None:
         files = [util.read_lines(file_name) for file_name in args]
         lines = [line for file in files for line in file] if files else inp
 

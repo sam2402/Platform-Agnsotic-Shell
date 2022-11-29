@@ -1,4 +1,4 @@
-from typing import Deque, List
+from collections import deque
 
 import util
 from flagging import ApplicationFlagDict, Flag, FlagConfiguration
@@ -20,7 +20,7 @@ class Cut(Application):
     def __init__(self, flags: ApplicationFlagDict = None):
         super().__init__(flags)
 
-    def run(self, inp: List[str], out: Deque[str], args: List[str]):
+    def run(self, inp: list[str], out: deque[str], args: list[str]):
         if len(args) not in [0, 1]:
             raise ArgumentError(type(self), "supply at most one file path")
 

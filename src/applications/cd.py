@@ -1,5 +1,5 @@
 import os
-from typing import Deque, List
+from collections import deque
 
 from flagging import ApplicationFlagDict
 from .application import Application, ApplicationError, ArgumentError
@@ -13,7 +13,7 @@ class Cd(Application):
     def __init__(self, flags: ApplicationFlagDict = None):
         super().__init__(flags)
 
-    def run(self, inp: List[str], out: Deque[str], args: List[str]):
+    def run(self, inp: list[str], out: deque[str], args: list[str]):
         if len(args) != 1:
             raise ArgumentError(type(self), "missing path argument")
 

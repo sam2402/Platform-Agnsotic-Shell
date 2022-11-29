@@ -3,7 +3,6 @@ import random
 import unittest
 from collections import deque
 from string import ascii_letters
-from typing import List
 
 from hypothesis import given, assume
 from hypothesis.strategies import integers, lists, text
@@ -45,7 +44,7 @@ class TestProperties(unittest.TestCase):
         self.app_uniq_i = Uniq({"-i": True})
 
     @given(lists(text()))
-    def test_cat_n_starts_with_line_no(self, inp: List[str]):
+    def test_cat_n_starts_with_line_no(self, inp: list[str]):
         out = deque()
         self.app_cat_n.run(inp, out, [])
 
@@ -60,7 +59,7 @@ class TestProperties(unittest.TestCase):
             self.app_cd.run([], deque(), [directory])
 
     @given(lists(text(alphabet=ascii_letters)))
-    def test_cut_b_1_len_returns_identical_string(self, inp: List[str]):
+    def test_cut_b_1_len_returns_identical_string(self, inp: list[str]):
         for line in inp:
             out = deque()
             cut = Cut({"-b": f"1-{len(line)}"})
@@ -68,7 +67,7 @@ class TestProperties(unittest.TestCase):
             self.assertEqual(line, out.popleft().rstrip())
 
     @given(lists(text()))
-    def test_echo_ends_with_newline(self, args: List[str]):
+    def test_echo_ends_with_newline(self, args: list[str]):
         assume(args)
 
         out = deque()
@@ -76,7 +75,7 @@ class TestProperties(unittest.TestCase):
         self.assertTrue(out.popleft().endswith("\n"))
 
     @given(lists(text().filter(lambda s: "\n" not in s)))
-    def test_echo_n_does_not_end_with_newline(self, args: List[str]):
+    def test_echo_n_does_not_end_with_newline(self, args: list[str]):
         assume(args)
 
         out = deque()
@@ -92,7 +91,7 @@ class TestProperties(unittest.TestCase):
         self.assertFalse(out)
 
     @given(lists(text()))
-    def test_grep_finds_everything(self, lines: List[str]):
+    def test_grep_finds_everything(self, lines: list[str]):
         out = deque()
         self.app_grep.run(lines, out, [".*"])
 
@@ -102,13 +101,13 @@ class TestProperties(unittest.TestCase):
             self.assertEqual(out.popleft(), lines.pop(0))
 
     @given(lists(text()))
-    def test_grep_i_finds_nothing(self, lines: List[str]):
+    def test_grep_i_finds_nothing(self, lines: list[str]):
         out = deque()
         self.app_grep_i.run(lines, out, [".*"])
         self.assertFalse(out)
 
     @given(integers(), lists(text()))
-    def test_head_returns_correct_no_lines(self, n: int, lines: List[str]):
+    def test_head_returns_correct_no_lines(self, n: int, lines: list[str]):
         assume(0 <= n <= len(lines))
 
         out = deque()
@@ -121,7 +120,7 @@ class TestProperties(unittest.TestCase):
             self.assertEqual(out.popleft(), lines.pop(0))
 
     @given(integers(), lists(text()))
-    def test_tail_returns_correct_no_lines(self, n: int, lines: List[str]):
+    def test_tail_returns_correct_no_lines(self, n: int, lines: list[str]):
         assume(0 <= n <= len(lines))
 
         out = deque()

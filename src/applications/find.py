@@ -1,6 +1,6 @@
 import fnmatch
 import os
-from typing import Deque, List
+from collections import deque
 
 from flagging import ApplicationFlagDict
 from .application import Application, ArgumentError
@@ -17,7 +17,7 @@ class Find(Application):
     def __init__(self, flags: ApplicationFlagDict = None):
         super().__init__(flags)
 
-    def run(self, inp: List[str], out: Deque[str], args: List[str]):
+    def run(self, inp: list[str], out: deque[str], args: list[str]):
         if len(args) not in [2, 3] or \
                 args[0 if len(args) == 2 else 1] != "-name":
             raise ArgumentError(type(self), "command must follow format: "

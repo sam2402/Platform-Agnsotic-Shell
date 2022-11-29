@@ -1,10 +1,10 @@
 """Module for handling user flags"""
 
 from dataclasses import dataclass
-from typing import get_args, Dict, List, Type, Union
+from typing import get_args, Type
 
-ApplicationFlagDict = Dict[str, Union[str, int, bool]]
-FlagType = Union[Type[str], Type[int], Type[bool]]
+ApplicationFlagDict = dict[str, str | int | bool]
+FlagType = Type[str] | Type[int] | Type[bool]
 
 
 @dataclass
@@ -15,8 +15,7 @@ class Flag:
     long_name: str = None
     argument_count: int = 0
     is_optional: bool = False
-    default_value: Union[get_args(FlagType)[0],
-                         List[get_args(FlagType)[0]]] = None
+    default_value: get_args(FlagType)[0] | list[get_args(FlagType)[0]] = None
 
     def __str__(self) -> str:
         return self.name
@@ -39,7 +38,7 @@ class FlagConfiguration:
     "-f" in fc # True
     """
 
-    def __init__(self, flags: List[Flag] = None):
+    def __init__(self, flags: list[Flag] = None):
         self.flags = [Flag("-h", bool, "--help")] \
             + (flags if flags is not None else [])
 

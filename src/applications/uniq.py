@@ -1,4 +1,4 @@
-from typing import Deque, List
+from collections import deque
 
 import util
 from flagging import Flag, FlagConfiguration
@@ -19,7 +19,7 @@ class Uniq(Application):
         Flag("-i", bool, "--ignore-case")
     ])
 
-    def run(self, inp: List[str], out: Deque[str], args: List[str]) -> None:
+    def run(self, inp: list[str], out: deque[str], args: list[str]) -> None:
         lines = util.read_lines(args[0]) if len(args) == 1 else inp
 
         last = None

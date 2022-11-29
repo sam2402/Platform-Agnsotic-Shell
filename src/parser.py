@@ -3,7 +3,6 @@ Module for parsing the user input
 """
 
 import glob
-from typing import List, Optional, Tuple, Union
 
 from antlr4 import CommonTokenStream, InputStream
 from antlr4.tree.Tree import TerminalNodeImpl
@@ -18,7 +17,7 @@ class ParsingError(Exception):
     pass
 
 
-def execute_command(raw_input: str) -> List[str]:
+def execute_command(raw_input: str) -> list[str]:
     """Executes a command from a string and returns the list of outputs
 
     Args:
@@ -110,8 +109,8 @@ IN = "<"
 OUT = ">"
 
 
-def parse_redirections(ctxts: List[CommandParser.RedirectionContext]) \
-        -> Tuple[Optional[str], Optional[str]]:
+def parse_redirections(ctxts: list[CommandParser.RedirectionContext]) \
+        -> tuple[str | None, str | None]:
     in_file = None
     out_file = None
 
@@ -135,8 +134,8 @@ def parse_redirections(ctxts: List[CommandParser.RedirectionContext]) \
 
 
 def parse_arguments(
-        ctxts: List[Union[TerminalNodeImpl, CommandParser.ArgumentContext]])\
-        -> List[str]:
+        ctxts: list[TerminalNodeImpl | CommandParser.ArgumentContext]) \
+        -> list[str]:
     args = []
     cur_arg = ""
 
@@ -160,7 +159,7 @@ def parse_arguments(
     return args
 
 
-def parse_argument(ctx: CommandParser.ArgumentContext) -> List[str]:
+def parse_argument(ctx: CommandParser.ArgumentContext) -> list[str]:
     child = ctx.children[0]
 
     if type(child) == TerminalNodeImpl:
@@ -180,7 +179,7 @@ def parse_argument(ctx: CommandParser.ArgumentContext) -> List[str]:
     raise AssertionError("invalid argument type")
 
 
-def glob_expand_arg(arg: str) -> List[str]:
+def glob_expand_arg(arg: str) -> list[str]:
     files = glob.glob(arg)
     return files if files else [arg]
 
@@ -216,7 +215,7 @@ def parse_double_quoted(ctx: CommandParser.DoubleQuotedContext) -> str:
     return quoted
 
 
-def parse_back_quoted(ctx: CommandParser.BackQuotedContext) -> List[str]:
+def parse_back_quoted(ctx: CommandParser.BackQuotedContext) -> list[str]:
     children = ctx.children[1:-1]  # Exclude the opening and closing backtick
     raw_command = "".join([str(child) for child in children])
 

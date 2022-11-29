@@ -1,5 +1,5 @@
 import random
-from typing import Deque, List
+from collections import deque
 
 import util
 from flagging import ApplicationFlagDict, Flag, FlagConfiguration
@@ -25,7 +25,7 @@ class Sort(Application):
     def __init__(self, flags: ApplicationFlagDict = None):
         super().__init__(flags)
 
-    def run(self, inp: List[str], out: Deque[str], args: List[str]) -> None:
+    def run(self, inp: list[str], out: deque[str], args: list[str]) -> None:
         lines = util.read_lines(args[0]) if len(args) == 1 else inp
 
         if self.flags["-R"]:

@@ -3,7 +3,6 @@
 import os
 from abc import ABC, abstractmethod
 from collections import deque
-from typing import List
 
 import util
 from application_factory import ApplicationFactory
@@ -13,7 +12,7 @@ from applications.application import ApplicationError
 class SubCommand(ABC):
 
     @abstractmethod
-    def execute(self, inp: List[str]) -> List[str]:
+    def execute(self, inp: list[str]) -> list[str]:
         """Run execute the command
 
         Args:
@@ -23,12 +22,12 @@ class SubCommand(ABC):
 
 class CallCommand(SubCommand):
 
-    def __init__(self, args: List[str], in_file: str, out_file: str):
+    def __init__(self, args: list[str], in_file: str, out_file: str):
         self.args = args
         self.in_file = in_file
         self.out_file = out_file
 
-    def execute(self, inp: List[str]) -> List[str]:
+    def execute(self, inp: list[str]) -> list[str]:
         if self.in_file and not inp:
             if not os.path.exists(self.in_file):
                 raise ApplicationError(
@@ -57,17 +56,17 @@ class PipeCommand(SubCommand):
         self.call = call
         self.receiver = receiver
 
-    def execute(self, inp: List[str]) -> List[str]:
+    def execute(self, inp: list[str]) -> list[str]:
         out = self.call.execute(inp)
         return self.receiver.execute(out)
 
 
 class Command:
 
-    def __init__(self, sub_commands: List[SubCommand]):
+    def __init__(self, sub_commands: list[SubCommand]):
         self.sub_commands = sub_commands
 
-    def execute(self) -> List[str]:
+    def execute(self) -> list[str]:
         out = [line
                for sub_command in self.sub_commands
                for line in sub_command.execute([])]
