@@ -11,7 +11,6 @@ class TestUniq(ApplicationTest):
 
     def setUp(self) -> None:
         self.out = deque()
-        self.app_uniq = Uniq({"-i": False})
         self.file_name = "file1.txt"
         self.text = "Uniq method test\nUniq method test\nUniQ MethoD TesT\n"
 
