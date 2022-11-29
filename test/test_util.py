@@ -21,7 +21,8 @@ class TestUtil(unittest.TestCase):
         os.remove(self.file_name)
 
     def test_file_doesnt_exist(self):
-        self.assertRaises(ApplicationError, read_lines, "file2.txt")
+        with self.assertRaises(ApplicationError):
+            read_lines("file2.txt")
 
     def test_read_lines(self):
         self.out = read_lines(self.file_name)
