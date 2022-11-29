@@ -33,14 +33,15 @@ class TestGrep(ApplicationTest):
         shutil.rmtree(self.folder)
 
     @application_test()
-    def test_grep_no_args(self):
-        self.assertRaises(ArgumentError, Grep.run, self, [], self.out, [])
+    def test_grep_no_args(self, grep):
+        with self.assertRaises(ArgumentError):
+            grep.run([], self.out, [])
 
-    @application_test()
-    def test_grep_invalid_args(self):
+    @application_test(flags={"-v": False})
+    def test_grep_invalid_args(self, grep):
         arg = os.path.join(self.folder, "file1.txt")
-        self.assertRaises(ApplicationError, Grep.run, self, [], self.out,
-                          ["66s\\55a", arg])
+        with self.assertRaises(ApplicationError):
+            grep.run([], self.out, ["66s\\55a", arg])
 
     @application_test(flags={"-v": False})
     def test_grep_one_valid_arg(self, grep):
@@ -69,10 +70,12 @@ class TestGrep(ApplicationTest):
         for i in range(len(self.out)):
             self.assertEqual(self.out.popleft(), ans[i])
 
-    @application_test()
-    def test_grep_help_message(self):
-        self.assertEqual(Grep.help_message(self),
-                         "grep [-v] <pcre> [files...]")
+    @application_test({"-h": True})
+    def test_grep_help_message(self, grep):
+        self.assertEqual(
+            grep.help_message(),
+            "grep [-v] <pcre> [files...]"
+        )
 
 
 if __name__ == '__main__':

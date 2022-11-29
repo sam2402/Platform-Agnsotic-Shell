@@ -11,7 +11,7 @@ class TestCat(ApplicationTest):
 
     application = Cat
 
-    def setUp(self) -> None:
+    def setUp(self):
         self.out = deque()
         self.folder = "TestFiles"
         os.mkdir(self.folder)
@@ -46,7 +46,7 @@ class TestCat(ApplicationTest):
 
     @application_test(flags={"-n": False})
     def test_cat_help_message(self, cat):
-        self.assertEqual(cat.help_message(self), "cat [-n] [files...]")
+        self.assertEqual(cat.help_message(), "cat [-n] [files...]")
 
 
 if __name__ == '__main__':

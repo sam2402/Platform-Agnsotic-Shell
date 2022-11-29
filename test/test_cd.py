@@ -25,23 +25,24 @@ class TestCd(ApplicationTest):
         os.remove(self.file)
 
     @application_test()
-    def test_cd_zero_arg(self):
-        self.assertRaises(ArgumentError, Cd.run, self, [], self.out, [])
+    def test_cd_zero_arg(self, cd):
+        with self.assertRaises(ArgumentError):
+            cd.run([], self.out, [])
 
     @application_test()
-    def test_cd_one_valid_arg(self):
-        Cd.run(self, [], self.out, [self.folder])
+    def test_cd_one_valid_arg(self, cd):
+        cd.run([], self.out, [self.folder])
         self.assertEqual(os.getcwd(), self.dir_name)
         os.chdir("..")
 
     @application_test()
-    def test_cd_file(self):
-        self.assertRaises(ApplicationError, Cd.run, self, [], self.out,
-                          [self.file])
+    def test_cd_file(self, cd):
+        with self.assertRaises(ApplicationError):
+            cd.run([], self.out, [self.file])
 
     @application_test()
-    def test_cd_help_message(self):
-        self.assertEqual(Cd.help_message(self), "cd <directory>")
+    def test_cd_help_message(self, cd):
+        self.assertEqual(cd.help_message(), "cd <directory>")
 
 
 if __name__ == '__main__':

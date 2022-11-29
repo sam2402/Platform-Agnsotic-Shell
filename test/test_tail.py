@@ -26,9 +26,8 @@ class TestTail(ApplicationTest):
         os.remove(self.file_name)
 
     @application_test(flags={"-n": 10, "-v": False})
-    def test_tail_no_input(self):
-        app_tail = Tail({"-n": 10, "-v": False})
-        app_tail.run([], self.out, ["file1.txt"])
+    def test_tail_no_input(self, tail):
+        tail.run([], self.out, ["file1.txt"])
         self.text_to_check = "a file to contain text can can be checked " \
                              "against.".split()
 
@@ -54,7 +53,7 @@ class TestTail(ApplicationTest):
 
     @application_test()
     def test_tail_help_message(self, tail):
-        self.assertEqual(tail.help_message(self), "tail [-v -n lines] [file]")
+        self.assertEqual(tail.help_message(), "tail [-v -n lines] [file]")
 
 
 if __name__ == '__main__':

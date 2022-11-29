@@ -25,24 +25,25 @@ class TestFind(ApplicationTest):
         shutil.rmtree(self.folder)
 
     @application_test()
-    def test_find_no_args(self):
-        self.assertRaises(ArgumentError, Find.run, self, [], self.out, [])
+    def test_find_no_args(self, find):
+        with self.assertRaises(ArgumentError):
+            find.run([], self.out, [])
 
     @application_test()
-    def test_find_no_name_flag(self):
-        self.assertRaises(ArgumentError, Find.run, self, [], self.out,
-                          ["-notname", "file"])
+    def test_find_no_name_flag(self, find):
+        with self.assertRaises(ArgumentError):
+            find.run([], self.out, ["-notname", "file"])
 
     @application_test()
-    def test_find_one_file(self):
-        Find.run(self, [], self.out, ["-name", self.files[0]])
+    def test_find_one_file(self, find):
+        find.run([], self.out, ["-name", self.files[0]])
         file_address = os.path.join(".", self.folder, self.files[0] + "\n")
         self.assertEqual(self.out.popleft(), file_address)
 
-    @application_test()
-    def test_find_help_message(self):
-        self.assertEqual(Find.help_message(self), "find [path] -name "
-                                                       "<pattern>")
+    @application_test({"-h": True})
+    def test_find_help_message(self, find):
+        self.assertEqual(find.help_message(), "find [path] -name "
+                         "<pattern>")
 
 
 if __name__ == '__main__':

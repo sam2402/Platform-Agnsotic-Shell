@@ -39,7 +39,11 @@ class TestRm(ApplicationTest):
         for file in self.files:
             open(os.path.join(self.folder, self.nested_folder, file), 'w')
 
-        self.nested_files = {"file1_nested.txt", "file2_nested.txt", "file3_nested.txt"}
+        self.nested_files = {
+            "file1_nested.txt",
+            "file2_nested.txt",
+            "file3_nested.txt"
+        }
         for file in self.files:
             open(os.path.join(self.folder, self.nested_folder, file), 'w')
 
@@ -61,12 +65,18 @@ class TestRm(ApplicationTest):
     def test_rm_normal(self, rm):
         file = os.path.join(self.folder, "file1.txt")
         rm.run([], self.out, [file])
-        self.assertEqual(set(os.listdir(self.folder)), self.folder_contents-{"file1.txt"})
+        self.assertEqual(
+            set(os.listdir(self.folder)),
+            self.folder_contents-{"file1.txt"}
+        )
 
     @application_test({"-r": True, "-v": False, "-f": False})
     def test_rm_recursive(self, rm):
         rm.run([], self.out, [os.path.join(self.folder, self.empty_folder)])
-        self.assertEqual(set(os.listdir(self.folder)), self.folder_contents-{self.empty_folder})
+        self.assertEqual(
+            set(os.listdir(self.folder)),
+            self.folder_contents-{self.empty_folder}
+        )
 
     @application_test({"-r": False, "-v": False, "-f": False})
     def test_rm_delete_dir_error(self, rm):
@@ -81,22 +91,46 @@ class TestRm(ApplicationTest):
     @application_test({"-r": True, "-v": False, "-f": True})
     def test_rm_recursive_force(self, rm):
         rm.run([], self.out, [os.path.join(self.folder, "nested_dir")])
-        self.assertEqual(set(os.listdir(self.folder)), self.folder_contents-{self.nested_folder})
+        self.assertEqual(
+            set(os.listdir(self.folder)),
+            self.folder_contents-{self.nested_folder}
+        )
 
     @application_test({"-r": False, "-v": True, "-f": False})
     def test_rm_files_verbose(self, rm: Rm):
-        rm.run([], self.out, map(lambda file: os.path.join(self.folder, file), self.files))
-        self.assertEqual(set(os.listdir(self.folder)), self.folder_contents-self.files)
-        self.assertEqual(self.out, deque(map(lambda file: f"deleted file '{os.path.join(self.folder, file)}'\n", self.files)))
+        rm.run([], self.out, map(
+            lambda file: os.path.join(self.folder, file), self.files))
+        self.assertEqual(
+            set(os.listdir(self.folder)),
+            self.folder_contents-self.files
+        )
+        self.assertEqual(
+            self.out,
+            deque(map(
+                lambda file:
+                f"deleted file '{os.path.join(self.folder, file)}'\n",
+                self.files
+            ))
+        )
 
     @application_test({"-r": True, "-v": True, "-f": False})
     def test_rm_dir_verbose(self, rm):
         rm.run([], self.out, [os.path.join(self.folder, self.empty_folder)])
-        self.assertEqual(set(os.listdir(self.folder)), self.folder_contents-{self.empty_folder})
-        self.assertEqual(self.out, deque([f"deleted directory '{os.path.join(self.folder, self.empty_folder)}'\n"]))
+        self.assertEqual(
+            set(os.listdir(self.folder)),
+            self.folder_contents-{self.empty_folder}
+        )
+        self.assertEqual(
+            self.out,
+            deque([
+                f"deleted directory '"
+                f"{os.path.join(self.folder, self.empty_folder)}'\n"
+            ])
+        )
 
-    def test_rm_help_message(self):
-        self.assertEqual(Rm.help_message(self),
+    @application_test({"-h": True})
+    def test_rm_help_message(self, rm):
+        self.assertEqual(rm.help_message(),
                          "rm [-v -r -f] [directories/files...]")
 
 
