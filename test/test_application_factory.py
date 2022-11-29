@@ -2,7 +2,8 @@ import unittest
 
 from applications.application import (
     ApplicationError,
-    ArgumentError
+    ArgumentError,
+    UnsafeApplication
 )
 from applications.head_tail import Head
 from flagging import Flag, FlagConfiguration
@@ -68,6 +69,19 @@ class TestApplicationFactory(unittest.TestCase):
             []
         )
         self.assertEqual(flag_dict, {"-h": False})
+
+    def test_with_unsafe_application(self):
+        app = ApplicationFactory().get_application(
+            ["_head", "-n", "3", "file.txt"]
+        )
+        self.assertIsInstance(app, UnsafeApplication)
+        self.assertIsInstance(app._child_application, Head)
+
+    def test_true_boolean_flag(self):
+        ls = ApplicationFactory().get_application(
+            ["_ls", "-a"]
+        )
+        self.assertTrue(ls.flags["-a"])
 
     def test_get_application_with_fake_name(self):
         with self.assertRaises(ApplicationError):

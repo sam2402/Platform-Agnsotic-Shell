@@ -14,7 +14,11 @@ class SubCommand(ABC):
 
     @abstractmethod
     def execute(self, inp: List[str]) -> List[str]:
-        pass
+        """Run execute the command
+
+        Args:
+            inp: list of strings representing stdin
+        """
 
 
 class CallCommand(SubCommand):
