@@ -58,8 +58,12 @@ class TestRm(ApplicationTest):
 
     @application_test({"-r": False, "-v": False, "-f": False})
     def test_zero_args(self, rm: Rm):
-        with self.assertRaises(ArgumentError):
+        with self.assertRaises(ArgumentError) as cm:
             rm.run([], self.out, [])
+        self.assertEqual(
+            str(cm.exception),
+            "rm - supply at least one file path"
+        )
 
     @application_test({"-r": False, "-v": False, "-f": False})
     def test_rm_normal(self, rm):
