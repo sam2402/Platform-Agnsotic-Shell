@@ -23,9 +23,11 @@ class Cat(Application):
         lines = [line for file in files for line in file] if files else inp
 
         for i, line in enumerate(lines):
+            out_line = ""
             if self.flags["-n"]:
-                out.append(f"{i + 1} ")
-            out.append(line)
+                out_line += f"{i + 1} "
+            out_line += line
+            out.append(out_line)
 
     def help_message(self) -> str:
         return "cat [-n] [files...]"

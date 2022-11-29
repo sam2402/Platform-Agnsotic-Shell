@@ -10,7 +10,7 @@ class Grep(Application):
     """Searches for lines containing a match to the specified pattern
 
     Flags:
-        -v, --verbose: inverts match
+        -v, --invert: inverts match
     """
 
     name = "grep"
