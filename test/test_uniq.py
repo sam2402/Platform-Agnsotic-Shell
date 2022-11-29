@@ -1,9 +1,8 @@
 import os
-import unittest
 from collections import deque
 
 from application_test import ApplicationTest, application_test
-from src.applications.uniq import Uniq
+from applications.uniq import Uniq
 
 
 class TestUniq(ApplicationTest):
@@ -31,13 +30,9 @@ class TestUniq(ApplicationTest):
 
     @application_test({"-i": True})
     def test_uniq_case_insensitive(self, uniq):
-        uniq = Uniq({"-i": True})
         uniq.run([], self.out, [self.file_name])
         self.assertEqual(self.out.popleft(), "Uniq method test\n")
 
-    def test_uniq_help_message(self):
-        self.assertEqual(Uniq.help_message(self), "uniq [-i] [file]")
-
-
-if __name__ == '__main__':
-    unittest.main()
+    @application_test({"-h": True})
+    def test_uniq_help_message(self, uniq):
+        self.assertEqual(uniq.help_message(), "uniq [-i] [file]")

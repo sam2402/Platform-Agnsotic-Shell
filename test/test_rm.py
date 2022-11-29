@@ -1,11 +1,10 @@
 import os
 import shutil
-import unittest
 from collections import deque
 
 from application_test import ApplicationTest, application_test
-from src.applications.application import ApplicationError, ArgumentError
-from src.applications.rm import Rm
+from applications.application import ApplicationError, ArgumentError
+from applications.rm import Rm
 
 
 class TestRm(ApplicationTest):
@@ -102,8 +101,8 @@ class TestRm(ApplicationTest):
 
     @application_test({"-r": False, "-v": True, "-f": False})
     def test_rm_files_verbose(self, rm: Rm):
-        rm.run([], self.out, map(
-            lambda file: os.path.join(self.folder, file), self.files))
+        rm.run([], self.out, list(map(
+            lambda file: os.path.join(self.folder, file), self.files)))
         self.assertEqual(
             set(os.listdir(self.folder)),
             self.folder_contents-self.files
@@ -136,7 +135,3 @@ class TestRm(ApplicationTest):
     def test_rm_help_message(self, rm):
         self.assertEqual(rm.help_message(),
                          "rm [-v -r -f] [directories/files...]")
-
-
-if __name__ == '__main__':
-    unittest.main()

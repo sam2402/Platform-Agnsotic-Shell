@@ -1,11 +1,12 @@
 import unittest
-from applications.head_tail import Head
-from flagging import Flag, FlagConfiguration
-from src.application_factory import ApplicationFactory
+
 from applications.application import (
     ApplicationError,
     ArgumentError
 )
+from applications.head_tail import Head
+from flagging import Flag, FlagConfiguration
+from application_factory import ApplicationFactory
 
 
 class TestApplicationFactory(unittest.TestCase):
@@ -79,7 +80,3 @@ class TestApplicationFactory(unittest.TestCase):
     def test_get_application_with_invalid_argument_count(self):
         with self.assertRaises(ArgumentError):
             ApplicationFactory().get_application(["head", "-n"])
-
-
-if __name__ == "__main__":
-    unittest.main()

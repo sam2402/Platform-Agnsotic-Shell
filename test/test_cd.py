@@ -1,11 +1,10 @@
 import os
 import shutil
-import unittest
 from collections import deque
 
 from application_test import ApplicationTest, application_test
-from src.applications.application import ArgumentError, ApplicationError
-from src.applications.cd import Cd
+from applications.application import ArgumentError, ApplicationError
+from applications.cd import Cd
 
 
 class TestCd(ApplicationTest):
@@ -43,7 +42,3 @@ class TestCd(ApplicationTest):
     @application_test()
     def test_cd_help_message(self, cd):
         self.assertEqual(cd.help_message(), "cd <directory>")
-
-
-if __name__ == '__main__':
-    unittest.main()

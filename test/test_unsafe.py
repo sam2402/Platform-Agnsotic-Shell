@@ -1,8 +1,8 @@
-from collections import deque
 import unittest
+from collections import deque
 
-from src.applications.application import UnsafeApplication
-from src.applications.ls import Ls
+from applications.application import UnsafeApplication
+from applications.ls import Ls
 
 
 class TestUnsafe(unittest.TestCase):
@@ -18,7 +18,3 @@ class TestUnsafe(unittest.TestCase):
     def test_unsafe_exception(self):
         self.unsafe_ls.run([], self.out, ["fake_dir"])
         self.assertEquals(self.out, deque(["no such directory 'fake_dir'\n"]))
-
-
-if __name__ == "__main__":
-    unittest.main()

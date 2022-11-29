@@ -1,30 +1,27 @@
 import os
-import unittest
 from collections import deque
 
-from application_test import ApplicationTest
-from src.applications.pwd import Pwd
+from application_test import ApplicationTest, application_test
+from applications.pwd import Pwd
 
 
 class TestPwd(ApplicationTest):
-    def setUp(self) -> None:
-        self.app_pwd = Pwd({"-P": False})
 
-    def test_pwd_run(self):
-        self.out = deque()
-        self.app_pwd.run([], self.out, [])
-        self.assertEqual(self.out.popleft(), os.getcwd() + "\n")
+    application = Pwd
 
-    def test_pwd_P_flag(self):
-        self.out = deque()
-        app_pwd_p = Pwd({"-P": True})
-        app_pwd_p.run([], self.out, [])
+    @application_test(flags={"-P": False})
+    def test_pwd_run(self, pwd):
+        out = deque()
+        pwd.run([], out, [])
+        self.assertEqual(out.popleft(), os.getcwd() + "\n")
+
+    @application_test(flags={"-P": True})
+    def test_pwd_P_flag(self, pwd):
+        out = deque()
+        pwd.run([], out, [])
         non_symbolic_link = os.path.realpath(os.getcwd())
-        self.assertEqual(self.out.popleft(), non_symbolic_link + "\n")
+        self.assertEqual(out.popleft(), non_symbolic_link + "\n")
 
-    def test_pwd_help_message(self):
-        self.assertEqual(Pwd.help_message(self), "pwd [-P]")
-
-
-if __name__ == '__main__':
-    unittest.main()
+    @application_test(flags={"-h": True})
+    def test_pwd_help_message(self, pwd):
+        self.assertEqual(pwd.help_message(), "pwd [-P]")

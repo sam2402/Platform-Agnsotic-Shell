@@ -1,11 +1,10 @@
 import os
 import shutil
-import unittest
 from collections import deque
 
 from application_test import ApplicationTest, application_test
-from src.applications.application import ArgumentError, ApplicationError
-from src.applications.grep import Grep
+from applications.application import ArgumentError, ApplicationError
+from applications.grep import Grep
 
 
 class TestGrep(ApplicationTest):
@@ -76,7 +75,3 @@ class TestGrep(ApplicationTest):
             grep.help_message(),
             "grep [-v] <pcre> [files...]"
         )
-
-
-if __name__ == '__main__':
-    unittest.main()

@@ -1,9 +1,8 @@
 import os
-import unittest
 from collections import deque
 
 from application_test import ApplicationTest, application_test
-from src.applications.head_tail import Tail
+from applications.head_tail import Tail
 
 
 class TestTail(ApplicationTest):
@@ -54,7 +53,3 @@ class TestTail(ApplicationTest):
     @application_test()
     def test_tail_help_message(self, tail):
         self.assertEqual(tail.help_message(), "tail [-v -n lines] [file]")
-
-
-if __name__ == '__main__':
-    unittest.main()

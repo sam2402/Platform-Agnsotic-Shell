@@ -1,10 +1,9 @@
 import os
-import unittest
 from collections import deque
 
 from application_test import ApplicationTest
-from src.applications.application import ArgumentError
-from src.applications.head_tail import Head
+from applications.application import ArgumentError
+from applications.head_tail import Head
 
 
 class TestHead(ApplicationTest):
@@ -59,7 +58,3 @@ class TestHead(ApplicationTest):
 
     def test_head_help_message(self):
         self.assertEqual(Head.help_message(self), "head [-v -n lines] [file]")
-
-
-if __name__ == '__main__':
-    unittest.main()

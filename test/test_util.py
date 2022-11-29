@@ -1,8 +1,9 @@
+import filecmp
 import os
 import unittest
-from src.util import read_lines, write_lines
-from src.applications.application import ApplicationError
-import filecmp
+
+from applications.application import ApplicationError
+from util import read_lines, write_lines
 
 
 class TestUtil(unittest.TestCase):
@@ -40,7 +41,3 @@ class TestUtil(unittest.TestCase):
         self.assertEqual(filecmp.cmp(self.file_name, file_to_write,
                                      shallow=False), True)
         os.remove(file_to_write)
-
-
-if __name__ == '__main__':
-    unittest.main()

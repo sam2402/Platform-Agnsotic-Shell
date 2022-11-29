@@ -1,9 +1,8 @@
 import os
-import unittest
 from collections import deque
 
 from application_test import ApplicationTest, application_test
-from src.applications.sort import Sort
+from applications.sort import Sort
 
 
 class TestSort(ApplicationTest):
@@ -48,9 +47,6 @@ class TestSort(ApplicationTest):
         for i in range(len(text_to_check)):
             self.assertIn(self.out.popleft(), text_to_check)
 
-    def test_sort_help_message(self):
-        self.assertEqual(Sort.help_message(self), "sort [-r -R] [file]")
-
-
-if __name__ == '__main__':
-    unittest.main()
+    @application_test({"-h": True})
+    def test_sort_help_message(self, sort):
+        self.assertEqual(sort.help_message(), "sort [-r -R] [file]")

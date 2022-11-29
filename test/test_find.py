@@ -1,11 +1,10 @@
 import os
 import shutil
-import unittest
 from collections import deque
 
 from application_test import ApplicationTest, application_test
-from src.applications.application import ArgumentError
-from src.applications.find import Find
+from applications.application import ArgumentError
+from applications.find import Find
 
 
 class TestFind(ApplicationTest):
@@ -44,7 +43,3 @@ class TestFind(ApplicationTest):
     def test_find_help_message(self, find):
         self.assertEqual(find.help_message(), "find [path] -name "
                          "<pattern>")
-
-
-if __name__ == '__main__':
-    unittest.main()

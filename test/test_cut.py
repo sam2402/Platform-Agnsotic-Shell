@@ -1,10 +1,9 @@
 import os
-import unittest
 from collections import deque
 
 from application_test import ApplicationTest, application_test
-from src.applications.application import ArgumentError, ApplicationError
-from src.applications.cut import Cut
+from applications.application import ArgumentError, ApplicationError
+from applications.cut import Cut
 
 
 class TestCut(ApplicationTest):
@@ -55,7 +54,3 @@ class TestCut(ApplicationTest):
 
     def test_cut_help_message(self):
         self.assertEqual(Cut.help_message(self), "cut -b <intervals> [file]")
-
-
-if __name__ == '__main__':
-    unittest.main()

@@ -1,8 +1,8 @@
 import contextlib
+import io
 import sys
 import unittest
 from collections import deque
-import io
 
 from shell import evaluate, run_shell, handle_input, ShellError
 
@@ -62,18 +62,6 @@ class TestShell(unittest.TestCase):
         err = io.StringIO()
         with contextlib.redirect_stderr(err):
             handle_input("<doesnotexist.txt echo")
-
-        exp = "application error: input file 'doesnotexist.txt' does not exist"
-        self.assertEqual(err.getvalue(), exp + "\n")
-
-    def test_handle_input_catches_parsing_error(self):
-        err = io.StringIO()
-        with contextlib.redirect_stderr(err):
-            handle_input("||")
-
-        self.assertTrue(err.getvalue().startswith(
-            "parsing error: improperly formatted subcommand"
-        ))
 
         exp = "application error: input file 'doesnotexist.txt' does not exist"
         self.assertEqual(err.getvalue(), exp + "\n")

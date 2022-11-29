@@ -1,11 +1,10 @@
 import os
 import shutil
-import unittest
 from collections import deque
 
 from application_test import ApplicationTest, application_test
-from src.applications.application import ApplicationError
-from src.applications.ls import Ls
+from applications.application import ApplicationError
+from applications.ls import Ls
 
 
 class TestLs(ApplicationTest):
@@ -72,14 +71,10 @@ class TestLs(ApplicationTest):
             ls.run([], self.out, ["fake_file.txt"])
 
     @application_test({"-a": False, "-r": False, "-s": False})
-    def test_ls_file_in_empty_directry(self, ls):
+    def test_ls_file_in_empty_directory(self, ls):
         ls.run([], self.out, ["folder1"])
         self.assertEqual(self.out, deque())
 
     @application_test({"-h": True})
     def test_ls_help_message(self, ls):
         self.assertEqual(ls.help_message(), "ls [-a -r -s] [directory]")
-
-
-if __name__ == '__main__':
-    unittest.main()

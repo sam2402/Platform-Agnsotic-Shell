@@ -1,11 +1,10 @@
 import os
 import shutil
-import unittest
 from collections import deque
 
 from application_test import ApplicationTest
-from src.applications.application import ApplicationError
-from src.applications.mkdir import Mkdir
+from applications.application import ApplicationError
+from applications.mkdir import Mkdir
 
 
 class TestMkdir(ApplicationTest):
@@ -47,7 +46,3 @@ class TestMkdir(ApplicationTest):
     def test_mkdir_help_message(self):
         self.assertEqual(Mkdir.help_message(self),
                          "mkdir [-v -p] [directories...]")
-
-
-if __name__ == '__main__':
-    unittest.main()

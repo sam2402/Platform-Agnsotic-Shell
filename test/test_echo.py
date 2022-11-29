@@ -1,10 +1,9 @@
-import unittest
 from collections import deque
 
 from parameterized import parameterized
 
 from application_test import ApplicationTest, application_test
-from src.applications.echo import Echo
+from applications.echo import Echo
 
 
 class TestEcho(ApplicationTest):
@@ -36,7 +35,3 @@ class TestEcho(ApplicationTest):
     @application_test({"-h": True})
     def test_echo_help_message(self, echo):
         self.assertEqual(echo.help_message(), "echo [-n] [args...]")
-
-
-if __name__ == "__main__":
-    unittest.main()

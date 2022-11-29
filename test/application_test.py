@@ -3,8 +3,8 @@ import unittest
 from abc import ABC
 from typing import Callable, Type
 
-from flagging import ApplicationFlagDict
 from applications.application import Application
+from flagging import ApplicationFlagDict
 
 
 class ApplicationTest(unittest.TestCase, ABC):

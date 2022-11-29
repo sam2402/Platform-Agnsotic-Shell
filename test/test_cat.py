@@ -1,10 +1,9 @@
 import os
 import shutil
-import unittest
 from collections import deque
 
 from application_test import ApplicationTest, application_test
-from src.applications.cat import Cat
+from applications.cat import Cat
 
 
 class TestCat(ApplicationTest):
@@ -47,7 +46,3 @@ class TestCat(ApplicationTest):
     @application_test(flags={"-n": False})
     def test_cat_help_message(self, cat):
         self.assertEqual(cat.help_message(), "cat [-n] [files...]")
-
-
-if __name__ == '__main__':
-    unittest.main()
