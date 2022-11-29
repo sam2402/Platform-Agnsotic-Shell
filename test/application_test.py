@@ -4,7 +4,7 @@ from abc import ABC
 from typing import Callable, Type
 
 from flagging import ApplicationFlagDict
-from src.applications.application import Application
+from applications.application import Application
 
 
 class ApplicationTest(unittest.TestCase, ABC):
