@@ -142,7 +142,7 @@ class TestProperties(unittest.TestCase):
 
     @given(text(alphabet=ascii_letters), text(alphabet=ascii_letters))
     def test_mkdir_raises_for_nested_path_without_p(self, p1: str, p2: str):
-        assume(p1 and p2 and not os.path.isdir(p1))
+        assume(p1 and p2 and not os.path.isdir(p1) and not os.path.exists(p1))
 
         with self.assertRaises(ApplicationError):
             self.app_mkdir.run([], deque(), [os.path.join(p1, p2)])
