@@ -20,10 +20,15 @@ class Grep(Application):
         Flag("-c", bool)
     ])
 
-    def __init__(self, flags: ApplicationFlagDict = None):
+    def __init__(
+        self,
+        flags: ApplicationFlagDict = None,
+        highlight_colour: str = "\u001b[35m",  # Magenta
+        reset_colour: str = "\u001b[0m"  # White
+    ):
         super().__init__(flags)
-        self.highlight_colour = "\u001b[35m"  # Magenta
-        self.reset_colour = "\u001b[0m"
+        self.highlight_colour = highlight_colour
+        self.reset_colour = reset_colour
 
     def run(self, inp: list[str], out: deque[str], args: list[str]):
         if not args:
