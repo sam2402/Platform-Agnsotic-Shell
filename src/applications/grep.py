@@ -11,13 +11,19 @@ class Grep(Application):
 
     Flags:
         -v, --invert: inverts match
+        -c, --colour: colours the matching sections
     """
 
     name = "grep"
-    flag_configuration = FlagConfiguration([Flag("-v", bool, "--invert")])
+    flag_configuration = FlagConfiguration([
+        Flag("-v", bool, "--invert"),
+        Flag("-c", bool)
+    ])
 
     def __init__(self, flags: ApplicationFlagDict = None):
         super().__init__(flags)
+        self.highlight_colour = "\u001b[35m"  # Magenta
+        self.reset_colour = "\u001b[0m"
 
     def run(self, inp: List[str], out: Deque[str], args: List[str]):
         if not args:
@@ -41,10 +47,18 @@ class Grep(Application):
                 if self.flags["-v"] ^ (not pattern.search(line)):
                     continue
 
+                if self.flags["-c"]:
+                    # Apply colouring to sections which matched the regex
+                    line = re.sub(
+                        f"({pattern.pattern})",
+                        f"{self.highlight_colour}\\g<1>{self.reset_colour}",
+                        line
+                    )
+
                 if len(files) == 1:
                     out.append(line)
                 else:
                     out.append(f"{file_name}:{line}")
 
     def help_message(self) -> str:
-        return "grep [-v] <pcre> [files...]"
+        return "grep [-v -c] <pcre> [files...]"

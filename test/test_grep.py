@@ -36,19 +36,19 @@ class TestGrep(ApplicationTest):
         with self.assertRaises(ArgumentError):
             grep.run([], self.out, [])
 
-    @application_test(flags={"-v": False})
+    @application_test(flags={"-v": False, "-c": False})
     def test_grep_invalid_args(self, grep):
         arg = os.path.join(self.folder, "file1.txt")
         with self.assertRaises(ApplicationError):
             grep.run([], self.out, ["66s\\55a", arg])
 
-    @application_test(flags={"-v": False})
+    @application_test(flags={"-v": False, "-c": False})
     def test_grep_one_valid_arg(self, grep):
         arg = os.path.join(self.folder, "file1.txt")
         grep.run([], self.out, ["second", arg])
         self.assertEqual(self.out.popleft(), "and this is the second line\n")
 
-    @application_test(flags={"-v": False})
+    @application_test(flags={"-v": False, "-c": False})
     def test_grep_multiple_valid_arg(self, grep):
         arg = os.path.join(self.folder, "file1.txt")
         grep.run([], self.out, ["line", arg])
@@ -56,7 +56,7 @@ class TestGrep(ApplicationTest):
         for i in range(len(self.out)):
             self.assertEqual(self.out.popleft(), ans[i])
 
-    @application_test(flags={"-v": False})
+    @application_test(flags={"-v": False, "-c": False})
     def test_grep_multiple_files(self, grep):
         arg = []
         for file_name in self.files:
@@ -69,9 +69,23 @@ class TestGrep(ApplicationTest):
         for i in range(len(self.out)):
             self.assertEqual(self.out.popleft(), ans[i])
 
+    @application_test(flags={"-v": True, "-c": False})
+    def test_grep_invert(self, grep):
+        inp = ["tinker", "tailor", "soldier", "spy"]
+        grep.run(inp, self.out, ["t.*r"])
+        self.assertListEqual(list(self.out), ["soldier", "spy"])
+
+    @application_test(flags={"-v": False, "-c": True})
+    def test_group_colour(self, grep):
+        inp = ["rum gum ram bar rim bat"]
+        c, r = grep.highlight_colour, grep.reset_colour
+        expected = f"{c}rum{r} gum {c}ram{r} bar {c}rim{r} bat"
+        grep.run(inp, self.out, ["r.m"])
+        self.assertEqual(self.out.popleft(), expected)
+
     @application_test({"-h": True})
     def test_grep_help_message(self, grep):
         self.assertEqual(
             grep.help_message(),
-            "grep [-v] <pcre> [files...]"
+            "grep [-v -c] <pcre> [files...]"
         )

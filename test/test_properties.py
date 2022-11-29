@@ -33,8 +33,8 @@ class TestProperties(unittest.TestCase):
 
         self.app_find = Find()
 
-        self.app_grep = Grep({"-v": False})
-        self.app_grep_i = Grep({"-v": True})
+        self.app_grep = Grep({"-v": False, "-c": False})
+        self.app_grep_i = Grep({"-v": True, "-c": False})
 
         self.app_ls = Ls()
 
