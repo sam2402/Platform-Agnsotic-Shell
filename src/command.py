@@ -28,7 +28,7 @@ class CallCommand(SubCommand):
         if self.in_file and not inp:
             if not os.path.exists(self.in_file):
                 raise ApplicationError(
-                    f"input file '{self.in_file} does not exist"
+                    f"input file '{self.in_file}' does not exist"
                 )
             inp = util.read_lines(self.in_file)
 

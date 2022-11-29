@@ -65,7 +65,6 @@ class Application(ABC):
             ArgumentError: the flags and/or args are malformed
             ApplicationError: an error occurred in the execution of the command
         """
-        pass
 
     @abstractmethod
     def help_message(self) -> str:
@@ -82,11 +81,10 @@ class Application(ABC):
         Returns:
             A string detailing the syntax of the application's command
         """
-        pass
 
 
 class UnsafeApplication(Application):
-    """An adapter pattern implementation Application class to provide an unsafe
+    """An adaptor pattern implementation Application class to provide an unsafe
     variant
 
     An unsafe version of an application is an application that has the same
@@ -121,4 +119,3 @@ class ArgumentError(Exception):
 
 class ApplicationError(Exception):
     """Raised when an error occurs when calling an application"""
-    pass

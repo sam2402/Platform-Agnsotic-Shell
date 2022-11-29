@@ -14,8 +14,6 @@ class Sort(Application):
     Flags:
         -r: sorts in reverse order
         -R: randomises order
-        -f: enable the deletion of non-empty directories and ignore
-            non-existent paths
     """
 
     name = "sort"

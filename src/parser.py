@@ -43,6 +43,9 @@ def parse_command(raw_input: str) -> Command:
     Raises:
         ParsingError if the input does not follow the command grammar
     """
+    if not raw_input.strip():
+        raise ParsingError("command cannot be empty")
+
     lexer = CommandLexer(InputStream(raw_input))
     tokens = CommonTokenStream(lexer)
     parser = CommandParser(tokens)
@@ -72,15 +75,10 @@ def parse_sub_command(ctx: CommandParser.SubCommandContext) -> SubCommand:
     if type(child) == CommandParser.CallContext:
         return parse_call(child)
 
-    raise ParsingError("sub commands must either be of type PIPE or CALL")
+    raise AssertionError("sub commands must either be of type PIPE or CALL")
 
 
 def parse_pipe(ctx: CommandParser.PipeContext) -> PipeCommand:
-    if len(ctx.children) != 3:
-        raise ParsingError("improperly formatted pipe command")
-    if type(ctx.children[0]) != CommandParser.CallContext:
-        raise ParsingError("input to pipe must be a CALL command")
-
     call = parse_call(ctx.children[0])
 
     receiver_node = ctx.children[2]
@@ -89,7 +87,9 @@ def parse_pipe(ctx: CommandParser.PipeContext) -> PipeCommand:
     elif type(receiver_node) == CommandParser.CallContext:
         receiver = parse_call(receiver_node)
     else:
-        raise ParsingError("receiver from pipe must be a PIPE or CALL command")
+        raise AssertionError(
+            "receiver from pipe must be a PIPE or CALL command"
+        )
 
     return PipeCommand(call, receiver)
 
@@ -128,6 +128,8 @@ def parse_redirections(ctxts: List[CommandParser.RedirectionContext]) \
             if out_file:
                 raise ParsingError("more than one output file specified")
             out_file = file
+        else:
+            raise AssertionError("invalid redirection symbol")
 
     return in_file, out_file
 
@@ -175,7 +177,7 @@ def parse_argument(ctx: CommandParser.ArgumentContext) -> List[str]:
     if type(child) == CommandParser.BackQuotedContext:
         return parse_back_quoted(child)
 
-    raise ParsingError("unknown argument type")
+    raise AssertionError("invalid argument type")
 
 
 def glob_expand_arg(arg: str) -> List[str]:
@@ -188,7 +190,7 @@ def parse_single_quoted(ctx: CommandParser.SingleQuotedContext) -> str:
     quoted = "".join([str(child) for child in children])
 
     if "\n" in quoted or "'" in quoted:
-        raise ParsingError(
+        raise AssertionError(
             "single quoted sections may not contain single quotes or newlines"
         )
 
@@ -201,12 +203,13 @@ def parse_double_quoted(ctx: CommandParser.DoubleQuotedContext) -> str:
     for child in ctx.children[1:-1]:
         if type(child) == TerminalNodeImpl:  # Terminal node is UNQUOTED
             if "\"" in str(child) or "\n" in str(child):
-                raise ParsingError(
+                raise AssertionError(
                     "double quoted sections may not "
                     "contain double quotes or newlines"
                 )
             quoted += str(child)
-        elif type(child) == CommandParser.BackQuotedContext:
+        else:
+            assert type(child) == CommandParser.BackQuotedContext
             # Expanded backquoted commands
             quoted += " ".join(parse_back_quoted(child))
 
@@ -218,7 +221,7 @@ def parse_back_quoted(ctx: CommandParser.BackQuotedContext) -> List[str]:
     raw_command = "".join([str(child) for child in children])
 
     if "`" in raw_command or "\n" in raw_command:
-        raise ParsingError(
+        raise AssertionError(
             "back quoted section may not contain back quotes or newlines"
         )
 

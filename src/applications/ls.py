@@ -41,7 +41,7 @@ class Ls(Application):
             files = files[::-1]
         if self.flags["-s"]:
             files = [
-                f"{(os.stat(file).st_size if os.path.isfile(file) else 0)}"
+                f"{(os.stat(file).st_size if os.path.isfile(file) else 0)} "
                 f"{file}"
                 for file in files
             ]
