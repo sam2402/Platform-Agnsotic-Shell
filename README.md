@@ -1,4 +1,4 @@
-# COMP0010 Shell — Group P1
+# COMP0010 Shell
 
 # Features
 
