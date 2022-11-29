@@ -1,7 +1,7 @@
 import os
 import unittest
-from src.applications.application import ApplicationError
 from src.util import read_lines, write_lines
+from src.applications.application import ApplicationError
 import filecmp
 
 
@@ -21,7 +21,7 @@ class TestUtil(unittest.TestCase):
         os.remove(self.file_name)
 
     def test_file_doesnt_exist(self):
-        self.assertRaises(FileNotFoundError, read_lines, "file2.txt")
+        self.assertRaises(ApplicationError, read_lines, "file2.txt")
 
     def test_read_lines(self):
         self.out = read_lines(self.file_name)
@@ -35,15 +35,10 @@ class TestUtil(unittest.TestCase):
                         "and this is the second line\n" \
                         "third line to check".split("\n ")
 
-        write_lines(file_to_write,text_to_write)
+        write_lines(file_to_write, text_to_write)
         self.assertEqual(filecmp.cmp(self.file_name, file_to_write,
                                      shallow=False), True)
         os.remove(file_to_write)
-
-
-
-
-
 
 
 if __name__ == '__main__':
