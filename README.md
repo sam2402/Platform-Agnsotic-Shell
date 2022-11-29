@@ -7,7 +7,7 @@
   - Extra flags have added to the following applications (documentation can be found in each application file):
     - `cat`: `-n`
     - `echo`: `-n`
-    - `grep` `-v/--invert`
+    - `grep` `-v/--invert`, `-c/--colour`
     - `head`: `-v/--verbose`
     - `ls`: `-a`, `-r/--reverse`, `-s/--size`
     - `pwd`: `-P`
