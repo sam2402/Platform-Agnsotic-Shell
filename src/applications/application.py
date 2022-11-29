@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
-from typing import Deque, List, Type
+from collections import deque
+from typing import Type
 
 from flagging import ApplicationFlagDict, FlagConfiguration
 
@@ -22,7 +23,7 @@ class Application(ABC):
     flag_configuration: FlagConfiguration = FlagConfiguration()
 
     @classmethod
-    def clean_args(cls, args: List[str]) -> List[str]:
+    def clean_args(cls, args: list[str]) -> list[str]:
         """Removes the application name, flags and their parameters
 
         Args:
@@ -48,7 +49,7 @@ class Application(ABC):
         self.flags = flags or {}
 
     @abstractmethod
-    def run(self, inp: List[str], out: Deque[str], args: List[str]):
+    def run(self, inp: list[str], out: deque[str], args: list[str]):
         """Runs the application with flag context
 
         Args:
@@ -96,7 +97,7 @@ class UnsafeApplication(Application):
         super().__init__(child_application.flags)
         self._child_application = child_application
 
-    def run(self, inp: List[str], out: Deque[str], args: List[str]):
+    def run(self, inp: list[str], out: deque[str], args: list[str]):
         try:
             self._child_application.run(inp, out, args)
         except Exception as err:

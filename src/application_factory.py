@@ -1,4 +1,4 @@
-from typing import List, Type
+from typing import Type
 
 from applications.application import (
     Application,
@@ -53,7 +53,7 @@ class ApplicationFactory:
             cls._instance = super(ApplicationFactory, cls).__new__(cls)
         return cls._instance
 
-    def get_application(self, args: List[str]) -> Application:
+    def get_application(self, args: list[str]) -> Application:
         """Get a application object from the args
 
         It is assumed the first arg is the application name
@@ -80,7 +80,7 @@ class ApplicationFactory:
         return self._get_safe_application(app_name, args[1:])
 
     def _get_safe_application(
-            self, app_name: str, application_args: List[str]
+            self, app_name: str, application_args: list[str]
     ) -> Application:
         application_type = self._get_app_type(app_name)
         try:
@@ -98,7 +98,7 @@ class ApplicationFactory:
         raise ApplicationError(f"unknown application '{app_name}'")
 
     def _parse_flags(
-            self, flag_configuration: FlagConfiguration, args: List[str]
+            self, flag_configuration: FlagConfiguration, args: list[str]
     ) -> ApplicationFlagDict:
         flags = {}
         i = 0

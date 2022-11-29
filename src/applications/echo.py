@@ -1,4 +1,4 @@
-from typing import Deque, List
+from collections import deque
 
 from flagging import ApplicationFlagDict, Flag, FlagConfiguration
 from .application import Application
@@ -19,7 +19,7 @@ class Echo(Application):
     def __init__(self, flags: ApplicationFlagDict = None):
         super().__init__(flags)
 
-    def run(self, inp: List[str], out: Deque[str], args: List[str]) -> None:
+    def run(self, inp: list[str], out: deque[str], args: list[str]) -> None:
         output = " ".join(args)
         output += "\n" if not self.flags["-n"] else ""
         out.append(output)

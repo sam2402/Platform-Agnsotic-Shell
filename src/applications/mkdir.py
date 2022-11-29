@@ -1,5 +1,5 @@
 import os
-from typing import Deque, List
+from collections import deque
 
 from flagging import ApplicationFlagDict, Flag, FlagConfiguration
 from .application import Application, ApplicationError
@@ -22,7 +22,7 @@ class Mkdir(Application):
     def __init__(self, flags: ApplicationFlagDict = None):
         super().__init__(flags)
 
-    def run(self, inp: List[str], out: Deque[str], args: List[str]) -> None:
+    def run(self, inp: list[str], out: deque[str], args: list[str]) -> None:
         already_exists_dir = []
         non_existent_parent_dirs = []
         make_directory = os.makedirs if self.flags["-p"] else os.mkdir
@@ -42,8 +42,8 @@ class Mkdir(Application):
 
     def _handle_errors(
             self,
-            already_exists_dir: List[str],
-            non_existent_parent_dirs: List[str]):
+            already_exists_dir: list[str],
+            non_existent_parent_dirs: list[str]):
         err_msgs = []
         if already_exists_dir:
             err_msgs.extend(

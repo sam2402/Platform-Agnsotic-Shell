@@ -1,13 +1,12 @@
 import os
 import sys
 from collections import deque
-from typing import Deque
 
 import parser
 from applications.application import ApplicationError, ArgumentError
 
 
-def evaluate(cmd_line: str, out: Deque[str]):
+def evaluate(cmd_line: str, out: deque[str]):
     out_list = parser.execute_command(cmd_line)
     for term in out_list:
         out.append(term)

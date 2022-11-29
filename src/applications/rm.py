@@ -1,6 +1,6 @@
 import os
 import shutil
-from typing import Deque, List
+from collections import deque
 
 from flagging import ApplicationFlagDict, Flag, FlagConfiguration
 from .application import Application, ApplicationError, ArgumentError
@@ -26,7 +26,7 @@ class Rm(Application):
     def __init__(self, flags: ApplicationFlagDict = None):
         super().__init__(flags)
 
-    def run(self, inp: List[str], out: Deque[str], args: List[str]) -> None:
+    def run(self, inp: list[str], out: deque[str], args: list[str]) -> None:
         if not args:
             raise ArgumentError(type(self), "supply at least one file path")
 
@@ -61,9 +61,9 @@ class Rm(Application):
 
     def _handle_errors(
             self,
-            non_existent_paths: List[str],
-            directory_args: List[str],
-            non_empty_directories: List[str]):
+            non_existent_paths: list[str],
+            directory_args: list[str],
+            non_empty_directories: list[str]):
         err_msgs = []
         if directory_args and not self.flags["-r"]:
             err_msgs.extend(

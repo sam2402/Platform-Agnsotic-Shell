@@ -1,5 +1,5 @@
 from abc import ABC
-from typing import Deque, List
+from collections import deque
 
 import util
 from flagging import ApplicationFlagDict, Flag, FlagConfiguration
@@ -18,9 +18,9 @@ class FileLineOutputter(Application, ABC):
         super().__init__(flags)
 
     def run(self,
-            inp: List[str],
-            out: Deque[str],
-            args: List[str], invert: bool = False
+            inp: list[str],
+            out: deque[str],
+            args: list[str], invert: bool = False
             ):
         if len(args) > 1:
             raise ArgumentError(type(self), "supply at most one file path")
@@ -34,7 +34,7 @@ class FileLineOutputter(Application, ABC):
             out.append(f"==>{args[0]}<==\n")
         out.extend(lines)
 
-    def _get_lines(self, inp: List[str], args: List[str], max_line_count: int):
+    def _get_lines(self, inp: list[str], args: list[str], max_line_count: int):
         lines = util.read_lines(args[0]) if len(args) == 1 else inp
         line_count = max_line_count if abs(max_line_count) < len(lines) \
             else len(lines)
@@ -54,7 +54,7 @@ class Head(FileLineOutputter):
 
     name = "head"
 
-    def run(self, inp: List[str], out: Deque[str], args: List[str]):
+    def run(self, inp: list[str], out: deque[str], args: list[str]):
         super().run(inp, out, args, invert=False)
 
     def help_message(self) -> str:
@@ -72,7 +72,7 @@ class Tail(FileLineOutputter):
 
     name = "tail"
 
-    def run(self, inp: List[str], out: Deque[str], args: List[str]):
+    def run(self, inp: list[str], out: deque[str], args: list[str]):
         super().run(inp, out, args, invert=True)
 
     def help_message(self) -> str:

@@ -1,5 +1,5 @@
 import os
-from typing import Deque, List
+from collections import deque
 
 from flagging import ApplicationFlagDict, Flag, FlagConfiguration
 from .application import Application
@@ -22,7 +22,7 @@ class Pwd(Application):
     def __init__(self, flags: ApplicationFlagDict = None):
         super().__init__(flags)
 
-    def run(self, inp: List[str], out: Deque[str], args: List[str]) -> None:
+    def run(self, inp: list[str], out: deque[str], args: list[str]) -> None:
         cwd = os.getcwd()
         if self.flags["-P"]:
             cwd = os.path.realpath(cwd)
