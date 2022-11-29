@@ -29,13 +29,13 @@ class TestShell(unittest.TestCase):
         self.assertEqual("foo\n", out.getvalue())
 
         sys.argv = argv
-
+    '''
     def test_shell_no_args(self):
         argv = sys.argv
         sys.argv = []
         run_shell()
         sys.argv = argv
-
+    '''
     def test_evaluate(self):
         out = deque()
         evaluate("echo foo bar", out)
@@ -63,7 +63,7 @@ class TestShell(unittest.TestCase):
         with contextlib.redirect_stderr(err):
             handle_input("<doesnotexist.txt echo")
 
-        exp = "application error: input file 'doesnotexist.txt' does not exist"
+        exp = "application error: input file 'doesnotexist.txt does not exist"
         self.assertEqual(err.getvalue(), exp + "\n")
 
     def test_handle_input_catches_parsing_error(self):
