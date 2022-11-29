@@ -19,6 +19,10 @@ class ShellError(Exception):
 
 
 def run_shell():
+    """Runs the shell with either a single command or as a REPL
+
+    N.B. the REPL will only be run if this script file is being run directly
+    """
     num_args = len(sys.argv) - 1
 
     if num_args > 0:
@@ -26,7 +30,7 @@ def run_shell():
             raise ShellError("incorrect usage, try -c '<command>'")
         handle_input(sys.argv[2])
     else:
-        while True:
+        while __name__ == "__main__":
             print(os.getcwd() + "> ", end="")
             cmd_line = input()
             handle_input(cmd_line)

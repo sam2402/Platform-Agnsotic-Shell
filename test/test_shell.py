@@ -75,6 +75,14 @@ class TestShell(unittest.TestCase):
             "parsing error: improperly formatted subcommand"
         ))
 
+        exp = "application error: input file 'doesnotexist.txt' does not exist"
+        self.assertEqual(err.getvalue(), exp + "\n")
 
-if __name__ == "__main__":
-    unittest.main()
+    def test_handle_input_catches_parsing_error(self):
+        err = io.StringIO()
+        with contextlib.redirect_stderr(err):
+            handle_input("||")
+
+        self.assertTrue(err.getvalue().startswith(
+            "parsing error: improperly formatted subcommand"
+        ))

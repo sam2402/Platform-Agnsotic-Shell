@@ -84,7 +84,7 @@ class Application(ABC):
 
 
 class UnsafeApplication(Application):
-    """An adapter pattern implementation Application class to provide an unsafe
+    """An adaptor pattern implementation Application class to provide an unsafe
     variant
 
     An unsafe version of an application is an application that has the same

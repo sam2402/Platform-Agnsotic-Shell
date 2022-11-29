@@ -20,8 +20,8 @@ class Find(Application):
     def run(self, inp: List[str], out: Deque[str], args: List[str]):
         if len(args) not in [2, 3] or \
                 args[0 if len(args) == 2 else 1] != "-name":
-            raise ArgumentError(type(self), "command must follow format: \
-                find [path] -name <pattern>")
+            raise ArgumentError(type(self), "command must follow format: "
+                                            "find [path] -name <pattern>")
 
         path = args[0] if len(args) == 3 else "."
         pattern = args[1] if len(args) == 2 else args[2]
