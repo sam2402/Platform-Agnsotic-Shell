@@ -22,9 +22,8 @@ class Grep(Application):
 
     def __init__(self, flags: ApplicationFlagDict = None):
         super().__init__(flags)
-
-    highlight_colour = "\u001b[35m"  # Magenta
-    reset_colour = "\u001b[0m"
+        self.highlight_colour = "\u001b[35m"  # Magenta
+        self.reset_colour = "\u001b[0m"
 
     def run(self, inp: List[str], out: Deque[str], args: List[str]):
         if not args:
