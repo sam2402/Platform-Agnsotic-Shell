@@ -29,13 +29,13 @@ class TestShell(unittest.TestCase):
         self.assertEqual("foo\n", out.getvalue())
 
         sys.argv = argv
-    '''
+
     def test_shell_no_args(self):
         argv = sys.argv
         sys.argv = []
         run_shell()
         sys.argv = argv
-    '''
+
     def test_evaluate(self):
         out = deque()
         evaluate("echo foo bar", out)
