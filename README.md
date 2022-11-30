@@ -13,7 +13,7 @@
     - `pwd`: `-P`
     - `sort`: `-R`, `-f`
     - `tail`: `-v/--invert`
-- Extra UNIX applications have been added (`mkdir`, `rm`) also with several flags.
+- Extra UNIX applications have been added (`mkdir`, `rm`, `wc`) also with several flags.
 - A help flag (`-h/--help`) has been added to every application which displays a usage message to the user.
 
 ## Design
