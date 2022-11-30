@@ -19,6 +19,7 @@ from applications.pwd import Pwd
 from applications.rm import Rm
 from applications.sort import Sort
 from applications.uniq import Uniq
+from applications.wc import Wc
 from flagging import ApplicationFlagDict, FlagConfiguration
 
 APPLICATIONS = {app.name: app for app in [
@@ -36,6 +37,7 @@ APPLICATIONS = {app.name: app for app in [
     Sort,
     Tail,
     Uniq,
+    Wc
 ]}
 
 

@@ -1,5 +1,4 @@
 from collections import deque
-
 from parameterized import parameterized
 
 from application_test import ApplicationTest, application_test
