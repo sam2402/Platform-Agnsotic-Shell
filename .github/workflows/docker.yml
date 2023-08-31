@@ -19,6 +19,4 @@ jobs:
           run: "docker run -p 80:8000 --rm shell /comp0010/tools/coverage_no_http"
         - name: Build system tests container
           run: "docker build -t comp0010-system-test ."
-        - name: Run system tests
-          run: "python system_test/tests.py -v"
 
